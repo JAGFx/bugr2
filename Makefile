@@ -1,16 +1,29 @@
+# -- Start Docker
+start:
+	@docker compose up -d
+
+stop:
+	@docker compose down
+# -- End Docker
+
+# -- Start Environment
 build: stop
 	@docker compose build --pull --no-cache
 
-install:
-	@bin/php composer install
+db: start
 	@bin/php bin/console d:d:d -f --if-exists
 	@bin/php bin/console d:d:c
 	@bin/php bin/console d:m:m -n
-	@bin/php bin/console h:f:l -n --purge-with-truncate
+
+install: start db
+	@bin/php composer install
+	@npm i
 
 fixture:
 	@bin/php bin/console h:f:l -n --purge-with-truncate
+# -- End Environment
 
+# -- Start Code linter & test (CI)
 test:
 #	@bin/php bin/console d:d:d -f --if-exists --env=test
 #	@bin/php bin/console d:d:c --env=test
@@ -23,12 +36,7 @@ lint:
 	@bin/php ./vendor/bin/psalm
 	@bin/php vendor/bin/phpcs -v --standard=.phpcs.xml -s --no-cache --colors src
 	@bin/php vendor/bin/phpcpd src
-
-start:
-	@docker compose up -d
-
-stop:
-	@docker compose down
+	@npm run lint
 
 ci: lint test
-	@npm run lint
+# -- End Code linter & test (CI)
