@@ -1,0 +1,12 @@
+{% macro amount(amount, color = 'true') %}
+	{% set class = (amount > 0 )
+		? 'text-success'
+		: 'text-danger'
+	%}
+	
+	<span class="{{ color == 'true' ? class : '' }}">{{ amount | number_format(2, '.', ' ') }}&nbsp;{{ 'EUR' | currency_symbol }}</span>
+{% endmacro %}
+
+{% macro progress(amount, status, color = 'true') %}
+	<span class="progress-status {{ color == 'true' ? status : '' }}">{{ amount | number_format(2, '.', ' ') }}&nbsp;{{ 'EUR' | currency_symbol }}</span>
+{% endmacro %}

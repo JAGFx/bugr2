@@ -1,0 +1,20 @@
+shared:
+    resource:
+        path: ../src/Shared/Controller/
+        namespace: App\Shared\Controller
+    type: attribute
+
+#domain:
+#    resource: '../src/Domain/*/Controller/*'
+#    type: attribute
+#    resource: 'routes/_domain.yaml'
+#    resource:
+#        path: '../src/Domain/*/Controller/*'
+#        namespace: App\Domain
+#    type: attribute
+
+budget_front:
+    resource:
+        path: ../src/Domain/Budget/Controller/Front/
+        namespace: App\Domain\Budget\Controller\Front
+    type: attribute

@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  php:
+    image: bugr2-php:latest
+    build:
+      context: ./docker/php
+    volumes:
+      - ./:/var/www/symfony/
+    networks:
+      - app_network
+
+  nginx:
+    image: bugr2-nginx:latest
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./:/var/www/symfony/
+    ports:
+      - "9001:80"
+    networks:
+      - app_network
+
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: noPassword
+      MYSQL_DATABASE: bugr
+      MYSQL_USER: app
+      MYSQL_PASSWORD: noPassword
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - app_network
+
+volumes:
+  db-data:
+
+networks:
+  app_network:

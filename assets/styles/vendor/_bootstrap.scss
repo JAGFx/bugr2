@@ -1,0 +1,28 @@
+@use "sass:color";
+
+@import "bootstrap_configuration";
+
+// <editor-folder> Custom variables
+
+// </editor-folder> Custom variables
+
+// Layout & components
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/tables";
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/progress";
+@import "bootstrap/scss/badge";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+
+// Helpers
+@import "bootstrap/scss/helpers";
+
+// Utilities
+@import "bootstrap/scss/utilities/api";
