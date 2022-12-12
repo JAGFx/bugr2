@@ -18,13 +18,17 @@ test:
 #	@bin/php bin/console h:f:l -n --purge-with-truncate --env=test
 	@bin/php bin/phpunit
 
+lint:
+	@bin/php php-cs-fixer fix --using-cache=no --diff
+	@bin/php ./vendor/bin/psalm
+	@bin/php vendor/bin/phpcs -v --standard=.phpcs.xml -s --no-cache --colors src
+	@bin/php vendor/bin/phpcpd src
+
 start:
 	@docker compose up -d
 
 stop:
 	@docker compose down
 
-ci:
+ci: lint test
 	@npm run lint
-	@bin/php php-cs-fixer fix src --diff --dry-run
-	@bin/php ./vendor/bin/psalm

@@ -1,24 +1,24 @@
 {% import 'shared/_currency.macro.html.twig' as currency %}
 
 <div class="card text-bg-dark">
-	<div class="card-body p-0">
-		<h5 class="card-title p-3 text-center">
-			Balance
-		</h5>
-		<table class="table table-borderless table-hover table-striped table-responsive m-0">
-			<tr>
-				<td colspan="2" class="text-center fs-3">
-					{{ currency.amount(entryBalance.total) }}
-				</td>
-			</tr>
-			<tr class="text-center fw-bold">
-				<td>Dépense</td>
-				<td>Provision</td>
-			</tr>
-			<tr class="text-center fs-5">
-				<td>{{ currency.amount(entryBalance.totalSpent) }}</td>
-				<td>{{ currency.amount(entryBalance.totalForecast) }}</td>
-			</tr>
-		</table>
-	</div>
+    <div class="card-body p-0">
+        <h5 class="card-title p-3 text-center">
+            Balance
+        </h5>
+        <table class="table table-borderless table-hover table-striped table-responsive m-0">
+            <tr>
+                <td colspan="2" class="text-center fs-3">
+                    {{ currency.amount(entryBalance.total) }}
+                </td>
+            </tr>
+            <tr class="text-center fw-bold">
+                <td>Dépense</td>
+                <td>Provision</td>
+            </tr>
+            <tr class="text-center fs-5">
+                <td>{{ currency.amount(entryBalance.totalSpent) }}</td>
+                <td>{{ currency.amount(entryBalance.totalForecast) }}</td>
+            </tr>
+        </table>
+    </div>
 </div>

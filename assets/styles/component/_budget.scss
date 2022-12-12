@@ -1,27 +1,45 @@
 @import "assets/styles/vendor/bootstrap_configuration";
 
 .budget {
-	.progress-status {
-		&.has-more-save { color: $primary; }
-		
-		&.is-soon-full { color: $warning; }
-		
-		&.is-full { color: $green; }
-		
-		&.is-over { color: $danger; }
-	}
-	
-	.progress-bar {
-		min-width: 2rem;
-		
-		&.has-more-save { background: $primary; }
-		
-		&.is-in-progress { background: $secondary; }
-		
-		&.is-soon-full { background: $warning; }
-		
-		&.is-full { background: $green; }
-		
-		&.is-over { background: $danger; }
-	}
+  .progress-status {
+    &.has-more-save {
+      color: $primary;
+    }
+
+    &.is-soon-full {
+      color: $warning;
+    }
+
+    &.is-full {
+      color: $green;
+    }
+
+    &.is-over {
+      color: $danger;
+    }
+  }
+
+  .progress-bar {
+    min-width: 2rem;
+
+    &.has-more-save {
+      background: $primary;
+    }
+
+    &.is-in-progress {
+      background: $secondary;
+    }
+
+    &.is-soon-full {
+      background: $warning;
+    }
+
+    &.is-full {
+      background: $green;
+    }
+
+    &.is-over {
+      background: $danger;
+    }
+  }
 }

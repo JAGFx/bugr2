@@ -28,3 +28,8 @@ yarn-error.log
 
 /.idea
 .php-cs-fixer.cache
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/.phpcs.xml
+###< squizlabs/php_codesniffer ###

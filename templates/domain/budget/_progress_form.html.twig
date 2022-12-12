@@ -1,21 +1,21 @@
 {# TODO: Use color from Ets2DashboardSkin project #}
 
 {{ form_start(form, {
-	attr: {
-		'data-turbo': true
-	}
+    attr: {
+        'data-turbo': true
+    }
 }) }}
-	<div class="d-flex justify-content-center align-items-center">
-		<div class="mx-1 ms-0 w-100">
-			{{ form_row(form.from) }}
-		</div>
-		<div class="mx-1 w-100">
-			{{ form_row(form.to) }}
-		</div>
-		<div class="mx-1 me-0 w-auto d-flex">
-			<button class="btn btn-primary m-1" type="submit">Filter</button>
-			<button class="btn btn-secondary m-1" type="reset">Réinitialiser</button>
-		</div>
-	</div>
+<div class="d-flex justify-content-center align-items-center">
+    <div class="mx-1 ms-0 w-100">
+        {{ form_row(form.from) }}
+    </div>
+    <div class="mx-1 w-100">
+        {{ form_row(form.to) }}
+    </div>
+    <div class="mx-1 me-0 w-auto d-flex">
+        <button class="btn btn-primary m-1" type="submit">Filter</button>
+        <button class="btn btn-secondary m-1" type="reset">Réinitialiser</button>
+    </div>
+</div>
 
 {{ form_end(form) }}

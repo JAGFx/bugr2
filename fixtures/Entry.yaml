@@ -1,31 +1,31 @@
 App\Domain\Entry\Entity\Entry:
-    entry_{1..50}:
-        name: <name()>
-        createdAt: <immutableDateTimeBetween('-1 month', 'today')>
-        amount: <randomFloat(2, -500, 500)>
-        budget: '@budget_<numberBetween(1, 5)>'
+  entry_{1..50}:
+    name: <name()>
+    createdAt: <immutableDateTimeBetween('-1 month', 'today')>
+    amount: <randomFloat(2, -500, 500)>
+    budget: '@budget_<numberBetween(1, 5)>'
 
-    entry_{51..100}:
-        name: <name()>
-        createdAt: <immutableDateTimeBetween('-1 month', 'today')>
-        amount: <randomFloat(2, -500, 500)>
-        type: 'type-forecast'
-        budget: '@budget_<numberBetween(1, 5)>'
+  entry_{51..100}:
+    name: <name()>
+    createdAt: <immutableDateTimeBetween('-1 month', 'today')>
+    amount: <randomFloat(2, -500, 500)>
+    type: 'type-forecast'
+    budget: '@budget_<numberBetween(1, 5)>'
 
-    entry_budget_full:
-        name: <name()>
-        createdAt: <immutableDateTimeBetween('-1 month', 'today')>
-        amount: 200
-        budget: '@budget_full'
+  entry_budget_full:
+    name: <name()>
+    createdAt: <immutableDateTimeBetween('-1 month', 'today')>
+    amount: 200
+    budget: '@budget_full'
 
-    entry_budget_current_year_{1..5}:
-        name: <name()>
-        createdAt: <immutableDateTimeBetween('-6 month', 'today')>
-        amount: 100
-        budget: '@budget_current_year'
+  entry_budget_current_year_{1..5}:
+    name: <name()>
+    createdAt: <immutableDateTimeBetween('-6 month', 'today')>
+    amount: 100
+    budget: '@budget_current_year'
 
-    entry_budget_current_year_past_{1..5}:
-        name: <name()>
-        createdAt: <immutableDateTimeBetween('-1 year -6 month', '-1 year')>
-        amount: 100
-        budget: '@budget_current_year'
+  entry_budget_current_year_past_{1..5}:
+    name: <name()>
+    createdAt: <immutableDateTimeBetween('-1 year -6 month', '-1 year')>
+    amount: 100
+    budget: '@budget_current_year'

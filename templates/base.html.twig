@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('bugr') }}
-        {% endblock %}
-    
-        {% block javascripts %}
-            {{ encore_entry_script_tags('bugr') }}
-        {% endblock %}
-    </head>
-    <body data-turbo="false">
-        {% include '_header.html.twig' %}
-        
-        <main class="container my-4" >
-            {% block body %}{% endblock %}
-        </main>
-        
-        {% include '_footer.html.twig' %}
-    </body>
+    />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('bugr') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('bugr') }}
+    {% endblock %}
+</head>
+<body data-turbo="false">
+{% include '_header.html.twig' %}
+
+<main class="container my-4">
+    {% block body %}{% endblock %}
+</main>
+
+{% include '_footer.html.twig' %}
+</body>
 </html>

@@ -1,8 +1,8 @@
 shared:
-    resource:
-        path: ../src/Shared/Controller/
-        namespace: App\Shared\Controller
-    type: attribute
+  resource:
+    path: ../src/Shared/Controller/
+    namespace: App\Shared\Controller
+  type: attribute
 
 #domain:
 #    resource: '../src/Domain/*/Controller/*'
@@ -14,7 +14,7 @@ shared:
 #    type: attribute
 
 budget_front:
-    resource:
-        path: ../src/Domain/Budget/Controller/Front/
-        namespace: App\Domain\Budget\Controller\Front
-    type: attribute
+  resource:
+    path: ../src/Domain/Budget/Controller/Front/
+    namespace: App\Domain\Budget\Controller\Front
+  type: attribute

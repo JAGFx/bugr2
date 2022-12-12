@@ -1,37 +1,37 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="7"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="https://getpsalm.org/schema/config"
-    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        errorLevel="7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="src" />
+        <directory name="src"/>
         <ignoreFiles>
-            <directory name="vendor" />
+            <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
-    
+
     <issueHandlers>
-        <MissingTemplateParam errorLevel="suppress" />
-        <PossiblyInvalidMethodCall errorLevel="suppress" />
-        <ArgumentTypeCoercion errorLevel="suppress" />
-        <LessSpecificReturnStatement errorLevel="suppress" />
-        <MoreSpecificReturnType errorLevel="suppress" />
-        <InvalidStringClass errorLevel="suppress" />
-        <MoreSpecificImplementedParamType errorLevel="suppress" />
-        <InvalidNullableReturnType errorLevel="suppress" />
-        <NullableReturnStatement errorLevel="suppress" />
-        <PossiblyInvalidArgument errorLevel="suppress" />
-        <MissingClosureReturnType errorLevel="suppress" />
-        <DeprecatedMethod errorLevel="info" />
-        <MissingParamType errorLevel="info" />
-        <MissingClosureParamType errorLevel="info" />
-        <MissingReturnType errorLevel="info" />
-        <DeprecatedClass errorLevel="info" />
-        <PossiblyNullReference errorLevel="info" />
-        <PossiblyNullArgument errorLevel="info" />
-        <PossiblyNullOperand errorLevel="info" />
+        <MissingTemplateParam errorLevel="suppress"/>
+        <PossiblyInvalidMethodCall errorLevel="suppress"/>
+        <ArgumentTypeCoercion errorLevel="suppress"/>
+        <LessSpecificReturnStatement errorLevel="suppress"/>
+        <MoreSpecificReturnType errorLevel="suppress"/>
+        <InvalidStringClass errorLevel="suppress"/>
+        <MoreSpecificImplementedParamType errorLevel="suppress"/>
+        <InvalidNullableReturnType errorLevel="suppress"/>
+        <NullableReturnStatement errorLevel="suppress"/>
+        <PossiblyInvalidArgument errorLevel="suppress"/>
+        <MissingClosureReturnType errorLevel="suppress"/>
+        <DeprecatedMethod errorLevel="info"/>
+        <MissingParamType errorLevel="info"/>
+        <MissingClosureParamType errorLevel="info"/>
+        <MissingReturnType errorLevel="info"/>
+        <DeprecatedClass errorLevel="info"/>
+        <PossiblyNullReference errorLevel="info"/>
+        <PossiblyNullArgument errorLevel="info"/>
+        <PossiblyNullOperand errorLevel="info"/>
         <UndefinedClass>
             <errorLevel type="suppress">
                 <directory name="tests"/>
