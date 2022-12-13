@@ -16,6 +16,13 @@ db: start
 	@bin/php bin/console d:d:c
 	@bin/php bin/console d:m:m -n
 
+db\:test: start
+	@sleep 1s
+	@bin/php bin/console d:d:d -f --if-exists --env=test
+	@bin/php bin/console d:d:c --env=test
+	@bin/php bin/console d:m:m -n --env=test
+	@bin/php bin/console h:f:l -n --purge-with-truncate --env=test
+
 install: start db
 	@sleep 1s
 	@bin/php composer install
@@ -26,12 +33,14 @@ fixture:
 # -- End Environment
 
 # -- Start Code linter & test (CI)
-test:
-	@bin/php bin/console d:d:d -f --if-exists --env=test
-	@bin/php bin/console d:d:c --env=test
-	@bin/php bin/console d:m:m -n --env=test
-	@bin/php bin/console h:f:l -n --purge-with-truncate --env=test
+test: db\:test test\:unit test\:functional
 	@bin/php bin/phpunit
+
+test\:unit:
+	@bin/php bin/phpunit tests/Unit
+
+test\:functional:
+	@bin/php bin/phpunit tests/Functionnal
 
 lint:
 	@bin/php php-cs-fixer fix --using-cache=no --diff

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Budget\Model;
+namespace App\Tests\Unit\Domain\Budget\Model;
 
 use App\Domain\Budget\Model\BudgetProgressTrait;
 use Generator;
