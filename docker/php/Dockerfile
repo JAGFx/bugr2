@@ -18,20 +18,9 @@ RUN curl -L https://cs.symfony.com/download/php-cs-fixer-v3.phar -o php-cs-fixer
     && chmod a+x php-cs-fixer \
     && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
-#RUN wget https://phar.phpunit.de/phpcpd.phar -o phpcpd.phar \
-#    && chmod a+x phpcpd.phar \
-#	&& mv phpcpd.phar /usr/local/bin/phpcpd.phar
-
-
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 COPY conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 COPY conf.d/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
 COPY conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-
-#RUN apt install curl git -y \
-#    && curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash \
-#    && apt install symfony-cli -y \
-#    && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
-#    && apt install nodejs -y
 
 WORKDIR /var/www/symfony

@@ -1,0 +1,4 @@
+App\Domain\Budget\Entity\Budget:
+  budget_empty:
+    name: 'Budget empty'
+    amount: <randomFloat(2, 15, 1500)>

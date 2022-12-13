@@ -11,11 +11,13 @@ build: stop
 	@docker compose build --pull --no-cache
 
 db: start
+	@sleep 1s
 	@bin/php bin/console d:d:d -f --if-exists
 	@bin/php bin/console d:d:c
 	@bin/php bin/console d:m:m -n
 
 install: start db
+	@sleep 1s
 	@bin/php composer install
 	@npm i
 
@@ -25,10 +27,10 @@ fixture:
 
 # -- Start Code linter & test (CI)
 test:
-#	@bin/php bin/console d:d:d -f --if-exists --env=test
-#	@bin/php bin/console d:d:c --env=test
-#	@bin/php bin/console d:m:m -n --env=test
-#	@bin/php bin/console h:f:l -n --purge-with-truncate --env=test
+	@bin/php bin/console d:d:d -f --if-exists --env=test
+	@bin/php bin/console d:d:c --env=test
+	@bin/php bin/console d:m:m -n --env=test
+	@bin/php bin/console h:f:l -n --purge-with-truncate --env=test
 	@bin/php bin/phpunit
 
 lint:

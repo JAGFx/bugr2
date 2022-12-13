@@ -27,8 +27,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: noPassword
       MYSQL_DATABASE: bugr
-      MYSQL_USER: app
-      MYSQL_PASSWORD: noPassword
     volumes:
       - db-data:/var/lib/mysql
     ports:
