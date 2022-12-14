@@ -2,3 +2,7 @@ App\Domain\Budget\Entity\Budget:
   budget_empty:
     name: 'Budget empty'
     amount: <randomFloat(2, 15, 1500)>
+
+  budget__spent_2016:
+    name: 'Budget spent 2016'
+    amount: 256

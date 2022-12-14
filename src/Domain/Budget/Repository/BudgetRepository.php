@@ -4,6 +4,7 @@ namespace App\Domain\Budget\Repository;
 
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Shared\Utils\YearRange;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,17 +27,25 @@ class BudgetRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('b')
             ->select(
-                'NEW App\Domain\Budget\ValueObject\BudgetValueObject(b.id, b.name, b.amount, b.enable, SUM(e.amount) )'
+                'NEW App\Domain\Budget\ValueObject\BudgetValueObject(b.id, b.name, b.amount, b.enable, SUM(ABS(e.amount)))'
             )
             ->join('b.entries', 'e')
             ->groupBy('b.id');
 
-        if (null !== $command->getFrom() && null !== $command->getTo()) {
+        if (null !== $command->getYear()) {
             $qb->andWhere('e.createdAt BETWEEN :from AND :to')
                 ->setParameters([
-                    'from' => $command->getFrom()->format('Y-m-d H:i:s'),
-                    'to' => $command->getTo()->format('Y-m-d H:i:s'),
+                    'from' => YearRange::fisrtDayOf($command->getYear())->format('Y-m-d H:i:s'),
+                    'to' => YearRange::lastDayOf($command->getYear())->format('Y-m-d H:i:s'),
                 ]);
+        }
+
+        if (true === $command->getShowCredits()) {
+            $qb->andWhere('e.amount > 0');
+        }
+
+        if (false === $command->getShowCredits()) {
+            $qb->andWhere('e.amount < 0');
         }
 
         return $qb;

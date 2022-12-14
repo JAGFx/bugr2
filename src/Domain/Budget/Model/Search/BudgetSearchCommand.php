@@ -5,31 +5,31 @@ namespace App\Domain\Budget\Model\Search;
 class BudgetSearchCommand
 {
     public function __construct(
-        private ?\DateTimeImmutable $from = null,
-        private ?\DateTimeImmutable $to = null,
+        private ?int $year = null,
+        private ?bool $showCredits = null
     ) {
     }
 
-    public function getFrom(): ?\DateTimeImmutable
+    public function getYear(): ?int
     {
-        return $this->from;
+        return $this->year;
     }
 
-    public function setFrom(?\DateTimeImmutable $from): self
+    public function setYear(?int $year): self
     {
-        $this->from = $from;
+        $this->year = $year;
 
         return $this;
     }
 
-    public function getTo(): ?\DateTimeImmutable
+    public function getShowCredits(): ?bool
     {
-        return $this->to;
+        return $this->showCredits;
     }
 
-    public function setTo(?\DateTimeImmutable $to): self
+    public function setShowCredits(?bool $showCredits): self
     {
-        $this->to = $to;
+        $this->showCredits = $showCredits;
 
         return $this;
     }

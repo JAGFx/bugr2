@@ -13,4 +13,12 @@ final class ImmutableDateTime extends Base
             DateTime::dateTimeBetween($startDate, $endDate, $timezone)
         );
     }
+
+    /**
+     * @throws \Exception
+     */
+    public static function dateTimeImmutable(string $dateTime): \DateTimeImmutable
+    {
+        return new \DateTimeImmutable($dateTime);
+    }
 }

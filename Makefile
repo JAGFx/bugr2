@@ -28,24 +28,24 @@ install: start db
 	@bin/php composer install
 	@npm i
 
-fixture:
+fixture: db
 	@bin/php bin/console h:f:l -n --purge-with-truncate
 # -- End Environment
 
 # -- Start Code linter & test (CI)
-test: db\:test test\:unit test\:functional
+test: db\:test test\:unit test\:integration
 	@bin/php bin/phpunit
 
 test\:unit:
 	@bin/php bin/phpunit tests/Unit
 
-test\:functional:
-	@bin/php bin/phpunit tests/Functionnal
+test\:integration:
+	@bin/php bin/phpunit tests/Integration
 
 lint:
 	@bin/php php-cs-fixer fix --using-cache=no --diff
 	@bin/php ./vendor/bin/psalm
-	@bin/php vendor/bin/phpcs -v --standard=.phpcs.xml -s --no-cache --colors src
+#	@bin/php vendor/bin/phpcs -v --standard=.phpcs.xml -s --no-cache --colors src
 	@bin/php vendor/bin/phpcpd src
 	@npm run lint
 

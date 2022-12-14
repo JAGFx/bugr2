@@ -1,7 +1,11 @@
 App\Domain\Budget\Entity\Budget:
-  budget_{1..5}:
-    name: <name()>
-    amount: <randomFloat(2, 15, 1500)>
+#  budget_{1..5}:
+#    name: <name()>
+#    amount: <randomFloat(2, 15, 1500)>
+
+  budget_over:
+    name: 'Budget Over'
+    amount: 200
 
   budget_full:
     name: 'Budget full'

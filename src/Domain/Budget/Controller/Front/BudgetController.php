@@ -6,6 +6,7 @@ use App\Domain\Budget\Form\BudgetSearchType;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Shared\Utils\TurboResponseTraits;
+use App\Shared\Utils\YearRange;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,9 @@ class BudgetController extends AbstractController
     #[Route('/progress-filter', name: 'front_budget_filter', methods: [Request::METHOD_GET, Request::METHOD_POST])]
     public function filter(Request $request): Response
     {
-        $command = new BudgetSearchCommand();
+        $command = (new BudgetSearchCommand())
+            ->setShowCredits(false)
+            ->setYear(YearRange::current());
 
         $form = $this
             ->createForm(BudgetSearchType::class, $command, [
