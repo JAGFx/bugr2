@@ -5,14 +5,18 @@ namespace App\Tests\Integration\Domain\Budget\Repository;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\ValueObject\BudgetValueObject;
+use App\Shared\Utils\YearRange;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class BudgetRepositoryTest extends KernelTestCase
 {
+    private const BUDGET_NAME = 'Budget spent Current year';
+
     private BudgetManager $budgetManager;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function setUp(): void
     {
@@ -22,40 +26,67 @@ class BudgetRepositoryTest extends KernelTestCase
         $this->budgetManager = $container->get(BudgetManager::class);
     }
 
-    /**
-     * @return BudgetValueObject[]
-     */
-    private function getBudgetVos(int $expectCount, int $year, ?bool $showCredit = null): array {
-        $command = (new BudgetSearchCommand())
-            ->setYear($year)
-            ->setShowCredits($showCredit);
+    private function getBudgetVos(array $data = []): array {
+        $command = (new BudgetSearchCommand());
+        $command
+            ->setYear($data['year'] ?? null)
+            ->setShowCredits($data['showCredit'] ?? null);
+
         $budgetsVos =  $this->budgetManager->searchValueObject($command);
 
-        self::assertCount($expectCount, $budgetsVos);
+        self::assertCount(1, $budgetsVos);
 
         return $budgetsVos;
     }
 
-    public function testBudgetSpentProgress(): void {
-        $budgetsVos = $this->getBudgetVos(1, 2016, false);
+    public function testBudgetSpentProgressForSpecificYearIsCorrect(): void {
+        $budgetsVos = $this->getBudgetVos( [
+            'year' => YearRange::current(),
+            'showCredit' => false
+        ]);
         $budgetsVo = reset($budgetsVos);
 
         self::assertInstanceOf( BudgetValueObject::class, $budgetsVo );
-        self::assertSame('Budget spent 2016', $budgetsVo->getName());
+        self::assertSame(self::BUDGET_NAME, $budgetsVo->getName());
         self::assertSame(256.0, $budgetsVo->getAmount());
-        self::assertSame(192.0, $budgetsVo->getProgress());
+        self::assertSame(-192.0, $budgetsVo->getProgress());
     }
 
-    public function testBudgetForecastProgress(): void {
-        $budgetsVos = $this->getBudgetVos(1, 2016, true);
+    public function testBudgetForecastProgressForSpecificYearIsCorrect(): void {
+        $budgetsVos = $this->getBudgetVos( [
+            'year' => YearRange::current(),
+            'showCredit' => true
+        ]);
 
         $budgetsVo = reset($budgetsVos);
 
         self::assertInstanceOf( BudgetValueObject::class, $budgetsVo );
-        self::assertSame('Budget spent 2016', $budgetsVo->getName());
+        self::assertSame(self::BUDGET_NAME, $budgetsVo->getName());
         self::assertSame(256.0, $budgetsVo->getAmount());
         self::assertSame(128.0, $budgetsVo->getProgress());
     }
 
-    // TODO Add test for global (spent + forecast)
+    public function testBudgetSoldForSpecificYearIsCorrect(): void {
+        $budgetsVos = $this->getBudgetVos( [
+            'year' => YearRange::current()
+        ]);
+
+        $budgetsVo = reset($budgetsVos);
+
+        self::assertInstanceOf( BudgetValueObject::class, $budgetsVo );
+        self::assertSame(self::BUDGET_NAME, $budgetsVo->getName());
+        self::assertSame(256.0, $budgetsVo->getAmount());
+        self::assertSame(-64.0, $budgetsVo->getProgress());
+    }
+
+    public function testBudgetSoldIsCorrect(): void {
+        $budgetsVos = $this->getBudgetVos();
+
+        $budgetsVo = reset($budgetsVos);
+
+        self::assertInstanceOf( BudgetValueObject::class, $budgetsVo );
+        self::assertSame(self::BUDGET_NAME, $budgetsVo->getName());
+        self::assertSame(256.0, $budgetsVo->getAmount());
+        self::assertSame(320.0, $budgetsVo->getProgress());
+    }
 }

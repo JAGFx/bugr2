@@ -2,10 +2,11 @@
 
 namespace App\Domain\Budget\Controller\Front;
 
+use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Form\BudgetSearchType;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
-use App\Shared\Utils\TurboResponseTraits;
+use App\Shared\Model\TurboResponseTraits;
 use App\Shared\Utils\YearRange;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,20 @@ class BudgetController extends AbstractController
             [
                 'form' => $form,
                 'budgets' => $this->budgetManager->searchValueObject($command),
+            ]
+        );
+    }
+
+    #[Route('/{id}/disable', name: 'front_budget_disable', methods: [Request::METHOD_GET])]
+    public function disable(Request $request, Budget $budget): Response
+    {
+        $this->budgetManager->disable($budget);
+
+        return $this->renderTurboStream(
+            $request,
+            'domain/budget/turbo/success.stream.disable.html.twig',
+            [
+                'budget' => $budget,
             ]
         );
     }

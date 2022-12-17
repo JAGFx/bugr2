@@ -13,8 +13,20 @@ shared:
 #        namespace: App\Domain
 #    type: attribute
 
+budget_back:
+  resource:
+    path: ../src/Domain/Budget/Controller/Back/
+    namespace: App\Domain\Budget\Controller\Back
+  type: attribute
+
 budget_front:
   resource:
     path: ../src/Domain/Budget/Controller/Front/
     namespace: App\Domain\Budget\Controller\Front
+  type: attribute
+
+entry_front:
+  resource:
+    path: ../src/Domain/Entry/Controller/Front/
+    namespace: App\Domain\Entry\Controller\Front
   type: attribute

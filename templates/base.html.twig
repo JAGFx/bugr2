@@ -18,12 +18,14 @@
     {% endblock %}
 </head>
 <body data-turbo="false">
-{% include '_header.html.twig' %}
+{% include 'shared/_header.html.twig' %}
 
 <main class="container my-4">
+    <turbo-frame id="entry_balance" src="{{ path('front_entry_balance') }}"></turbo-frame>
+
     {% block body %}{% endblock %}
 </main>
 
-{% include '_footer.html.twig' %}
+{% include 'shared/_footer.html.twig' %}
 </body>
 </html>

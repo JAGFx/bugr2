@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Utils;
+namespace App\Shared\Model;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% include 'domain/entry/_balance.html.twig' %}
-
     <turbo-frame id="budget_progress_form" class="row mt-4" src="{{ path('front_budget_filter') }}">
         Form
     </turbo-frame>

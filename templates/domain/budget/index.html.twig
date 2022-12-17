@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% import 'shared/_currency.macro.html.twig' as currency %}
+
+    <div class="d-flex justify-content-between align-items-center text-secondary mt-4 mb-2">
+        <div>
+            <span>Budget</span>
+            <a class="btn btn-primary btn-xs ms-1 px-1 py-0" href="{{ path('back_budget_create') }}">+</a>
+        </div>
+        <div class="me-4">Cible</div>
+    </div>
+
+    <ul class="list-group">
+        {% for budget in budgets %}
+            {% include 'domain/budget/_item.html.twig' %}
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% import 'shared/_currency.macro.html.twig' as currency %}
+
+<div class="col-12 col-md-6 d-flex justify-content-center align-items-center flex-column budget py-2 border-bottom border-dark">
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <div class="">{{ budget.name }}</div>
+        <div class="d-flex justify-content-center align-items-center">
+            <small>
+                {{ currency.progress(budget.progress(true), budget.status(true).value) }}
+                <span class="text-muted">/ {{ currency.amount(budget.amount, 'false') }}</span>
+            </small>
+        </div>
+    </div>
+    <div class="w-100">
+        <div class="progress w-auto my-2 bg-light bg-opacity-25">
+            {% set relativeProgress = min(
+                budget.relativeProgress(true), 100
+            ) %}
+            <div class="progress-bar striped {{ budget.status(true).value }}"
+                 style="width: {{ relativeProgress }}%;"
+            >
+                {{ budget.relativeProgress(true) | round }}%
+            </div>
+        </div>
+    </div>
+</div>

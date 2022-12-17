@@ -14,21 +14,11 @@ class EntryRepository extends ServiceEntityRepository
         parent::__construct($registry, Entry::class);
     }
 
-    // public function balance(string $type): float
-    // {
-    //    return (float) $this
-    //        ->createQueryBuilder('e')
-    //        ->select('SUM( e.amount ) as sumAmount')
-    //        ->where('e.type = :type')
-    //        ->setParameter('type', $type)
-    //        ->getQuery()
-    //        ->getSingleScalarResult();
-    // }
-
     public function balance(): QueryBuilder
     {
         return $this->createQueryBuilder('e')
-            ->select('e.type, SUM(e.amount) as sum')
-            ->groupBy('e.type');
+            ->select('SUM(e.amount) as sum, b.id')
+            ->leftJoin('e.budget', 'b')
+            ->groupBy('b.id');
     }
 }

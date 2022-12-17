@@ -7,11 +7,11 @@ RUN apt update -y \
     && apt full-upgrade -y \
     && apt dist-upgrade -y \
     && apt autoremove -y \
-    && apt install zip unzip libzip-dev libpq-dev -y
+    && apt install zip unzip libzip-dev libpq-dev libicu-dev -y
 
 RUN pecl install xdebug apcu
 
-RUN docker-php-ext-install zip pdo pgsql pdo_mysql pdo_pgsql opcache \
+RUN docker-php-ext-install zip pdo pgsql pdo_mysql pdo_pgsql opcache intl \
     && docker-php-ext-enable xdebug apcu
 
 RUN curl -L https://cs.symfony.com/download/php-cs-fixer-v3.phar -o php-cs-fixer \

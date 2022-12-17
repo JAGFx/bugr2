@@ -4,11 +4,13 @@ namespace App\Shared\Utils;
 
 class Statistics
 {
-    public static function filterBy(array $statistics, string $property, mixed $value): array
+    public static function filterBy(array $statistics, string $property, mixed $value, bool $negate = false): array
     {
         return array_filter(
             $statistics,
-            fn (array $statistic): bool => $statistic[$property] === $value
+            fn (array $statistic): bool => (!$negate)
+                ? $statistic[$property] === $value
+                : $statistic[$property] !== $value
         );
     }
 

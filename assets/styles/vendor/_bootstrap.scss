@@ -1,15 +1,12 @@
 @use "sass:color";
 @import "bootstrap_configuration";
 
-// <editor-folder> Custom variables
-
-// </editor-folder> Custom variables
-
 // Layout & components
 @import "bootstrap/scss/root";
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/type";
 @import "bootstrap/scss/containers";
+@import "bootstrap/scss/transitions";
 @import "bootstrap/scss/grid";
 @import "bootstrap/scss/navbar";
 @import "bootstrap/scss/nav";
@@ -19,9 +16,15 @@
 @import "bootstrap/scss/badge";
 @import "bootstrap/scss/forms";
 @import "bootstrap/scss/buttons";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/list-group";
 
 // Helpers
 @import "bootstrap/scss/helpers";
 
 // Utilities
 @import "bootstrap/scss/utilities/api";
+
+.btn-xs {
+  @include button-size(0.25rem, 0.5rem, 0.75rem, $border-radius);
+}

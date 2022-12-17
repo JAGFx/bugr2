@@ -3,10 +3,3 @@
 $color-dark: #283339;
 $color-accent1: #50ade8;
 $color-white: #fff;
-$dark: color.adjust($color-dark, $lightness: 5%);
-$primary: $color-accent1;
-$body-bg: $color-dark;
-$body-color: $color-white;
-$progress-bg: color.adjust($dark, $lightness: 5%);
-$input-bg: $dark;
-$input-border-color: color.adjust($dark, $lightness: 8%);

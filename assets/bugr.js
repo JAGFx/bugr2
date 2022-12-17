@@ -10,4 +10,8 @@ import './styles/bugr.scss';
 
 // start the Stimulus application
 import './bootstrap';
+import 'bootstrap/js/dist/base-component'
+import 'bootstrap/js/dist/dropdown'
+import 'bootstrap/js/dist/button'
+import 'bootstrap/js/dist/collapse'
 //import 'bootstrap/js/dist'

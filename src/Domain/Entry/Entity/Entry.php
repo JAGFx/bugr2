@@ -24,9 +24,6 @@ class Entry
     #[ORM\Column(type: 'float')]
     private float $amount = 0;
 
-    #[ORM\Column(enumType: EntryTypeEnum::class)]
-    private EntryTypeEnum $type = EntryTypeEnum::TYPE_SPENT;
-
     #[ORM\ManyToOne(fetch: 'EXTRA_LAZY', inversedBy: 'entries')]
     private ?Budget $budget = null;
 
@@ -61,26 +58,21 @@ class Entry
 
     public function getType(): EntryTypeEnum
     {
-        return $this->type;
-    }
-
-    public function setType(EntryTypeEnum $type): self
-    {
-        $this->type = $type;
-
-        return $this;
+        return (null === $this->budget)
+            ? EntryTypeEnum::TYPE_FORECAST
+            : EntryTypeEnum::TYPE_SPENT;
     }
 
     // ----
 
     public function isForecast(): bool
     {
-        return EntryTypeEnum::TYPE_FORECAST === $this->type;
+        return EntryTypeEnum::TYPE_FORECAST === $this->getType();
     }
 
     public function isSpent(): bool
     {
-        return EntryTypeEnum::TYPE_SPENT === $this->type;
+        return EntryTypeEnum::TYPE_SPENT === $this->getType();
     }
 
     public function getBudget(): ?Budget

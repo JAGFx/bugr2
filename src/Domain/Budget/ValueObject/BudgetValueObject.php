@@ -37,8 +37,10 @@ final class BudgetValueObject
         return $this->enable;
     }
 
-    public function getProgress(): float
+    public function getProgress(bool $showAsSpentOnly = false): float
     {
-        return $this->progress;
+        return ($showAsSpentOnly)
+            ? abs($this->progress)
+            : $this->progress;
     }
 }

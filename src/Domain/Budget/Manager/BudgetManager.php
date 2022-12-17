@@ -14,6 +14,25 @@ class BudgetManager
     ) {
     }
 
+    public function create(Budget $budget): void
+    {
+        $this->budgetRepository
+            ->create($budget)
+            ->flush();
+    }
+
+    public function disable(Budget $budget): void
+    {
+        $budget->setEnable(false);
+
+        $this->budgetRepository->flush();
+    }
+
+    public function update(): void
+    {
+        $this->budgetRepository->flush();
+    }
+
     /**
      * @return Budget[]
      */

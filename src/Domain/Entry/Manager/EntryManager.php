@@ -2,7 +2,6 @@
 
 namespace App\Domain\Entry\Manager;
 
-use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\Entry\Repository\EntryRepository;
 use App\Domain\Entry\ValueObject\EntryBalance;
 use App\Shared\Utils\Statistics;
@@ -21,8 +20,8 @@ class EntryManager
             ->getQuery()
             ->getResult();
 
-        $spentAmount = Statistics::filterBy($data, 'type', EntryTypeEnum::TYPE_SPENT);
-        $forecastAmount = Statistics::filterBy($data, 'type', EntryTypeEnum::TYPE_FORECAST);
+        $spentAmount = Statistics::filterBy($data, 'id', null);
+        $forecastAmount = Statistics::filterBy($data, 'id', null, true);
 
         $spentAmount = Statistics::sumOf($spentAmount, 'sum');
         $forecastAmount = Statistics::sumOf($forecastAmount, 'sum');

@@ -16,9 +16,22 @@ class BudgetRepository extends ServiceEntityRepository
         parent::__construct($registry, Budget::class);
     }
 
+    public function create(Budget $budget): self
+    {
+        $this->_em->persist($budget);
+
+        return $this;
+    }
+
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
     public function search(BudgetSearchCommand $command): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('b');
+        $qb = $this->createQueryBuilder('b')
+            ->orderBy('b.name');
 
         return $qb;
     }
@@ -27,7 +40,7 @@ class BudgetRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('b')
             ->select(
-                'NEW App\Domain\Budget\ValueObject\BudgetValueObject(b.id, b.name, b.amount, b.enable, SUM(ABS(e.amount)))'
+                'NEW App\Domain\Budget\ValueObject\BudgetValueObject(b.id, b.name, b.amount, b.enable, SUM(e.amount))'
             )
             ->join('b.entries', 'e')
             ->groupBy('b.id');

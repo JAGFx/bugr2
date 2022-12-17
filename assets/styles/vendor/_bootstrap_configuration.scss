@@ -1,4 +1,20 @@
+@use "sass:color";
 @import "assets/styles/abstract/variables";
+
+// <editor-folder> Custom variables
+$dark: color.adjust($color-dark, $lightness: 5%);
+$primary: $color-accent1;
+$body-bg: $color-dark;
+$body-color: $color-white;
+$progress-bg: color.adjust($dark, $lightness: 5%);
+$input-bg: $dark;
+$input-border-color: color.adjust($dark, $lightness: 8%);
+$enable-caret: false;
+$list-group-bg: $dark;
+$list-group-color: $color-white;
+$list-group-disabled-bg: color.adjust($color-dark, $lightness: 7%);
+
+// </editor-folder> Custom variables
 
 // Configuration
 @import "bootstrap/scss/functions";

@@ -27,5 +27,8 @@
     "build": "encore production --progress",
     "lint": "npm run lint:stylelint",
     "lint:stylelint": "npx stylelint 'assets/styles/**/*.scss' --fix --color"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.2.1"
   }
 }

@@ -8,18 +8,18 @@ trait BudgetProgressTrait
 
     abstract public function getAmount(): float;
 
-    public function getRelativeProgress(): float
+    public function getRelativeProgress(bool $showAsSpentOnly = false): float
     {
         if (0.0 === $this->getAmount()) {
             return 0.0;
         }
 
-        return $this->getProgress() * 100 / $this->getAmount();
+        return $this->getProgress($showAsSpentOnly) * 100 / $this->getAmount();
     }
 
-    public function getStatus(): BudgetStatusEnum
+    public function getStatus(bool $showAsSpentOnly = false): BudgetStatusEnum
     {
-        $relativeProgress = $this->getRelativeProgress();
+        $relativeProgress = $this->getRelativeProgress($showAsSpentOnly);
 
         return BudgetStatusEnum::statusByProgress($relativeProgress);
     }
