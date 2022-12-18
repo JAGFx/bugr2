@@ -1,9 +1,8 @@
 @import "../abstract/variables";
 
 body {
-  background: url('../../../public/img/bg.jpg') no-repeat center center;
+  background: url("../../../public/img/bg.jpg") no-repeat center center;
   background-size: cover;
-
   height: 100vh;
 }
 

@@ -56,7 +56,7 @@ class BudgetController extends AbstractController
         $message = 'Budget ';
         $message .= ($budget->getEnable()) ? 'activé' : 'désactivé';
 
-        $this->addFlash('success', $message  );
+        $this->addFlash('success', $message);
 
         return $this->renderTurboStream(
             $request,
@@ -68,7 +68,8 @@ class BudgetController extends AbstractController
     }
 
     #[Route('/{id}/balancing', name: 'front_budget_balancing', methods: [Request::METHOD_GET])]
-    public function balancing(Request $request, Budget $budget): Response {
+    public function balancing(Request $request, Budget $budget): Response
+    {
         $this->budgetManager->balancing($budget);
 
         $this->addFlash('success', 'Budget équilibré');

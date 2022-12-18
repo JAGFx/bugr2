@@ -14,13 +14,15 @@ class EntryRepository extends ServiceEntityRepository
         parent::__construct($registry, Entry::class);
     }
 
-    public function create(Entry $entry): self {
+    public function create(Entry $entry): self
+    {
         $this->_em->persist($entry);
 
         return $this;
     }
 
-    public function flush(): void {
+    public function flush(): void
+    {
         $this->_em->flush();
     }
 

@@ -30,7 +30,8 @@ class EntryManager
         return new EntryBalance($spentAmount + $forecastAmount, $spentAmount, $forecastAmount);
     }
 
-    public function create(Entry $entry): void {
+    public function create(Entry $entry): void
+    {
         $this->entryRepository->create($entry);
     }
 }

@@ -1,31 +1,31 @@
 @import "variables";
 
 @mixin border-gradient( $color, $width ) {
-	position: relative;
-	
-	&::before {
-		background:$color;
-		border-radius: 100rem;
-		content: "";
-		inset: 0;
-		mask:
-			linear-gradient(#fff 0 0) content-box,
-				 linear-gradient(#fff 0 0);
+  position: relative;
 
-		// mask-composite: xor;
-		mask-composite: exclude;
-		padding: $width;
-		position: absolute;
-	}
+  &::before {
+    background: $color;
+    border-radius: 100rem;
+    content: "";
+    inset: 0;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+
+    // mask-composite: xor;
+    mask-composite: exclude;
+    padding: $width;
+    position: absolute;
+  }
 }
 
-@mixin background-acrylic(){
-	background: $color-black-transparent-10 !important;
-	border: 0;
-	box-shadow: rgb(37 43 54 / 3%) 10px 10px 10px;
+@mixin background-acrylic() {
+  background: $color-black-transparent-10 !important;
+  border: 0;
+  box-shadow: rgb(37 43 54 / 3%) 10px 10px 10px;
 
-	@supports (backdrop-filter: blur(30px)) {
-		backdrop-filter: blur(30px);
-		background: rgba($color-black, 0.10) !important;
-	}
+  @supports (backdrop-filter: blur(30px)) {
+    backdrop-filter: blur(30px);
+    background: rgba($color-black, 0.1) !important;
+  }
 }

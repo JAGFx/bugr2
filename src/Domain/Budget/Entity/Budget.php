@@ -127,8 +127,9 @@ class Budget
         return $this;
     }
 
-    public function addEntry(Entry $entry): self {
-        if(!$this->entries->contains($entry) ){
+    public function addEntry(Entry $entry): self
+    {
+        if (!$this->entries->contains($entry)) {
             $this->entries->add($entry);
         }
 
@@ -217,11 +218,13 @@ class Budget
         );
     }
 
-    public function hasNegativeCashFlow(): bool {
+    public function hasNegativeCashFlow(): bool
+    {
         return round($this->getProgress(), 2) < 0.0;
     }
 
-    public function hasPositiveCashFlow(): bool {
+    public function hasPositiveCashFlow(): bool
+    {
         return round($this->getProgress(), 2) > 0.0;
     }
 }

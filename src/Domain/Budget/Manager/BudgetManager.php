@@ -62,22 +62,23 @@ class BudgetManager
             ->getResult();
     }
 
-    public function balancing(Budget $budget): void {
+    public function balancing(Budget $budget): void
+    {
         // TODO Add TI
 
-        if( $budget->hasPositiveCashFlow() ){
+        if ($budget->hasPositiveCashFlow()) {
             $entryBalanceSpent = (new Entry())
                 ->setName("Equilibrage de {$budget->getName()}")
-                ->setAmount( $budget->getProgress() );
+                ->setAmount($budget->getProgress());
 
             $entryBalanceForecast = (new Entry())
                 ->setBudget($budget)
                 ->setName("Equilibrage de {$budget->getName()}")
-                ->setAmount(- $budget->getProgress());
+                ->setAmount(-$budget->getProgress());
 
             $budget->addEntry($entryBalanceForecast);
 
-            $this->entryManager->create( $entryBalanceSpent );
+            $this->entryManager->create($entryBalanceSpent);
             $this->update();
         }
     }
