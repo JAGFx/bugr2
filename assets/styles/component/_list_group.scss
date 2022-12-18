@@ -1,0 +1,9 @@
+@import "../abstract/mixins";
+
+.bugr .list-group {
+  @include background-acrylic;
+
+  .list-group-item {
+    background-color: transparent;
+  }
+}

@@ -1,27 +1,49 @@
 {% import 'shared/_currency.macro.html.twig' as currency %}
 
-<turbo-frame id="budget_list_item_{{ budget.id }}">
-    <li class="list-group-item d-flex justify-content-center align-items-center py-3 {{ not budget.enable ? 'disabled' : '' }}">
-        <div class="d-flex justify-content-start align-items-center w-100">
-            {% if not budget.enable %}
-                <span class="me-2"><i class="fa-solid fa-skull-crossbones"></i></span>
+<li class="list-group-item d-flex justify-content-center align-items-center py-3 {{ not budget.enable ? 'list-group-item-secondary' : '' }}">
+    <div class="d-flex justify-content-center align-items-start w-100 flex-column">
+        {{ budget.name }}
+        <div>
+            {% if budget.hasNegativeCashFlow %}
+                <span class="me-2 text-danger" data-bs-toggle="tooltip" data-bs-title="Dépassement">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <small>{{ budget.progress | currency }}</small>
+            </span>
             {% endif %}
-            {{ budget.name }}
+            {% if budget.positiveCashFlow %}
+                <span class="me-2 text-success" data-bs-toggle="tooltip" data-bs-title="Surplus">
+                <i class="fa-solid fa-piggy-bank"></i>
+                <small>{{ budget.progress | currency }}</small>
+            </span>
+            {% endif %}
         </div>
-        <div class="w-50 me-3 text-end {{ not budget.enable ? 'text-decoration-line-through' : ''  }}">
-            {{ currency.amount(budget.amount, true, not budget.enable) }}
+    </div>
+    <div class="w-50 me-3 text-end {{ not budget.enable ? 'text-decoration-line-through' : '' }}">
+        {{ currency.amount(budget.amount, true, not budget.enable) }}
+    </div>
+    <div class="position-absolute" style="right: 0">
+        <div class="dropstart">
+            <button type="button" class="btn dropdown-toggle text-secondary border-0" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="{{ path('back_budget_edit', {'id': budget.id}) }}">Modifier</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                {% if budget.positiveCashFlow %}
+                    <li><a class="dropdown-item" data-turbo="true"
+                           href="{{ path('front_budget_balancing', {'id': budget.id}) }}">Équilibrer</a></li>
+                {% endif %}
+                {% if budget.enable %}
+                    <li><a class="dropdown-item" data-turbo="true"
+                           href="{{ path('front_budget_toggle', {'id': budget.id}) }}">Désactiver</a></li>
+                {% else %}
+                    <li><a class="dropdown-item" data-turbo="true"
+                           href="{{ path('front_budget_toggle', {'id': budget.id}) }}">Activer</a></li>
+                {% endif %}
+            </ul>
         </div>
-        <div class="position-absolute" style="right: 0">
-            <div class="dropstart">
-                <button type="button" class="btn dropdown-toggle text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="{{ path('back_budget_edit', {'id': budget.id}) }}">Modifier</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" data-turbo="true" href="{{ path('front_budget_disable', {'id': budget.id}) }}">Désactivé</a></li>
-                </ul>
-            </div>
-        </div>
-    </li>
-</turbo-frame>
+    </div>
+</li>

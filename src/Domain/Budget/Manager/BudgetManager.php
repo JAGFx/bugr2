@@ -6,11 +6,14 @@ use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\Repository\BudgetRepository;
 use App\Domain\Budget\ValueObject\BudgetValueObject;
+use App\Domain\Entry\Entity\Entry;
+use App\Domain\Entry\Manager\EntryManager;
 
 class BudgetManager
 {
     public function __construct(
-        private readonly BudgetRepository $budgetRepository
+        private readonly BudgetRepository $budgetRepository,
+        private readonly EntryManager $entryManager
     ) {
     }
 
@@ -21,9 +24,9 @@ class BudgetManager
             ->flush();
     }
 
-    public function disable(Budget $budget): void
+    public function toggle(Budget $budget): void
     {
-        $budget->setEnable(false);
+        $budget->setEnable(!$budget->getEnable());
 
         $this->budgetRepository->flush();
     }
@@ -57,5 +60,25 @@ class BudgetManager
             ->searchValueObject($command)
             ->getQuery()
             ->getResult();
+    }
+
+    public function balancing(Budget $budget): void {
+        // TODO Add TI
+
+        if( $budget->hasPositiveCashFlow() ){
+            $entryBalanceSpent = (new Entry())
+                ->setName("Equilibrage de {$budget->getName()}")
+                ->setAmount( $budget->getProgress() );
+
+            $entryBalanceForecast = (new Entry())
+                ->setBudget($budget)
+                ->setName("Equilibrage de {$budget->getName()}")
+                ->setAmount(- $budget->getProgress());
+
+            $budget->addEntry($entryBalanceForecast);
+
+            $this->entryManager->create( $entryBalanceSpent );
+            $this->update();
+        }
     }
 }

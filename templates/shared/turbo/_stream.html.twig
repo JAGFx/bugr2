@@ -1,0 +1,11 @@
+<turbo-stream action="append" target="toast_container">
+    <template>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                {% include 'shared/toast/_item.html.twig' with {type: label } %}
+            {% endfor %}
+        {% endfor %}
+    </template>
+</turbo-stream>
+
+{% block stream %}{% endblock %}

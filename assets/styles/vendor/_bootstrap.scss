@@ -18,6 +18,8 @@
 @import "bootstrap/scss/buttons";
 @import "bootstrap/scss/dropdown";
 @import "bootstrap/scss/list-group";
+@import "bootstrap/scss/close";
+@import "bootstrap/scss/toasts";
 
 // Helpers
 @import "bootstrap/scss/helpers";
@@ -27,4 +29,8 @@
 
 .btn-xs {
   @include button-size(0.25rem, 0.5rem, 0.75rem, $border-radius);
+}
+
+.toast-container {
+  top: 3.5rem;
 }

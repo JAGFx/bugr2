@@ -6,6 +6,7 @@ use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Form\BudgetSearchType;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\TurboResponseTraits;
 use App\Shared\Utils\YearRange;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,8 @@ class BudgetController extends AbstractController
     use TurboResponseTraits;
 
     public function __construct(
-        private readonly BudgetManager $budgetManager
+        private readonly BudgetManager $budgetManager,
+        private readonly EntryManager $entryManager
     ) {
     }
 
@@ -46,16 +48,37 @@ class BudgetController extends AbstractController
         );
     }
 
-    #[Route('/{id}/disable', name: 'front_budget_disable', methods: [Request::METHOD_GET])]
-    public function disable(Request $request, Budget $budget): Response
+    #[Route('/{id}/toggle', name: 'front_budget_toggle', methods: [Request::METHOD_GET])]
+    public function toggle(Request $request, Budget $budget): Response
     {
-        $this->budgetManager->disable($budget);
+        $this->budgetManager->toggle($budget);
+
+        $message = 'Budget ';
+        $message .= ($budget->getEnable()) ? 'activé' : 'désactivé';
+
+        $this->addFlash('success', $message  );
 
         return $this->renderTurboStream(
             $request,
-            'domain/budget/turbo/success.stream.disable.html.twig',
+            'domain/budget/turbo/success.stream.toggle.html.twig',
             [
                 'budget' => $budget,
+            ]
+        );
+    }
+
+    #[Route('/{id}/balancing', name: 'front_budget_balancing', methods: [Request::METHOD_GET])]
+    public function balancing(Request $request, Budget $budget): Response {
+        $this->budgetManager->balancing($budget);
+
+        $this->addFlash('success', 'Budget équilibré');
+
+        return $this->renderTurboStream(
+            $request,
+            'domain/budget/turbo/success.stream.balancing.html.twig',
+            [
+                'budget' => $budget,
+                'entryBalance' => $this->entryManager->balance(),
             ]
         );
     }

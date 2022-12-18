@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entry\Manager;
 
+use App\Domain\Entry\Entity\Entry;
 use App\Domain\Entry\Repository\EntryRepository;
 use App\Domain\Entry\ValueObject\EntryBalance;
 use App\Shared\Utils\Statistics;
@@ -27,5 +28,9 @@ class EntryManager
         $forecastAmount = Statistics::sumOf($forecastAmount, 'sum');
 
         return new EntryBalance($spentAmount + $forecastAmount, $spentAmount, $forecastAmount);
+    }
+
+    public function create(Entry $entry): void {
+        $this->entryRepository->create($entry);
     }
 }

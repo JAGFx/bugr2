@@ -1,18 +1,33 @@
 @use "sass:color";
 @import "assets/styles/abstract/variables";
+@import "assets/styles/abstract/mixins";
 
 // <editor-folder> Custom variables
+$success: $color-green;
+$danger: $color-red;
 $dark: color.adjust($color-dark, $lightness: 5%);
-$primary: $color-accent1;
-$body-bg: $color-dark;
+$primary: $color-accent-1;
+$text-muted: $color-white-transparent-25;
+//$body-bg: $color-dark;
 $body-color: $color-white;
+
 $progress-bg: color.adjust($dark, $lightness: 5%);
-$input-bg: $dark;
-$input-border-color: color.adjust($dark, $lightness: 8%);
+//$input-bg: $dark;
+//$input-border-color: color.adjust($dark, $lightness: 8%);
 $enable-caret: false;
-$list-group-bg: $dark;
+//$list-group-bg: $bg-acrylic;
+$list-group-border-width: 0;
 $list-group-color: $color-white;
-$list-group-disabled-bg: color.adjust($color-dark, $lightness: 7%);
+$card-border-width: 0;
+//$navbar-light-brand-color: $color-white;
+//$list-group-disabled-bg: color.adjust($color-dark, $lightness: 7%);
+$secondary: $color-white-dark-45;
+$toast-border-width: 0;
+$toast-color: $body-color;
+$input-bg: $color-white-transparent-10;
+$input-border-color: transparent;
+$input-placeholder-color: $text-muted;
+$input-focus-border-color: transparent;
 
 // </editor-folder> Custom variables
 
@@ -22,3 +37,23 @@ $list-group-disabled-bg: color.adjust($color-dark, $lightness: 7%);
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
+
+.bg-gradient-accent {
+  background: $gradient-accent;
+}
+
+.bg-acrylic {
+  @include background-acrylic;
+}
+
+.list-group-item {
+  background-color: inherit !important;
+}
+
+.text-accent-3 {
+  color: $color-accent-3;
+}
+
+.list-group-item-secondary {
+  color: $secondary !important;
+}

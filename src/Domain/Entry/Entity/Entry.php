@@ -84,6 +84,10 @@ class Entry
     {
         $this->budget = $budget;
 
+        if ($budget instanceof Budget) {
+            $budget->addEntry($this);
+        }
+
         return $this;
     }
 }

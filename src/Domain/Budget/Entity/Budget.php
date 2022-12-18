@@ -34,7 +34,7 @@ class Budget
     #[ORM\ManyToMany(targetEntity: PeriodicEntry::class, mappedBy: 'budgets', fetch: 'EXTRA_LAZY')]
     private Collection $periodicEntries;
 
-    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Entry::class, fetch: 'EXTRA_LAZY', indexBy: 'createdAt')]
+    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Entry::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', indexBy: 'createdAt')]
     private Collection $entries;
 
     #[ORM\Column(type: 'boolean')]
@@ -127,6 +127,14 @@ class Budget
         return $this;
     }
 
+    public function addEntry(Entry $entry): self {
+        if(!$this->entries->contains($entry) ){
+            $this->entries->add($entry);
+        }
+
+        return $this;
+    }
+
     /*public function getSumAmountOfEntries(): float
     {
         $amount      = 0.0;
@@ -207,5 +215,13 @@ class Budget
             fn (float $currentSum, Entry $entry): float => $currentSum + $entry->getAmount(),
             0
         );
+    }
+
+    public function hasNegativeCashFlow(): bool {
+        return round($this->getProgress(), 2) < 0.0;
+    }
+
+    public function hasPositiveCashFlow(): bool {
+        return round($this->getProgress(), 2) > 0.0;
     }
 }

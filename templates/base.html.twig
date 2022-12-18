@@ -17,10 +17,12 @@
         {{ encore_entry_script_tags('bugr') }}
     {% endblock %}
 </head>
-<body data-turbo="false">
+<body data-turbo="false" class="bugr">
 {% include 'shared/_header.html.twig' %}
 
-<main class="container my-4">
+<main class="container mb-4">
+    {% include 'shared/toast/_container.html.twig' %}
+
     <turbo-frame id="entry_balance" src="{{ path('front_entry_balance') }}"></turbo-frame>
 
     {% block body %}{% endblock %}

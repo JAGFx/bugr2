@@ -18,7 +18,7 @@ class CurrencyExtension extends AbstractExtension
     {
         if ($withSign) {
             $result = ($amount < 0)
-                ? '-'
+                ? ''
                 : '+';
         } else {
             $result = '';
