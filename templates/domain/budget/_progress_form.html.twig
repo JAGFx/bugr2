@@ -1,5 +1,3 @@
-{# TODO: Use color from Ets2DashboardSkin project #}
-
 {{ form_start(form, {
     attr: {
         'data-turbo': true
@@ -10,7 +8,9 @@
         {{ form_row(form.year) }}
     </div>
     <div class="mx-1 me-0 w-auto d-flex">
-        <button class="btn btn-primary m-1" type="submit">Filter</button>
+        <button class="btn border-0" type="submit">
+            <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+        </button>
     </div>
 </div>
 

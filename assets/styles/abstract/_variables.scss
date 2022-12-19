@@ -14,6 +14,7 @@ $color-black-light-5: color.adjust($color-black, $lightness: 5%);
 $color-black-light-15: color.adjust($color-black, $lightness: 15%);
 $color-black-light-30: color.adjust($color-black, $lightness: 30%);
 $color-white-dark-45: color.adjust($color-white, $lightness: -45%);
+$color-green-dark-10: color.adjust($color-green, $lightness: -15%);
 $color-black-transparent-high: color.adjust($color-black, $lightness: 3%);
 $color-white-transparent-10: rgba($color-white, 0.1);
 $color-white-transparent-25: rgba($color-white, 0.25);

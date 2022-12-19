@@ -3,10 +3,12 @@
 @import "assets/styles/abstract/mixins";
 
 // <editor-folder> Custom variables
+$green: $color-green;
 $success: $color-green;
 $danger: $color-red;
 $dark: color.adjust($color-dark, $lightness: 5%);
 $primary: $color-accent-1;
+$warning: $color-accent-2;
 $text-muted: $color-white-transparent-25;
 $body-color: $color-white;
 $progress-bg: color.adjust($dark, $lightness: 5%);
@@ -21,6 +23,7 @@ $input-bg: $color-white-transparent-10;
 $input-border-color: transparent;
 $input-placeholder-color: $text-muted;
 $input-focus-border-color: transparent;
+$btn-border-width: 0;
 
 // </editor-folder> Custom variables
 

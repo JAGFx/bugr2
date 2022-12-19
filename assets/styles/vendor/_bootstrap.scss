@@ -34,3 +34,15 @@
 .toast-container {
   top: 3.5rem;
 }
+
+.btn.btn-gradient-accent {
+  background: $gradient-accent;
+
+  @include button-variant(
+    $color-accent-1,
+    transparent,
+    $color-white,
+    $hover-color: $color-white,
+    $active-color: $color-white
+  );
+}

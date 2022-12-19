@@ -1,6 +1,6 @@
 @import "assets/styles/vendor/bootstrap_configuration";
 
-.budget {
+.bugr {
   .progress-status {
     &.has-more-save {
       color: $primary;
@@ -23,11 +23,11 @@
     min-width: 2rem;
 
     &.has-more-save {
-      background: $primary;
+      background: $blue;
     }
 
     &.is-in-progress {
-      background: $secondary;
+      background: $color-accent-3;
     }
 
     &.is-soon-full {
@@ -35,7 +35,7 @@
     }
 
     &.is-full {
-      background: $green;
+      background: $color-green-dark-10;
     }
 
     &.is-over {

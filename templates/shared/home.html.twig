@@ -1,11 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <turbo-frame id="budget_progress_form" class="row mt-4" src="{{ path('front_budget_filter') }}">
-        Form
-    </turbo-frame>
-
-    <turbo-frame id="budget_progress_list" class="row mt-4">
-        List
-    </turbo-frame>
+    <div class="bg-acrylic rounded p-3 mt-4 mb-2">
+        <turbo-frame id="budget_progress_form" src="{{ path('front_budget_filter') }}"></turbo-frame>
+        <turbo-frame id="budget_progress_list"></turbo-frame>
+    </div>
 {% endblock %}
