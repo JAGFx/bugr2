@@ -33,6 +33,11 @@ class BudgetRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('b')
             ->orderBy('b.name');
 
+        if (null !== $command->getName()) {
+            $qb->andWhere('b.name = :name')
+                ->setParameter('name', $command->getName());
+        }
+
         return $qb;
     }
 
@@ -47,10 +52,8 @@ class BudgetRepository extends ServiceEntityRepository
 
         if (null !== $command->getYear()) {
             $qb->andWhere('e.createdAt BETWEEN :from AND :to')
-                ->setParameters([
-                    'from' => YearRange::fisrtDayOf($command->getYear())->format('Y-m-d H:i:s'),
-                    'to' => YearRange::lastDayOf($command->getYear())->format('Y-m-d H:i:s'),
-                ]);
+                ->setParameter('from', YearRange::fisrtDayOf($command->getYear())->format('Y-m-d H:i:s'))
+                ->setParameter('to', YearRange::lastDayOf($command->getYear())->format('Y-m-d H:i:s'));
         }
 
         if (true === $command->getShowCredits()) {
@@ -59,6 +62,16 @@ class BudgetRepository extends ServiceEntityRepository
 
         if (false === $command->getShowCredits()) {
             $qb->andWhere('e.amount < 0');
+        }
+
+        if (null !== $command->getName()) {
+            $qb->andWhere('b.name = :name')
+                ->setParameter('name', $command->getName());
+        }
+
+        if (null !== $command->getBudgetId()) {
+            $qb->andWhere('b.id = :budget')
+                ->setParameter('budget', $command->getBudgetId());
         }
 
         return $qb;

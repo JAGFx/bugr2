@@ -30,6 +30,9 @@ doctrine:
         dir: '%kernel.project_dir%/src/Domain/PeriodicEntry/Entity'
         prefix: 'App\Domain\PeriodicEntry\Entity\PeriodicEntry'
         alias: PeriodicEntry
+    dql:
+      string_functions:
+        ifnull: DoctrineExtensions\Query\Mysql\IfNull
 
 when@test:
   doctrine:

@@ -7,6 +7,7 @@ use App\Domain\Budget\Repository\BudgetRepository;
 use App\Domain\Entry\Entity\Entry;
 use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
 use App\Shared\Model\TimstampableTrait;
+use App\Shared\Utils\YearRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -136,67 +137,6 @@ class Budget
         return $this;
     }
 
-    /*public function getSumAmountOfEntries(): float
-    {
-        $amount      = 0.0;
-        $anivDate    = ($this->isAnniversaryYearCalendar())
-            ? new DateTime(self::ANNIV_CALENDAR_DATE)
-            : new DateTime(self::ANNIV_ACCOUNT_DATE);
-        $currentYear = ( new DateTime() )->format('Y');
-        $anivDate->setDate(
-            $currentYear - 1,
-            $anivDate->format('m'),
-            $anivDate->format('d')
-        );
-
-        //dump($this->historic);
-        $arrayIT = new ArrayIterator($this->historic);
-
-        do {
-            $nextDate = $this->historic[ $arrayIT->key() + 1 ] ?? $anivDate;
-
-            //dump($nextDate, $arrayIT->key(), $arrayIT->current());
-            ///** @var Entry $entry
-            foreach ($this->entries as $entry) {
-                //dump($entry->getDate() >= $nextDate, $entry->getDate(), $nextDate, $entry->getAmount(), $amount, '----');
-                $entryIsOnCurrentYear = $entry->getDate()->format('Y') == $currentYear;
-                if ($entry->getDate() >= $nextDate && $entry->getAmount() < 0 && $entryIsOnCurrentYear) {
-                    $amount += $entry->getAmount();
-                }
-            }
-
-            $arrayIT->next();
-        } while ($arrayIT->valid());
-
-        //foreach ( $this->historic as $k => $item ) {
-        //    $nextDate = $this->historic[ ++$k ] ?? new DateTime( '2019-05-01 00:00:00' );
-        //
-        //        dump($nextDate, $k, $item);
-        //        /** @var \App\Entity\Entry $entry
-         //				foreach ( $this->entries as $entry ) {
-         //					if ( $entry->getDate() >= $nextDate )
-         //						$amount += $entry->getAmount();
-         //				}
-         //		}
-
-
-        return round($amount, 2);
-    }*/
-
-    // ---
-
-    // #[ORM\PreUpdate]
-    // public function onUpdate(): void
-    // {
-    //    if (empty($this->historic)
-    //         || (!empty($this->historic) && $this->amount != end($this->historic)[ 'amount' ])) {
-    //        $this->historic[] = [
-    //            'date'   => new DateTime(),
-    //            'amount' => round($this->amount, 2)
-    //        ];
-    //    }
-    // }
-
     public function getEnable(): bool
     {
         return $this->enable;
@@ -218,13 +158,29 @@ class Budget
         );
     }
 
+    public function getCashFlow(): float
+    {
+        $entriesForLastYear = $this->entries
+            ->filter(fn (Entry $entry): bool => $entry->getCreatedAt() < YearRange::fisrtDayOf(YearRange::current()) || $entry->isABalancing());
+
+        $cashFlow = array_reduce(
+            $entriesForLastYear->toArray(),
+            fn (float $cashFlow, Entry $entry): float => $cashFlow + $entry->getAmount(),
+            0.0
+        );
+
+        return (0.0 === $cashFlow)
+            ? 0.0
+            : $cashFlow - $this->amount;
+    }
+
     public function hasNegativeCashFlow(): bool
     {
-        return round($this->getProgress(), 2) < 0.0;
+        return round($this->getCashFlow(), 2) < 0.0;
     }
 
     public function hasPositiveCashFlow(): bool
     {
-        return round($this->getProgress(), 2) > 0.0;
+        return round($this->getCashFlow(), 2) > 0.0;
     }
 }

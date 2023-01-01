@@ -1,18 +1,30 @@
 App\Domain\Entry\Entity\Entry:
   entry_budget__spent_current_year_old_{1..3}:
     name: <name()>
-    createdAt: <immutableDateTimeBetween('-1 year', '13 month')>
+    createdAt: <immutableDateTimeBetween('-1 year')>
     amount: 128
     budget: '@budget__spent_current_year'
 
   entry_budget__spent_current_year_{1..3}:
     name: <name()>
-    createdAt: <immutableDateTimeBetween('-11 month')>
+    createdAt: <immutableDateTimeBetween('-5 hour')>
     amount: -64
     budget: '@budget__spent_current_year'
 
   entry_budget__forecast_current_year_{1..2}:
     name: <name()>
-    createdAt: <immutableDateTimeBetween('-11 month')>
+    createdAt: <immutableDateTimeBetween('-5 hour')>
     amount: 64
     budget: '@budget__spent_current_year'
+
+  entry_balance_current_year:
+    name: <name()>
+    createdAt: <dateTimeImmutable('-5 hour')>
+    amount: 500
+    budget: '@budget_balance'
+
+  entry_balance_past_year:
+    name: <name()>
+    createdAt: <dateTimeImmutable('-1 year')>
+    amount: 1200
+    budget: '@budget_balance'

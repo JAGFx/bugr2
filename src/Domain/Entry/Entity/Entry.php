@@ -3,6 +3,7 @@
 namespace App\Domain\Entry\Entity;
 
 use App\Domain\Budget\Entity\Budget;
+use App\Domain\Entry\Model\EntryKindEnum;
 use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\Entry\Repository\EntryRepository;
 use App\Shared\Model\TimstampableTrait;
@@ -26,6 +27,14 @@ class Entry
 
     #[ORM\ManyToOne(fetch: 'EXTRA_LAZY', inversedBy: 'entries')]
     private ?Budget $budget = null;
+
+    #[ORM\Column(enumType: EntryKindEnum::class, options: ['default' => EntryKindEnum::DEFAULT])]
+    private EntryKindEnum $kind = EntryKindEnum::DEFAULT;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -89,5 +98,22 @@ class Entry
         }
 
         return $this;
+    }
+
+    public function getKind(): EntryKindEnum
+    {
+        return $this->kind;
+    }
+
+    public function setKind(EntryKindEnum $kind): self
+    {
+        $this->kind = $kind;
+
+        return $this;
+    }
+
+    public function isABalancing(): bool
+    {
+        return EntryKindEnum::BALANCING === $this->kind;
     }
 }

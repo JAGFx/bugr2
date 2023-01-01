@@ -6,7 +6,10 @@ class BudgetSearchCommand
 {
     public function __construct(
         private ?int $year = null,
-        private ?bool $showCredits = null
+        private ?bool $showCredits = null,
+        private ?string $name = null,
+        private ?bool $excludeCurrentYear = null,
+        private ?int $budgetId = null
     ) {
     }
 
@@ -30,6 +33,42 @@ class BudgetSearchCommand
     public function setShowCredits(?bool $showCredits): self
     {
         $this->showCredits = $showCredits;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getExcludeCurrentYear(): ?bool
+    {
+        return $this->excludeCurrentYear;
+    }
+
+    public function setExcludeCurrentYear(?bool $excludeCurrentYear): self
+    {
+        $this->excludeCurrentYear = $excludeCurrentYear;
+
+        return $this;
+    }
+
+    public function getBudgetId(): ?int
+    {
+        return $this->budgetId;
+    }
+
+    public function setBudgetId(?int $budgetId): self
+    {
+        $this->budgetId = $budgetId;
 
         return $this;
     }

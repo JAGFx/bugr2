@@ -6,3 +6,7 @@ App\Domain\Budget\Entity\Budget:
   budget__spent_current_year:
     name: 'Budget spent Current year'
     amount: 256
+
+  budget_balance:
+    name: 'Budget balance'
+    amount: 1000

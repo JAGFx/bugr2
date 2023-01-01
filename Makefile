@@ -34,7 +34,6 @@ fixture: db
 
 # -- Start Code linter & test (CI)
 test: db\:test test\:unit test\:integration
-	@bin/php bin/phpunit
 
 test\:unit:
 	@bin/php bin/phpunit tests/Unit

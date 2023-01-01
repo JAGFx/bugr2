@@ -29,6 +29,7 @@ class BudgetRepositoryTest extends KernelTestCase
     private function getBudgetVos(array $data = []): array {
         $command = (new BudgetSearchCommand());
         $command
+            ->setName(self::BUDGET_NAME)
             ->setYear($data['year'] ?? null)
             ->setShowCredits($data['showCredit'] ?? null);
 

@@ -8,6 +8,7 @@ use App\Domain\Budget\Repository\BudgetRepository;
 use App\Domain\Budget\ValueObject\BudgetValueObject;
 use App\Domain\Entry\Entity\Entry;
 use App\Domain\Entry\Manager\EntryManager;
+use App\Domain\Entry\Model\EntryKindEnum;
 
 class BudgetManager
 {
@@ -64,17 +65,17 @@ class BudgetManager
 
     public function balancing(Budget $budget): void
     {
-        // TODO Add TI
-
         if ($budget->hasPositiveCashFlow()) {
             $entryBalanceSpent = (new Entry())
-                ->setName("Equilibrage de {$budget->getName()}")
-                ->setAmount($budget->getProgress());
+                ->setName("Équilibrage de {$budget->getName()}")
+                ->setKind(EntryKindEnum::BALANCING)
+                ->setAmount($budget->getCashFlow());
 
             $entryBalanceForecast = (new Entry())
                 ->setBudget($budget)
-                ->setName("Equilibrage de {$budget->getName()}")
-                ->setAmount(-$budget->getProgress());
+                ->setName("Équilibrage de {$budget->getName()}")
+                ->setKind(EntryKindEnum::BALANCING)
+                ->setAmount(-$budget->getCashFlow());
 
             $budget->addEntry($entryBalanceForecast);
 
