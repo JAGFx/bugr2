@@ -9,7 +9,8 @@ class BudgetSearchCommand
         private ?bool $showCredits = null,
         private ?string $name = null,
         private ?bool $excludeCurrentYear = null,
-        private ?int $budgetId = null
+        private ?int $budgetId = null,
+        private ?bool $enabled = true
     ) {
     }
 
@@ -69,6 +70,18 @@ class BudgetSearchCommand
     public function setBudgetId(?int $budgetId): self
     {
         $this->budgetId = $budgetId;
+
+        return $this;
+    }
+
+    public function getEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(?bool $enabled): self
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }

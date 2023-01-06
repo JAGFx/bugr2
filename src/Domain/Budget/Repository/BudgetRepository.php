@@ -4,6 +4,7 @@ namespace App\Domain\Budget\Repository;
 
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Domain\Entry\Model\EntryKindEnum;
 use App\Shared\Utils\YearRange;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -38,6 +39,10 @@ class BudgetRepository extends ServiceEntityRepository
                 ->setParameter('name', $command->getName());
         }
 
+        if (true === $command->getEnabled()) {
+            $qb->andWhere('b.enable = TRUE');
+        }
+
         return $qb;
     }
 
@@ -57,11 +62,15 @@ class BudgetRepository extends ServiceEntityRepository
         }
 
         if (true === $command->getShowCredits()) {
-            $qb->andWhere('e.amount > 0');
+            $qb->andWhere('e.amount > 0')
+                ->andWhere('e.kind = :kind')
+                ->setParameter('kind', EntryKindEnum::DEFAULT);
         }
 
         if (false === $command->getShowCredits()) {
-            $qb->andWhere('e.amount < 0');
+            $qb->andWhere('e.amount < 0')
+                ->andWhere('e.kind = :kind')
+                ->setParameter('kind', EntryKindEnum::DEFAULT);
         }
 
         if (null !== $command->getName()) {

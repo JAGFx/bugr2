@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="bg-acrylic rounded p-3 mt-4 mb-2">
+    <div class="mt-4 mb-2">
+        <a href="{{ path('back_budget_budget_list') }}" class="text-white-50 btn btn-outline-light">Retour</a>
+    </div>
+
+    <div class="bg-acrylic rounded p-3 my-2">
         {{ form_start(form) }}
 
         <div class="mb-2">

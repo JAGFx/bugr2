@@ -11,6 +11,7 @@ use App\Shared\Utils\YearRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 #[ORM\Entity(repositoryClass: BudgetRepository::class)]
 class Budget
@@ -27,6 +28,7 @@ class Budget
     private string $name;
 
     #[ORM\Column(type: 'float')]
+    #[GreaterThan(value: 0)]
     private float $amount;
 
     #[ORM\Column(type: 'simple_array', nullable: true)]
@@ -41,9 +43,6 @@ class Budget
     #[ORM\Column(type: 'boolean')]
     private bool $enable = true;
 
-    /**
-     * Budget constructor.
-     */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -86,7 +85,7 @@ class Budget
     }
 
     /**
-     * @return Collection|PeriodicEntry[]
+     * @return Collection<PeriodicEntry>
      */
     public function getPeriodicEntries(): Collection
     {
@@ -114,7 +113,7 @@ class Budget
     }
 
     /**
-     * @return Collection|Entry[]
+     * @return Collection<Entry>
      */
     public function getEntries(): Collection
     {

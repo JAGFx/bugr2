@@ -3,18 +3,23 @@
 namespace App\Domain\Budget\Form;
 
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Shared\Utils\YearRange;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BudgetSearchType extends AbstractType
+class BudgetBalanceSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('enabled', CheckboxType::class, [
-                'required' => false,
+            ->add('year', ChoiceType::class, [
+                'label' => 'Année',
+                'choices' => $this->yearChoices(),
+                'row_attr' => [
+                    'class' => 'form-floating',
+                ],
             ]);
     }
 
@@ -22,7 +27,13 @@ class BudgetSearchType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => BudgetSearchCommand::class,
-            'csrf_protection' => false,
         ]);
+    }
+
+    private function yearChoices(): array
+    {
+        $years = YearRange::range(2019, YearRange::current());
+
+        return array_combine($years, $years);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Domain\Budget\Controller\Front;
 
 use App\Domain\Budget\Entity\Budget;
-use App\Domain\Budget\Form\BudgetSearchType;
+use App\Domain\Budget\Form\BudgetBalanceSearchType;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Entry\Manager\EntryManager;
@@ -33,7 +33,7 @@ class BudgetController extends AbstractController
             ->setYear(YearRange::current());
 
         $form = $this
-            ->createForm(BudgetSearchType::class, $command, [
+            ->createForm(BudgetBalanceSearchType::class, $command, [
                 'action' => $this->generateUrl('front_budget_filter'),
             ])
             ->handleRequest($request);

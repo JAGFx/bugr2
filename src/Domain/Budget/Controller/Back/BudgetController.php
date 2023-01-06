@@ -3,8 +3,10 @@
 namespace App\Domain\Budget\Controller\Back;
 
 use App\Domain\Budget\Entity\Budget;
+use App\Domain\Budget\Form\BudgetSearchType;
 use App\Domain\Budget\Form\BudgetType;
 use App\Domain\Budget\Manager\BudgetManager;
+use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Shared\Model\ControllerActionEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +22,16 @@ class BudgetController extends AbstractController
     }
 
     #[Route('/', name: 'back_budget_budget_list', methods: Request::METHOD_GET)]
-    public function list(): Response
+    public function list(Request $request): Response
     {
+        $command = new BudgetSearchCommand();
+
+        $this
+            ->createForm(BudgetSearchType::class, $command)
+            ->submit($request->query->all());
+
         return $this->render('domain/budget/index.html.twig', [
-            'budgets' => $this->budgetManager->search(),
+            'budgets' => $this->budgetManager->search($command),
         ]);
     }
 
