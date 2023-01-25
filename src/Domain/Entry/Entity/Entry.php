@@ -7,6 +7,7 @@ use App\Domain\Entry\Model\EntryKindEnum;
 use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\Entry\Repository\EntryRepository;
 use App\Shared\Model\TimstampableTrait;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntryRepository::class)]
@@ -33,7 +34,7 @@ class Entry
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int

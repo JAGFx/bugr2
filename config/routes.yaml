@@ -25,6 +25,12 @@ budget_front:
     namespace: App\Domain\Budget\Controller\Front
   type: attribute
 
+entry_back:
+  resource:
+    path: ../src/Domain/Entry/Controller/Back/
+    namespace: App\Domain\Entry\Controller\Back
+  type: attribute
+
 entry_front:
   resource:
     path: ../src/Domain/Entry/Controller/Front/
