@@ -4,6 +4,13 @@
     <div class="d-flex justify-content-center align-items-start w-100 flex-column">
         {{ entry.name }}
         <div>
+            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ entry.kind.humanize }}">
+                {% if entry.isABalancing %}
+                    <i class="fa-solid fa-shield-halved"></i>
+                {% else %}
+                    <i class="fa-solid fa-leaf"></i>
+                {% endif %}
+            </span>
             <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création">
                 <i class="fa-regular fa-calendar-check"></i>
                 <small>{{ entry.createdAt | format_datetime(locale=app.request.locale) }}</small>

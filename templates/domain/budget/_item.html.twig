@@ -6,15 +6,15 @@
         <div>
             {% if budget.hasNegativeCashFlow %}
                 <span class="me-2 text-danger" data-bs-toggle="tooltip" data-bs-title="Dépassement">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <small>{{ budget.cashFlow | currency }}</small>
-            </span>
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <small>{{ budget.cashFlow | currency }}</small>
+                </span>
             {% endif %}
             {% if budget.hasPositiveCashFlow %}
                 <span class="me-2 text-success" data-bs-toggle="tooltip" data-bs-title="Surplus">
-                <i class="fa-solid fa-piggy-bank"></i>
-                <small>{{ budget.cashFlow | currency }}</small>
-            </span>
+                    <i class="fa-solid fa-piggy-bank"></i>
+                    <small>{{ budget.cashFlow | currency }}</small>
+                </span>
             {% endif %}
         </div>
     </div>

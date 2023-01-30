@@ -8,11 +8,17 @@
         </div>
         <div class="d-flex justify-content-center align-items-center bg-dark bg-opacity-10 py-2">
             <div class="d-flex justify-content-start align-items-center flex-column w-100 border-end border-white border-opacity-50">
-                <span class="text-white-50">Dépense</span>
+                <span class="text-white-50">
+                    <i class="fa-solid fa-leaf"></i>
+                    Dépense
+                </span>
                 <small>{{ currency.amount(entryBalance.totalSpent, false) }}</small>
             </div>
             <div class="d-flex justify-content-start align-items-center flex-column w-100">
-                <span class="text-white-50">Provision</span>
+                <span class="text-white-50">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Provision
+                </span>
                 <small class="text-white">{{ currency.amount(entryBalance.totalForecast, false) }}</small>
             </div>
         </div>
