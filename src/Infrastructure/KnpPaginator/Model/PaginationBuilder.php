@@ -11,7 +11,7 @@ class PaginationBuilder
     {
         $builder
             ->add('page', NumberType::class, [
-                'required' => false
+                'required' => false,
             ]);
     }
 }

@@ -9,13 +9,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 trait PaginationFormHandlerTrait
 {
-    abstract protected function createForm(string $type, mixed $data = null, array $options = []): FormInterface;
-    public function handlePaginationForm(Request $request, PaginationInterface $command): void {
+    public function handlePaginationForm(Request $request, PaginationInterface $command): void
+    {
         $this
             ->createForm(EntrySearchType::class, $command, [
                 'method' => Request::METHOD_GET,
-                'csrf_protection' => false
+                'csrf_protection' => false,
             ])
             ->submit($request->query->all(), false);
     }
+
+    abstract protected function createForm(string $type, mixed $data = null, array $options = []): FormInterface;
 }

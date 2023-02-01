@@ -18,6 +18,7 @@ trait PaginableTrait
     public function setPage(int $page): self
     {
         $this->page = $page;
+
         return $this;
     }
 
@@ -29,6 +30,7 @@ trait PaginableTrait
     public function setPageSize(int $pageSize): self
     {
         $this->pageSize = $pageSize;
+
         return $this;
     }
 }

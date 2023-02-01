@@ -5,7 +5,7 @@ namespace App\Shared\Model;
 use Doctrine\ORM\Mapping\Column;
 use Gedmo\Mapping\Annotation\Timestampable;
 
-trait TimstampableTrait
+trait TimestampableTrait
 {
     #[Column(type: 'datetime_immutable')]
     #[Timestampable(on: 'create')]

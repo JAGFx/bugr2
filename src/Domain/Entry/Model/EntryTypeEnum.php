@@ -6,4 +6,12 @@ enum EntryTypeEnum: string
 {
     case TYPE_FORECAST = 'type-forecast';
     case TYPE_SPENT = 'type-spent';
+
+    public function humanize(): string
+    {
+        return match ($this) {
+            self::TYPE_FORECAST => 'Dépense',
+            self::TYPE_SPENT => 'Provision'
+        };
+    }
 }

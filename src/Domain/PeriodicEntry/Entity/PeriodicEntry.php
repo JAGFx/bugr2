@@ -5,7 +5,7 @@ namespace App\Domain\PeriodicEntry\Entity;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\PeriodicEntry\Repository\PeriodicEntryRepository;
-use App\Shared\Model\TimstampableTrait;
+use App\Shared\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class PeriodicEntry
 {
-    use TimstampableTrait;
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

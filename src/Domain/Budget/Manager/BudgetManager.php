@@ -65,6 +65,8 @@ class BudgetManager
 
     public function balancing(Budget $budget): void
     {
+//        dump($budget->hasPositiveCashFlow(), $budget->getCashFlow());
+
         if ($budget->hasPositiveCashFlow()) {
             $entryBalanceSpent = (new Entry())
                 ->setName("Équilibrage de {$budget->getName()}")

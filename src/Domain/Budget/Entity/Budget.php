@@ -6,7 +6,7 @@ use App\Domain\Budget\Model\BudgetProgressTrait;
 use App\Domain\Budget\Repository\BudgetRepository;
 use App\Domain\Entry\Entity\Entry;
 use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
-use App\Shared\Model\TimstampableTrait;
+use App\Shared\Model\TimestampableTrait;
 use App\Shared\Utils\YearRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
 class Budget
 {
     use BudgetProgressTrait;
-    use TimstampableTrait;
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -37,7 +37,7 @@ class Budget
     #[ORM\ManyToMany(targetEntity: PeriodicEntry::class, mappedBy: 'budgets', fetch: 'EXTRA_LAZY')]
     private Collection $periodicEntries;
 
-    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Entry::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', indexBy: 'createdAt')]
+    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Entry::class, cascade: ['persist', 'remove'], /* fetch: 'EXTRA_LAZY', */ indexBy: 'createdAt')]
     private Collection $entries;
 
     #[ORM\Column(type: 'boolean')]
@@ -161,12 +161,19 @@ class Budget
     {
         $entriesForLastYear = $this->entries
             ->filter(fn (Entry $entry): bool => $entry->getCreatedAt() < YearRange::fisrtDayOf(YearRange::current()) || $entry->isABalancing());
+//            ->filter(function (Entry $entry): bool {
+//                dump($entry->getCreatedAt(), YearRange::fisrtDayOf(YearRange::current()), $entry->isABalancing(), '--');
+//
+//                return $entry->getCreatedAt() < YearRange::fisrtDayOf(YearRange::current()) || $entry->isABalancing();
+//            });
 
         $cashFlow = array_reduce(
             $entriesForLastYear->toArray(),
             fn (float $cashFlow, Entry $entry): float => $cashFlow + $entry->getAmount(),
             0.0
         );
+
+//        dump($cashFlow, $this->amount);
 
         return (0.0 === $cashFlow)
             ? 0.0

@@ -36,13 +36,15 @@ class EntryManager
 
     public function create(Entry $entry): void
     {
-        $this->entryRepository->create($entry);
+        $this->entryRepository->create($entry)
+            ->flush();
     }
 
     /**
      * @return Entry[]
      */
-    public function search(?EntrySearchCommand $command = null): array {
+    public function search(?EntrySearchCommand $command = null): array
+    {
         $command ??= new EntrySearchCommand();
 
         return $this->entryRepository->getEntryQueryBuilder($command)
@@ -50,7 +52,8 @@ class EntryManager
             ->getResult();
     }
 
-    public function getPaginated(?EntrySearchCommand $command = null): PaginationInterface {
+    public function getPaginated(?EntrySearchCommand $command = null): PaginationInterface
+    {
         $command ??= new EntrySearchCommand();
 
         return $this->paginator->paginate(
