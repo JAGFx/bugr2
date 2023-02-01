@@ -31,24 +31,24 @@ class BudgetRepository extends ServiceEntityRepository
 
     public function search(BudgetSearchCommand $command): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('b')
+        $queryBuilder = $this->createQueryBuilder('b')
             ->orderBy('b.name');
 
         if (null !== $command->getName()) {
-            $qb->andWhere('b.name = :name')
+            $queryBuilder->andWhere('b.name = :name')
                 ->setParameter('name', $command->getName());
         }
 
         if (true === $command->getEnabled()) {
-            $qb->andWhere('b.enable = TRUE');
+            $queryBuilder->andWhere('b.enable = TRUE');
         }
 
-        return $qb;
+        return $queryBuilder;
     }
 
     public function searchValueObject(BudgetSearchCommand $command): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('b')
+        $queryBuilder = $this->createQueryBuilder('b')
             ->select(
                 'NEW App\Domain\Budget\ValueObject\BudgetValueObject(b.id, b.name, b.amount, b.enable, SUM(e.amount))'
             )
@@ -56,33 +56,33 @@ class BudgetRepository extends ServiceEntityRepository
             ->groupBy('b.id');
 
         if (null !== $command->getYear()) {
-            $qb->andWhere('e.createdAt BETWEEN :from AND :to')
+            $queryBuilder->andWhere('e.createdAt BETWEEN :from AND :to')
                 ->setParameter('from', YearRange::fisrtDayOf($command->getYear())->format('Y-m-d H:i:s'))
                 ->setParameter('to', YearRange::lastDayOf($command->getYear())->format('Y-m-d H:i:s'));
         }
 
         if (true === $command->getShowCredits()) {
-            $qb->andWhere('e.amount > 0')
+            $queryBuilder->andWhere('e.amount > 0')
                 ->andWhere('e.kind = :kind')
                 ->setParameter('kind', EntryKindEnum::DEFAULT);
         }
 
         if (false === $command->getShowCredits()) {
-            $qb->andWhere('e.amount < 0')
+            $queryBuilder->andWhere('e.amount < 0')
                 ->andWhere('e.kind = :kind')
                 ->setParameter('kind', EntryKindEnum::DEFAULT);
         }
 
         if (null !== $command->getName()) {
-            $qb->andWhere('b.name = :name')
+            $queryBuilder->andWhere('b.name = :name')
                 ->setParameter('name', $command->getName());
         }
 
         if (null !== $command->getBudgetId()) {
-            $qb->andWhere('b.id = :budget')
+            $queryBuilder->andWhere('b.id = :budget')
                 ->setParameter('budget', $command->getBudgetId());
         }
 
-        return $qb;
+        return $queryBuilder;
     }
 }

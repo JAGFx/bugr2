@@ -26,8 +26,6 @@ class CurrencyExtension extends AbstractExtension
 
         $result .= number_format($amount, 2, '.', ' ');
 
-        $result .= ' €';
-
-        return $result;
+        return $result . ' €';
     }
 }

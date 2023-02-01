@@ -6,8 +6,11 @@ use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\PeriodicEntry\Repository\PeriodicEntryRepository;
 use App\Shared\Model\TimestampableTrait;
+use DateInterval;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PeriodicEntryRepository::class)]
@@ -18,25 +21,25 @@ class PeriodicEntry
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private int $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
     #[ORM\Column]
     private string $name;
 
-    #[ORM\Column(type: 'dateinterval')]
-    private ?\DateInterval $period = null;
+    #[ORM\Column(type: Types::DATEINTERVAL)]
+    private ?DateInterval $period = null;
 
     #[ORM\Column(enumType: EntryTypeEnum::class)]
     private EntryTypeEnum $type = EntryTypeEnum::TYPE_SPENT;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: Types::FLOAT)]
     private float $amount = 0.0;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private \DateTimeImmutable $executionDate;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private DateTimeImmutable $executionDate;
 
-    #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $historic = [];
 
     #[ORM\ManyToMany(targetEntity: Budget::class, inversedBy: 'periodicEntries', fetch: 'EXTRA_LAZY', indexBy: 'shortcut')]
@@ -44,9 +47,9 @@ class PeriodicEntry
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->executionDate = new \DateTimeImmutable();
-        $this->budgets = new ArrayCollection();
+        $this->createdAt     = new DateTimeImmutable();
+        $this->executionDate = new DateTimeImmutable();
+        $this->budgets       = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,15 +69,15 @@ class PeriodicEntry
         return $this;
     }
 
-    public function getPeriod(): ?\DateInterval
+    public function getPeriod(): ?DateInterval
     {
         return $this->period;
     }
 
-    public function setPeriod(?\DateInterval $period): self
+    public function setPeriod(?DateInterval $period): self
     {
         if (!$this->haveNoBudget()) {
-            $period = new \DateInterval('P1M');
+            $period = new DateInterval('P1M');
         }
 
         $this->period = $period;
@@ -112,17 +115,19 @@ class PeriodicEntry
         return $this;
     }
 
-    public function getExecutionDate(): \DateTimeImmutable
+    public function getExecutionDate(): DateTimeImmutable
     {
         return $this->executionDate;
     }
 
-    public function setExecutionDate(\DateTimeImmutable $executionDate): void
+    public function setExecutionDate(DateTimeImmutable $executionDate): void
     {
-        $executionDate->setTime(2, 0);
-        $this->executionDate = $executionDate;
+        $this->executionDate = $executionDate->setTime(2, 0);
     }
 
+    /**
+     * @return array<string>|null
+     */
     public function getHistoric(): ?array
     {
         return $this->historic;
@@ -138,18 +143,18 @@ class PeriodicEntry
 
     public function addBudget(Budget $budget): self
     {
-        $this->budgets->set($budget->getShortcut(), $budget);
-        $this->updateAmount();
+//        $this->budgets->set($budget->getShortcut(), $budget);
+//        $this->updateAmount();
 
         return $this;
     }
 
     public function removeBudget(Budget $budget): self
     {
-        if ($this->budgets->containsKey($budget->getShortcut())) {
-            $this->budgets->remove($budget->getShortcut());
-            $this->updateAmount();
-        }
+//        if ($this->budgets->containsKey($budget->getShortcut())) {
+//            $this->budgets->remove($budget->getShortcut());
+//            $this->updateAmount();
+//        }
 
         return $this;
     }
@@ -164,11 +169,11 @@ class PeriodicEntry
     #[ORM\PreUpdate]
     public function onUpdate(): void
     {
-        if (empty($this->historic)
-            || (!empty($this->historic) && $this->getAmount() !== end($this->historic)['amount'])) {
+        if ([] === $this->historic
+            || (!empty($this->historic) && $this->amount !== end($this->historic)['amount'])) {
             $this->historic[] = [
-                'date' => new \DateTimeImmutable(),
-                'amount' => $this->getAmount(),
+                'date'   => new DateTimeImmutable(),
+                'amount' => $this->amount,
             ];
         }
     }

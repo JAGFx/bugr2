@@ -20,15 +20,16 @@ class EntryManager
 
     public function balance(): EntryBalance
     {
+        /** @var array<string, mixed> $data */
         $data = $this->entryRepository
             ->balance()
             ->getQuery()
             ->getResult();
 
-        $spentAmount = Statistics::filterBy($data, 'id', null);
+        $spentAmount    = Statistics::filterBy($data, 'id', null);
         $forecastAmount = Statistics::filterBy($data, 'id', null, true);
 
-        $spentAmount = Statistics::sumOf($spentAmount, 'sum');
+        $spentAmount    = Statistics::sumOf($spentAmount, 'sum');
         $forecastAmount = Statistics::sumOf($forecastAmount, 'sum');
 
         return new EntryBalance($spentAmount + $forecastAmount, $spentAmount, $forecastAmount);
@@ -47,11 +48,17 @@ class EntryManager
     {
         $command ??= new EntrySearchCommand();
 
-        return $this->entryRepository->getEntryQueryBuilder($command)
+        /** @var Entry[] $result */
+        $result = $this->entryRepository->getEntryQueryBuilder($command)
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
+    /**
+     * @return PaginationInterface<Entry>
+     */
     public function getPaginated(?EntrySearchCommand $command = null): PaginationInterface
     {
         $command ??= new EntrySearchCommand();

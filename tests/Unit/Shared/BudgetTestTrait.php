@@ -8,7 +8,8 @@ trait BudgetTestTrait
 {
     use EntryTestTrait;
 
-    private function generateBudget(array $data = []): Budget{
+    private function generateBudget(array $data = []): Budget
+    {
         $budget = (new Budget())
             ->setName('A Budget')
             ->setAmount($data['amount'] ?? 0.0);
@@ -16,7 +17,7 @@ trait BudgetTestTrait
         foreach ($data['entries'] as $entryData) {
             $entry = $this->generateEntry([
                 ...$entryData,
-                'budget' => $budget
+                'budget' => $budget,
             ]);
 
             $budget->addEntry($entry);

@@ -25,10 +25,10 @@ class EntryController extends AbstractController
     #[Route('/', name: 'back_entries_list', methods: Request::METHOD_GET)]
     public function list(Request $request): Response
     {
-        $this->handlePaginationForm($request, $command = new EntrySearchCommand());
+        $this->handlePaginationForm($request, $entrySearchCommand = new EntrySearchCommand());
 
         return $this->render('domain/entry/index.html.twig', [
-            'pagination' => $this->entryManager->getPaginated($command),
+            'pagination' => $this->entryManager->getPaginated($entrySearchCommand),
         ]);
     }
 

@@ -1,28 +1,42 @@
 <?php
+
+$finder = (new PhpCsFixer\Finder())
+    ->in([
+        __DIR__ . '/src',
+        __DIR__ . '/tests',
+    ])
+    ->name('*.php');
+
 return (new PhpCsFixer\Config())
-    ->setRiskyAllowed(true)
-    ->setFinder(
-        PhpCsFixer\Finder::create()->in('src')
-    )
     ->setRules([
         '@Symfony' => true,
-        '@Symfony:risky' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'ordered_class_elements' => true,
-        'ordered_imports' => true,
-        'heredoc_to_nowdoc' => true,
-        'php_unit_strict' => true,
-        'php_unit_construct' => true,
-        'phpdoc_add_missing_param_annotation' => true,
-        'phpdoc_order' => true,
-        'strict_comparison' => true,
-        'strict_param' => true,
-        'no_extra_blank_lines' => true,
-        'echo_tag_syntax' => true,
-        'no_unreachable_default_argument_value' => true,
-        'no_useless_else' => true,
-        'no_useless_return' => true,
-        'semicolon_after_instruction' => true,
-        'combine_consecutive_unsets' => true,
-        'ternary_to_null_coalescing' => true,
-    ]);
+        'binary_operator_spaces' => [
+            'operators' => [
+                '=>' => 'align_single_space_minimal',
+                '=' => 'align_single_space_minimal',
+            ],
+        ],
+        'braces' => [
+            'allow_single_line_closure' => true,
+        ],
+        'class_attributes_separation' => [
+            'elements' => [
+                'const' => 'only_if_meta',
+                'method' => 'one',
+                'property' => 'only_if_meta',
+                'trait_import' => 'none',
+                'case' => 'none',
+            ],
+        ],
+        'concat_space' => [
+            'spacing' => 'one',
+        ],
+        'heredoc_to_nowdoc' => false,
+        'phpdoc_summary' => false,
+        'global_namespace_import' => [
+            'import_classes' => true,
+            'import_constants' => true,
+            'import_functions' => false,
+        ]
+    ])
+    ->setFinder($finder);

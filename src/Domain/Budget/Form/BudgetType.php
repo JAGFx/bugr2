@@ -16,7 +16,7 @@ class BudgetType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom',
+                'label'    => 'Nom',
                 'row_attr' => [
                     'class' => 'form-floating',
                 ],
@@ -25,7 +25,7 @@ class BudgetType extends AbstractType
                 'label' => 'Cible',
             ])
             ->add('enable', CheckboxType::class, [
-                'label' => 'Actif',
+                'label'    => 'Actif',
                 'required' => false,
             ]);
     }

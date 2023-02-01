@@ -13,7 +13,7 @@ trait PaginationFormHandlerTrait
     {
         $this
             ->createForm(EntrySearchType::class, $command, [
-                'method' => Request::METHOD_GET,
+                'method'          => Request::METHOD_GET,
                 'csrf_protection' => false,
             ])
             ->submit($request->query->all(), false);

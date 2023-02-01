@@ -11,7 +11,7 @@ class BudgetProgressTraitTest extends TestCase
     {
         $budgetProgressTrait = $this->getMockForTrait(BudgetProgressTrait::class, mockedMethods: [
             'getProgress',
-            'getAmount'
+            'getAmount',
         ]);
 
         $budgetProgressTrait

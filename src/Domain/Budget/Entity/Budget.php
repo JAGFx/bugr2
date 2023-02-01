@@ -8,8 +8,10 @@ use App\Domain\Entry\Entity\Entry;
 use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
 use App\Shared\Model\TimestampableTrait;
 use App\Shared\Utils\YearRange;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 
@@ -21,36 +23,39 @@ class Budget
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private int $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
     #[ORM\Column]
     private string $name;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: Types::FLOAT)]
     #[GreaterThan(value: 0)]
     private float $amount;
 
-    #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $historic = [];
 
     #[ORM\ManyToMany(targetEntity: PeriodicEntry::class, mappedBy: 'budgets', fetch: 'EXTRA_LAZY')]
     private Collection $periodicEntries;
 
+    /**
+     * @var Collection<int, Entry>|Entry[]
+     */
     #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Entry::class, cascade: ['persist', 'remove'], /* fetch: 'EXTRA_LAZY', */ indexBy: 'createdAt')]
     private Collection $entries;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $enable = true;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt       = new DateTimeImmutable();
         $this->periodicEntries = new ArrayCollection();
-        $this->entries = new ArrayCollection();
+        $this->entries         = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -79,6 +84,9 @@ class Budget
         return $this;
     }
 
+    /**
+     * @return array<string>|null
+     */
     public function getHistoric(): ?array
     {
         return $this->historic;
@@ -120,7 +128,7 @@ class Budget
         return $this->entries;
     }
 
-    public function setEntries($entries): self
+    public function setEntries(Collection $entries): self
     {
         $this->entries = $entries;
 
@@ -148,32 +156,25 @@ class Budget
         return $this;
     }
 
-    public function getProgress(): float
+    public function getProgress(bool $showAsSpentOnly = false): float
     {
         return array_reduce(
             $this->entries->toArray(),
-            fn (float $currentSum, Entry $entry): float => $currentSum + $entry->getAmount(),
+            static fn (float $currentSum, Entry $entry): float => $currentSum + $entry->getAmount(),
             0
         );
     }
 
     public function getCashFlow(): float
     {
-        $entriesForLastYear = $this->entries
-            ->filter(fn (Entry $entry): bool => $entry->getCreatedAt() < YearRange::fisrtDayOf(YearRange::current()) || $entry->isABalancing());
-//            ->filter(function (Entry $entry): bool {
-//                dump($entry->getCreatedAt(), YearRange::fisrtDayOf(YearRange::current()), $entry->isABalancing(), '--');
-//
-//                return $entry->getCreatedAt() < YearRange::fisrtDayOf(YearRange::current()) || $entry->isABalancing();
-//            });
+        $readableCollection = $this->entries
+            ->filter(static fn (Entry $entry): bool => $entry->getCreatedAt() < YearRange::fisrtDayOf(YearRange::current()) || $entry->isABalancing());
 
         $cashFlow = array_reduce(
-            $entriesForLastYear->toArray(),
-            fn (float $cashFlow, Entry $entry): float => $cashFlow + $entry->getAmount(),
+            $readableCollection->toArray(),
+            static fn (float $cashFlow, Entry $entry): float => $cashFlow + $entry->getAmount(),
             0.0
         );
-
-//        dump($cashFlow, $this->amount);
 
         return (0.0 === $cashFlow)
             ? 0.0

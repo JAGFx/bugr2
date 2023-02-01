@@ -12,7 +12,7 @@ class EntrySearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        PaginationBuilder::buildForm($builder, $options);
+        PaginationBuilder::buildForm($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

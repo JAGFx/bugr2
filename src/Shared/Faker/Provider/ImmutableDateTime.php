@@ -2,23 +2,25 @@
 
 namespace App\Shared\Faker\Provider;
 
+use DateTimeImmutable;
+use Exception;
 use Faker\Provider\Base;
 use Faker\Provider\DateTime;
 
 final class ImmutableDateTime extends Base
 {
-    public static function immutableDateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = null)
+    public static function immutableDateTimeBetween(string $startDate = '-30 years', string $endDate = 'now'): DateTimeImmutable
     {
-        return \DateTimeImmutable::createFromMutable(
-            DateTime::dateTimeBetween($startDate, $endDate, $timezone)
+        return DateTimeImmutable::createFromMutable(
+            DateTime::dateTimeBetween($startDate, $endDate, null)
         );
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public static function dateTimeImmutable(string $dateTime): \DateTimeImmutable
+    public static function dateTimeImmutable(string $dateTime): DateTimeImmutable
     {
-        return new \DateTimeImmutable($dateTime);
+        return new DateTimeImmutable($dateTime);
     }
 }

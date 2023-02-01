@@ -15,8 +15,8 @@ class BudgetBalanceSearchType extends AbstractType
     {
         $builder
             ->add('year', ChoiceType::class, [
-                'label' => 'Année',
-                'choices' => $this->yearChoices(),
+                'label'    => 'Année',
+                'choices'  => $this->yearChoices(),
                 'row_attr' => [
                     'class' => 'form-floating',
                 ],
@@ -30,6 +30,9 @@ class BudgetBalanceSearchType extends AbstractType
         ]);
     }
 
+    /**
+     * @return array<int, int>
+     */
     private function yearChoices(): array
     {
         $years = YearRange::range(2019, YearRange::current());

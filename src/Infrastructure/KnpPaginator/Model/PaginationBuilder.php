@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class PaginationBuilder
 {
-    public static function buildForm(FormBuilderInterface $builder, array $options): void
+    public static function buildForm(FormBuilderInterface $builder): void
     {
         $builder
             ->add('page', NumberType::class, [

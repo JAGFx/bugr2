@@ -1,0 +1,25 @@
+parameters:
+    level: max
+    parallel:
+        jobSize: 20
+        maximumNumberOfProcesses: 32
+        minimumNumberOfJobsPerProcess: 2
+    paths:
+        - src
+        - tests
+        - .php-cs-fixer.dist.php
+#        - rector.php
+#    excludePaths:
+#        - src/DataFixtures
+#    symfony:
+#        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+#        constantHassers: false # see https://github.com/phpstan/phpstan-symfony#constant-hassers
+#    scanDirectories:
+#        - var/cache/dev/Symfony/Config
+    ignoreErrors:
+        - message: '#^Property (.*) type has no value type specified in iterable type array.$#'
+          path: src/
+        - message: '#^Parameter (.*) callable#'
+          path: src/
+    checkGenericClassInNonGenericObjectType: false
+    reportUnmatchedIgnoredErrors: false

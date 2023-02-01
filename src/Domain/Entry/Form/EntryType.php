@@ -17,7 +17,7 @@ class EntryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Intitulé',
+                'label'    => 'Intitulé',
                 'row_attr' => [
                     'class' => 'form-floating',
                 ],
@@ -26,10 +26,10 @@ class EntryType extends AbstractType
                 'label' => 'Cible',
             ])
             ->add('budget', EntityType::class, [
-                'class' => Budget::class,
+                'class'        => Budget::class,
                 'choice_label' => 'name',
-                'required' => false,
-                'placeholder' => '-- Pas de budget --',
+                'required'     => false,
+                'placeholder'  => '-- Pas de budget --',
             ]);
     }
 

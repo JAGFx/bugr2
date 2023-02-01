@@ -24,14 +24,14 @@ class BudgetController extends AbstractController
     #[Route('/', name: 'back_budget_budget_list', methods: Request::METHOD_GET)]
     public function list(Request $request): Response
     {
-        $command = new BudgetSearchCommand();
+        $budgetSearchCommand = new BudgetSearchCommand();
 
         $this
-            ->createForm(BudgetSearchType::class, $command)
+            ->createForm(BudgetSearchType::class, $budgetSearchCommand)
             ->submit($request->query->all());
 
         return $this->render('domain/budget/index.html.twig', [
-            'budgets' => $this->budgetManager->search($command),
+            'budgets' => $this->budgetManager->search($budgetSearchCommand),
         ]);
     }
 

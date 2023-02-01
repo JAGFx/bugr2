@@ -15,39 +15,39 @@ use PHPUnit\Framework\TestCase;
 class BudgetManagerTest extends TestCase
 {
     use BudgetTestTrait;
-
     private const BUDGET_AMOUNT = 1000.0;
-
     private BudgetRepository $budgetRepository;
     private EntryManager $entryManager;
 
     protected function setUp(): void
     {
         $this->budgetRepository = $this->createMock(BudgetRepository::class);
-        $this->entryManager = $this->createMock(EntryManager::class);
+        $this->entryManager     = $this->createMock(EntryManager::class);
     }
 
-    public function createBudgetManagerMock(): BudgetManager|MockObject {
+    public function createBudgetManagerMock(): BudgetManager|MockObject
+    {
         return $this->getMockBuilder(BudgetManager::class)
             ->onlyMethods(['update'])
             ->setConstructorArgs([
                 $this->budgetRepository,
-                $this->entryManager
+                $this->entryManager,
             ])
             ->getMock();
     }
 
-    public function testBudgetWithNegativeCashFlowDoNothing(): void {
+    public function testBudgetWithNegativeCashFlowDoNothing(): void
+    {
         $progress = -500.0;
-        $budget = $this->generateBudget([
+        $budget   = $this->generateBudget([
              'amount' => self::BUDGET_AMOUNT,
             'entries' => [
                 [
-                    'entryName' => 'Past year entry',
-                    'entryAmount' => $progress,
+                    'entryName'      => 'Past year entry',
+                    'entryAmount'    => $progress,
                     'entryCreatedAt' => new DateTimeImmutable('-1 year'),
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $budgetManager = $this->createBudgetManagerMock();
@@ -61,20 +61,21 @@ class BudgetManagerTest extends TestCase
         self::assertSame($progress, $budget->getProgress());
     }
 
-    public function testBudgetWithPositiveCashFlowMustTransferToSpent(): void {
+    public function testBudgetWithPositiveCashFlowMustTransferToSpent(): void
+    {
         $overflow = 500.0;
-        $budget = $this->generateBudget([
-            'amount' => self::BUDGET_AMOUNT,
+        $budget   = $this->generateBudget([
+            'amount'  => self::BUDGET_AMOUNT,
             'entries' => [
                 [
-                    'entryName' => 'Past year entry',
-                    'entryAmount' => self::BUDGET_AMOUNT + $overflow,
+                    'entryName'      => 'Past year entry',
+                    'entryAmount'    => self::BUDGET_AMOUNT + $overflow,
                     'entryCreatedAt' => new DateTimeImmutable('-1 year'),
                 ],
                 [
-                    'entryAmount' => 200
-                ]
-            ]
+                    'entryAmount' => 200,
+                ],
+            ],
         ]);
 
         $budgetManager = $this->createBudgetManagerMock();
@@ -87,12 +88,12 @@ class BudgetManagerTest extends TestCase
         $budgetManager->balancing($budget);
 
         $balancingEntry = $budget->getEntries()
-            ->filter(fn(Entry $entry) : bool => str_starts_with($entry->getName(), 'Équilibrage'))
+            ->filter(fn (Entry $entry): bool => str_starts_with($entry->getName(), 'Équilibrage'))
             ->first();
 
         self::assertCount(2 + 1, $budget->getEntries());
-        self::assertInstanceOf(Entry::class,$balancingEntry);
-        self::assertSame($balancingEntry->getKind(),EntryKindEnum::BALANCING);
+        self::assertInstanceOf(Entry::class, $balancingEntry);
+        self::assertSame($balancingEntry->getKind(), EntryKindEnum::BALANCING);
         self::assertSame(-$overflow, $balancingEntry->getAmount());
         self::assertSame(0.0, $budget->getCashFlow());
     }

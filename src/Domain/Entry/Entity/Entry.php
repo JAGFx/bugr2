@@ -7,6 +7,8 @@ use App\Domain\Entry\Model\EntryKindEnum;
 use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\Entry\Repository\EntryRepository;
 use App\Shared\Model\TimestampableTrait;
+use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -22,14 +24,14 @@ class Entry
 
     #[Id]
     #[GeneratedValue]
-    #[Column(type: 'integer')]
-    private int $id;
+    #[Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
     #[Column]
     #[NotBlank]
     private string $name;
 
-    #[Column(type: 'float')]
+    #[Column(type: Types::FLOAT)]
     #[NotBlank]
     #[NotEqualTo(0)]
     private float $amount = 0;
@@ -44,7 +46,7 @@ class Entry
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int

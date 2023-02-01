@@ -23,10 +23,11 @@ class BudgetManagerTest extends KernelTestCase
         $container = static::getContainer();
 
         $this->budgetManager = $container->get(BudgetManager::class);
-        $this->entryManager = $container->get(EntryManager::class);
+        $this->entryManager  = $container->get(EntryManager::class);
     }
 
-    private function getBudget(array $data = []): Budget {
+    private function getBudget(array $data = []): Budget
+    {
         $command = new BudgetSearchCommand();
         $command->setName($data['name'] ?? null);
 
@@ -37,12 +38,13 @@ class BudgetManagerTest extends KernelTestCase
         return reset($result);
     }
 
-    public function testBudgetWithPositiveCashFlowMustTransferToSpent(): void {
+    public function testBudgetWithPositiveCashFlowMustTransferToSpent(): void
+    {
         $initialBalance = $this->entryManager->balance();
-        $overflow = 200;
+        $overflow       = 200;
 
         $budget = $this->getBudget([
-            'name' => 'Budget balance'
+            'name' => 'Budget balance',
         ]);
         $this->budgetManager->balancing($budget);
         $newBalance = $this->entryManager->balance();

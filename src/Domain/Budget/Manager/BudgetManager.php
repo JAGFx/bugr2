@@ -44,10 +44,13 @@ class BudgetManager
     {
         $command ??= new BudgetSearchCommand();
 
-        return $this->budgetRepository
+        /** @var Budget[] $result */
+        $result = $this->budgetRepository
             ->search($command)
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /**
@@ -57,25 +60,26 @@ class BudgetManager
     {
         $command ??= new BudgetSearchCommand();
 
-        return $this->budgetRepository
+        /** @var BudgetValueObject[] $result */
+        $result = $this->budgetRepository
             ->searchValueObject($command)
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     public function balancing(Budget $budget): void
     {
-//        dump($budget->hasPositiveCashFlow(), $budget->getCashFlow());
-
         if ($budget->hasPositiveCashFlow()) {
             $entryBalanceSpent = (new Entry())
-                ->setName("Équilibrage de {$budget->getName()}")
+                ->setName(sprintf('Équilibrage de %s', $budget->getName()))
                 ->setKind(EntryKindEnum::BALANCING)
                 ->setAmount($budget->getCashFlow());
 
             $entryBalanceForecast = (new Entry())
                 ->setBudget($budget)
-                ->setName("Équilibrage de {$budget->getName()}")
+                ->setName(sprintf('Équilibrage de %s', $budget->getName()))
                 ->setKind(EntryKindEnum::BALANCING)
                 ->setAmount(-$budget->getCashFlow());
 

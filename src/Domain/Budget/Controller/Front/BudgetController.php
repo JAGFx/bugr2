@@ -28,12 +28,12 @@ class BudgetController extends AbstractController
     #[Route('/progress-filter', name: 'front_budget_filter', methods: [Request::METHOD_GET, Request::METHOD_POST])]
     public function filter(Request $request): Response
     {
-        $command = (new BudgetSearchCommand())
+        $budgetSearchCommand = (new BudgetSearchCommand())
             ->setShowCredits(false)
             ->setYear(YearRange::current());
 
         $form = $this
-            ->createForm(BudgetBalanceSearchType::class, $command, [
+            ->createForm(BudgetBalanceSearchType::class, $budgetSearchCommand, [
                 'action' => $this->generateUrl('front_budget_filter'),
             ])
             ->handleRequest($request);
@@ -42,8 +42,8 @@ class BudgetController extends AbstractController
             $request,
             'domain/budget/turbo/success.stream.progress_list.html.twig',
             [
-                'form' => $form,
-                'budgets' => $this->budgetManager->searchValueObject($command),
+                'form'    => $form,
+                'budgets' => $this->budgetManager->searchValueObject($budgetSearchCommand),
             ]
         );
     }
@@ -78,7 +78,7 @@ class BudgetController extends AbstractController
             $request,
             'domain/budget/turbo/success.stream.balancing.html.twig',
             [
-                'budget' => $budget,
+                'budget'       => $budget,
                 'entryBalance' => $this->entryManager->balance(),
             ]
         );
