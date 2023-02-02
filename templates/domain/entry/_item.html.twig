@@ -1,9 +1,10 @@
 {% import 'shared/_currency.macro.html.twig' as currency %}
 
-<li class="list-group-item d-flex justify-content-center align-items-center py-3">
-    <div class="d-flex justify-content-center align-items-start w-100 flex-column">
-        {{ entry.name }}
-        <div>
+<turbo-frame id="entry_list_item_{{ entry.id }}">
+    <li class="list-group-item d-flex justify-content-center align-items-center py-3">
+        <div class="d-flex justify-content-center align-items-start w-100 flex-column">
+            {{ entry.name }}
+            <div>
             <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ entry.type.humanize }}">
                 {% if entry.isForecast %}
                     <i class="fa-solid fa-shield-halved text-warning"></i>
@@ -11,13 +12,32 @@
                     <i class="fa-solid fa-leaf text-primary"></i>
                 {% endif %}
             </span>
-            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création">
+                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création">
                 <i class="fa-regular fa-calendar-check"></i>
                 <small>{{ entry.createdAt | format_datetime(locale=app.request.locale) }}</small>
             </span>
+            </div>
         </div>
-    </div>
-    <div class="w-50 me-3 text-end">
-        {{ currency.amount(entry.amount, true) }}
-    </div>
-</li>
+        <div class="w-50 me-3 text-end">
+            {{ currency.amount(entry.amount, true) }}
+        </div>
+        {% if not entry.isABalancing %}
+            <div class="position-absolute" style="right: 0">
+                <div class="dropstart">
+                    <button type="button" class="btn dropdown-toggle text-secondary border-0" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('back_entry_edit', {'id': entry.id}) }}">Modifier</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" data-turbo="true" href="{{ path('front_entry_remove', {'id': entry.id}) }}">Supprimer</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </li>
+</turbo-frame>

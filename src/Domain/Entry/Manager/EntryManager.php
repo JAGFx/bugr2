@@ -41,6 +41,27 @@ class EntryManager
             ->flush();
     }
 
+    public function update(Entry $entry): void
+    {
+        if ($entry->isABalancing()) {
+            return;
+        }
+
+        $this->entryRepository
+            ->flush();
+    }
+
+    public function remove(Entry $entry): void
+    {
+        if ($entry->isABalancing()) {
+            return;
+        }
+
+        $this->entryRepository
+            ->remove($entry)
+            ->flush();
+    }
+
     /**
      * @return Entry[]
      */

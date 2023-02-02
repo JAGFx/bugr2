@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntryController extends AbstractController
 {
     use PaginationFormHandlerTrait;
+    public const HANDLE_FORM_CREATE = 'create';
+    public const HANDLE_FORM_UPDATE = 'update';
 
     public function __construct(
         private readonly EntryManager $entryManager
@@ -35,12 +37,27 @@ class EntryController extends AbstractController
     #[Route('/create', name: 'back_entry_create', methods: [Request::METHOD_GET, Request::METHOD_POST])]
     public function create(Request $request): Response
     {
+        return $this->handleForm(self::HANDLE_FORM_CREATE, $request, new Entry());
+    }
+
+    #[Route('/{id}/update', name: 'back_entry_edit', methods: [Request::METHOD_GET, Request::METHOD_POST])]
+    public function edit(Entry $entry, Request $request): Response
+    {
+        return $this->handleForm(self::HANDLE_FORM_UPDATE, $request, $entry);
+    }
+
+    private function handleForm(string $type, Request $request, Entry $entry): Response
+    {
         $form = $this
-            ->createForm(EntryType::class, $entry = new Entry())
+            ->createForm(EntryType::class, $entry)
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entryManager->create($entry);
+            if (self::HANDLE_FORM_CREATE === $type) {
+                $this->entryManager->create($entry);
+            } else {
+                $this->entryManager->update($entry);
+            }
 
             return $this->redirectToRoute('back_entries_list');
         }

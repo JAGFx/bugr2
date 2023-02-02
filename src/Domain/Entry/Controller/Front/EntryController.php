@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entry\Controller\Front;
 
+use App\Domain\Entry\Entity\Entry;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\TurboResponseTraits;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +25,17 @@ class EntryController extends AbstractController
     {
         return $this->renderTurboStream($request, 'domain/entry/turbo/success.stream.balance.html.twig', [
             'entryBalance' => $this->entryManager->balance(),
+        ]);
+    }
+
+    #[Route('/{id}/remove', name: 'front_entry_remove', methods: Request::METHOD_GET)]
+    public function remove(Entry $entry, Request $request): Response
+    {
+        $entryId = $entry->getId();
+        $this->entryManager->remove($entry);
+
+        return $this->renderTurboStream($request, 'domain/entry/turbo/success.stream.remove.html.twig', [
+            'entryId' => $entryId,
         ]);
     }
 }

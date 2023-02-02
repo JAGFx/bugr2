@@ -23,6 +23,13 @@ class EntryRepository extends ServiceEntityRepository
         return $this;
     }
 
+    public function remove(Entry $entry): self
+    {
+        $this->_em->remove($entry);
+
+        return $this;
+    }
+
     public function flush(): void
     {
         $this->_em->flush();
