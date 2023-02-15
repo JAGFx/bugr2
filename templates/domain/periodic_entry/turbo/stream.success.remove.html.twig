@@ -1,0 +1,5 @@
+{% extends 'shared/turbo/_stream.html.twig' %}
+
+{% block stream %}
+    <turbo-stream action="remove" target="periodic_entry_list_item_{{ periodicEntryId }}" />
+{% endblock %}

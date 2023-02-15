@@ -33,6 +33,7 @@ doctrine:
     dql:
       string_functions:
         ifnull: DoctrineExtensions\Query\Mysql\IfNull
+        if: DoctrineExtensions\Query\Mysql\IfElse
 
 when@test:
   doctrine:

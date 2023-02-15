@@ -1,0 +1,41 @@
+{% import 'shared/_currency.macro.html.twig' as currency %}
+
+<li class="list-group-item d-flex justify-content-center align-items-center py-3">
+    <div class="d-flex justify-content-center align-items-start w-100 flex-column">
+        {{ periodicEntry.name }}
+        <div>
+            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ periodicEntry.type.humanize }}">
+                {% if periodicEntry.isForecast %}
+                    <i class="fa-solid fa-shield-halved text-warning"></i>
+                    <small class="text-warning">{{ periodicEntry.type.humanize }}</small>
+                {% else %}
+                    <i class="fa-solid fa-leaf text-primary"></i>
+                    <small class="text-primary">{{ periodicEntry.type.humanize }}</small>
+                {% endif %}
+            </span>
+            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création">
+                <i class="fa-solid fa-calendar-day"></i>
+                <small>{{ periodicEntry.executionDate | format_datetime(pattern='d MMM', locale=app.request.locale) }}</small>
+            </span>
+        </div>
+    </div>
+    <div class="w-50 me-3 text-end">
+        {{ currency.amount(periodicEntry.amount, true) }}
+    </div>
+    <div class="position-absolute" style="right: 0">
+        <div class="dropstart">
+            <button type="button" class="btn dropdown-toggle text-secondary border-0" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                    <a class="dropdown-item" href="{{ path('back_periodicentry_edit', {'id': periodicEntry.id}) }}">Modifier</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" data-turbo="true" href="{{ path('front_periodicentry_remove', {'id': periodicEntry.id}) }}">Supprimer</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</li>

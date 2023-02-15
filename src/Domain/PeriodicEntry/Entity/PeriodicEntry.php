@@ -4,18 +4,21 @@ namespace App\Domain\PeriodicEntry\Entity;
 
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Model\EntryTypeEnum;
+use App\Domain\PeriodicEntry\Model\PeriodicEntryInterface;
 use App\Domain\PeriodicEntry\Repository\PeriodicEntryRepository;
 use App\Shared\Model\TimestampableTrait;
-use DateInterval;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\When;
 
 #[ORM\Entity(repositoryClass: PeriodicEntryRepository::class)]
-#[ORM\HasLifecycleCallbacks]
-class PeriodicEntry
+// #[ORM\HasLifecycleCallbacks]
+class PeriodicEntry implements PeriodicEntryInterface
 {
     use TimestampableTrait;
 
@@ -25,24 +28,24 @@ class PeriodicEntry
     private ?int $id = null;
 
     #[ORM\Column]
+    #[NotBlank]
     private string $name;
 
-    #[ORM\Column(type: Types::DATEINTERVAL)]
-    private ?DateInterval $period = null;
-
-    #[ORM\Column(enumType: EntryTypeEnum::class)]
-    private EntryTypeEnum $type = EntryTypeEnum::TYPE_SPENT;
-
     #[ORM\Column(type: Types::FLOAT)]
+    #[When(
+        expression: 'this.isSpent()',
+        constraints: [
+            new GreaterThan(0.0),
+            new NotBlank(),
+        ]
+    )]
     private float $amount = 0.0;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[NotBlank]
     private DateTimeImmutable $executionDate;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
-    private array $historic = [];
-
-    #[ORM\ManyToMany(targetEntity: Budget::class, inversedBy: 'periodicEntries', fetch: 'EXTRA_LAZY', indexBy: 'shortcut')]
+    #[ORM\ManyToMany(targetEntity: Budget::class, inversedBy: 'periodicEntries', fetch: 'EXTRA_LAZY')]
     private Collection $budgets;
 
     public function __construct()
@@ -57,60 +60,33 @@ class PeriodicEntry
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function setId(?int $id): PeriodicEntry
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): PeriodicEntry
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getPeriod(): ?DateInterval
-    {
-        return $this->period;
-    }
-
-    public function setPeriod(?DateInterval $period): self
-    {
-        if (!$this->haveNoBudget()) {
-            $period = new DateInterval('P1M');
-        }
-
-        $this->period = $period;
-
-        return $this;
-    }
-
-    public function getType(): EntryTypeEnum
-    {
-        return $this->type;
-    }
-
-    public function setType(EntryTypeEnum $type): self
-    {
-        if (!$this->haveNoBudget()) {
-            $type = EntryTypeEnum::TYPE_FORECAST;
-        }
-
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getAmount(): ?float
+    public function getAmount(): float
     {
         return $this->amount;
     }
 
-    public function setAmount(float $amount): self
+    public function setAmount(float $amount): PeriodicEntry
     {
-        $this->updateAmount();
-
-        $this->amount = round($amount, 2);
+        $this->amount = $amount;
 
         return $this;
     }
@@ -120,77 +96,57 @@ class PeriodicEntry
         return $this->executionDate;
     }
 
-    public function setExecutionDate(DateTimeImmutable $executionDate): void
+    public function setExecutionDate(DateTimeImmutable $executionDate): PeriodicEntry
     {
-        $this->executionDate = $executionDate->setTime(2, 0);
+        $this->executionDate = $executionDate;
+
+        return $this;
     }
 
-    /**
-     * @return array<string>|null
-     */
-    public function getHistoric(): ?array
-    {
-        return $this->historic;
-    }
-
-    /**
-     * @return Collection|Budget[]
-     */
     public function getBudgets(): Collection
     {
         return $this->budgets;
     }
 
-    public function addBudget(Budget $budget): self
+    public function setBudgets(Collection $budgets): PeriodicEntry
     {
-//        $this->budgets->set($budget->getShortcut(), $budget);
-//        $this->updateAmount();
+        $this->budgets = $budgets;
 
         return $this;
     }
 
-    public function removeBudget(Budget $budget): self
+    public function addBudget(Budget $budget): PeriodicEntry
     {
-//        if ($this->budgets->containsKey($budget->getShortcut())) {
-//            $this->budgets->remove($budget->getShortcut());
-//            $this->updateAmount();
-//        }
+        if (!$this->budgets->contains($budget)) {
+            $this->budgets->add($budget);
+        }
 
         return $this;
     }
 
-    public function haveNoBudget(): bool
+    public function removeBudget(Budget $budget): PeriodicEntry
     {
-        return $this->budgets->isEmpty();
+        if ($this->budgets->contains($budget)) {
+            $this->budgets->removeElement($budget);
+        }
+
+        return $this;
     }
 
-    // ----
-
-    #[ORM\PreUpdate]
-    public function onUpdate(): void
+    public function getType(): EntryTypeEnum
     {
-        if ([] === $this->historic
-            || (!empty($this->historic) && $this->amount !== end($this->historic)['amount'])) {
-            $this->historic[] = [
-                'date'   => new DateTimeImmutable(),
-                'amount' => $this->amount,
-            ];
-        }
+        return $this->budgets->isEmpty()
+            ? EntryTypeEnum::TYPE_SPENT
+            : EntryTypeEnum::TYPE_FORECAST;
     }
 
-    #[ORM\PreUpdate]
-    public function updateAmount(): void
+    public function isForecast(): bool
     {
-        if (!$this->haveNoBudget()) {
-            $amount = 0.0;
-            /** @var Budget $budget */
-            foreach ($this->budgets as $budget) {
-                if ($budget->getEnable()) {
-                    $amount += $budget->getAmount();
-                }
-            }
+        return EntryTypeEnum::TYPE_FORECAST === $this->getType();
+    }
 
-            $this->amount = round($amount / 12, 2);
-        }
+    public function isSpent(): bool
+    {
+        return EntryTypeEnum::TYPE_SPENT === $this->getType();
     }
 }

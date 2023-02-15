@@ -10,8 +10,8 @@ enum EntryTypeEnum: string
     public function humanize(): string
     {
         return match ($this) {
-            self::TYPE_FORECAST => 'Dépense',
-            self::TYPE_SPENT    => 'Provision'
+            self::TYPE_FORECAST => 'Provision',
+            self::TYPE_SPENT    => 'Dépense'
         };
     }
 }

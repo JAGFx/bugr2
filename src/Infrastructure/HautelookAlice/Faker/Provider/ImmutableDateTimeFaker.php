@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Shared\Faker\Provider;
+namespace App\Infrastructure\HautelookAlice\Faker\Provider;
 
 use DateTimeImmutable;
 use Exception;
 use Faker\Provider\Base;
 use Faker\Provider\DateTime;
 
-final class ImmutableDateTime extends Base
+final class ImmutableDateTimeFaker extends Base
 {
     public static function immutableDateTimeBetween(string $startDate = '-30 years', string $endDate = 'now'): DateTimeImmutable
     {

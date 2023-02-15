@@ -36,3 +36,15 @@ entry_front:
     path: ../src/Domain/Entry/Controller/Front/
     namespace: App\Domain\Entry\Controller\Front
   type: attribute
+
+periodic_entries_back:
+  resource:
+    path: ../src/Domain/PeriodicEntry/Controller/Back/
+    namespace: App\Domain\PeriodicEntry\Controller\Back
+  type: attribute
+
+periodic_entries_front:
+  resource:
+    path: ../src/Domain/PeriodicEntry/Controller/Front/
+    namespace: App\Domain\PeriodicEntry\Controller\Front
+  type: attribute

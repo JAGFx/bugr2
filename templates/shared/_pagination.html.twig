@@ -2,7 +2,7 @@
     <nav>
         {% set classAlign = (align is not defined) ? '' : align=='center' ? ' justify-content-center' : (align=='right' ? ' justify-content-end' : '') %}
         {% set classSize = (size is not defined) ? '' : size=='large' ? ' pagination-lg' : (size=='small' ? ' pagination-sm' : '') %}
-        <ul class="pagination{{ classAlign }}{{ classSize }}">
+        <ul class="pagination {{ classAlign }} {{ classSize }} rounded bg-acrylic">
             {% if previous is defined %}
                 <li class="page-item">
                     <a data-turbo="true" class="page-link" rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</a>

@@ -1,0 +1,13 @@
+App\Domain\PeriodicEntry\Entity\PeriodicEntry:
+  periodic_entry_spent:
+    name: 'Periodic dépence'
+    amount: <randomFloat(2, 15, 1500)>
+    executionDate: <immutableDateTimeBetween('-5 hour', 'now')>
+
+  periodic_entry_forecast:
+    name: 'Periodic provision'
+    amount: <randomFloat(2, 15, 1500)>
+    executionDate: <immutableDateTimeBetween('-5 hour', 'now')>
+    budgets:
+      - '@budget_over'
+      - '@budget_full'
