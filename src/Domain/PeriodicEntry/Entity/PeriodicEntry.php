@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\When;
 
 #[ORM\Entity(repositoryClass: PeriodicEntryRepository::class)]
-// #[ORM\HasLifecycleCallbacks]
 class PeriodicEntry implements PeriodicEntryInterface
 {
     use TimestampableTrait;

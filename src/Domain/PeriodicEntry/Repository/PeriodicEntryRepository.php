@@ -2,6 +2,7 @@
 
 namespace App\Domain\PeriodicEntry\Repository;
 
+use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
 use App\Domain\PeriodicEntry\Form\PeriodicEntrySearchCommand;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -48,7 +49,7 @@ class PeriodicEntryRepository extends ServiceEntityRepository
     {
         $command ??= new PeriodicEntrySearchCommand();
 
-        return $this
+        $queryBuilder = $this
             ->createQueryBuilder('p')
             ->select(
                 'NEW App\Domain\PeriodicEntry\ValueObject\PeriodicEntryValueObject(
@@ -61,5 +62,15 @@ class PeriodicEntryRepository extends ServiceEntityRepository
             )
             ->leftJoin('p.budgets', 'b')
             ->groupBy('p.id');
+
+        if (EntryTypeEnum::TYPE_SPENT === $command->getEntryTypeEnum()) {
+            $queryBuilder->andHaving('SUM(b.amount) IS NULL');
+        }
+
+        if (EntryTypeEnum::TYPE_FORECAST === $command->getEntryTypeEnum()) {
+            $queryBuilder->andHaving('SUM(b.amount) IS NOT NULL');
+        }
+
+        return $queryBuilder;
     }
 }
