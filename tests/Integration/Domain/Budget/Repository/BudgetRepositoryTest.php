@@ -6,8 +6,13 @@ use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\ValueObject\BudgetValueObject;
 use App\Shared\Utils\YearRange;
+use App\Tests\Factory\BudgetFactory;
+use App\Tests\Factory\EntryFactory;
+use App\Tests\Integration\Shared\KernelTestCase;
+use DateTimeImmutable;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+
+use function Zenstruck\Foundry\faker;
 
 class BudgetRepositoryTest extends KernelTestCase
 {
@@ -23,6 +28,34 @@ class BudgetRepositoryTest extends KernelTestCase
         $container = static::getContainer();
 
         $this->budgetManager = $container->get(BudgetManager::class);
+
+        $this->populateDatabase();
+    }
+
+    private function populateDatabase(): void
+    {
+        BudgetFactory::createOne([
+            'amount' => 256.0,
+            'name'   => self::BUDGET_NAME,
+        ]);
+
+        EntryFactory::createMany(3, [
+            'createdAt' => DateTimeImmutable::createFromMutable(faker()->dateTimeBetween('-1 year -1 month', '-1 year')),
+            'amount'    => 128,
+            'budget'    => BudgetFactory::find(['name' => self::BUDGET_NAME]),
+        ]);
+
+        EntryFactory::createMany(3, [
+            'createdAt' => DateTimeImmutable::createFromMutable(faker()->dateTimeBetween('-5 hour')),
+            'amount'    => -64.0,
+            'budget'    => BudgetFactory::find(['name' => self::BUDGET_NAME]),
+        ]);
+
+        EntryFactory::createMany(2, [
+            'createdAt' => DateTimeImmutable::createFromMutable(faker()->dateTimeBetween('-5 hour')),
+            'amount'    => 64.0,
+            'budget'    => BudgetFactory::find(['name' => self::BUDGET_NAME]),
+        ]);
     }
 
     private function getBudgetVos(array $data = []): array

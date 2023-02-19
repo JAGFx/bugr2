@@ -8,14 +8,10 @@ use App\Domain\PeriodicEntry\Manager\PeriodicEntryManager;
 use App\Domain\PeriodicEntry\ValueObject\PeriodicEntryValueObject;
 use App\Tests\Factory\BudgetFactory;
 use App\Tests\Factory\PeriodicEntryFactory;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
-use Zenstruck\Foundry\Test\ResetDatabase;
+use App\Tests\Integration\Shared\KernelTestCase;
 
 class PeriodicEntryRepositoryTest extends KernelTestCase
 {
-    use ResetDatabase;
-    use Factories;
     private PeriodicEntryManager $periodicEntryManager;
 
     protected function setUp(): void
@@ -39,12 +35,8 @@ class PeriodicEntryRepositoryTest extends KernelTestCase
                 'amount'  => 42,
                 'name'    => 'Forecast',
                 'budgets' => BudgetFactory::createSequence([
-                    [
-                        'amount' => 123,
-                    ],
-                    [
-                        'amount' => 456,
-                    ],
+                    ['amount' => 123],
+                    ['amount' => 456],
                 ]),
             ],
         ]);

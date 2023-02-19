@@ -6,13 +6,17 @@ use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Entry\Manager\EntryManager;
+use App\Tests\Factory\BudgetFactory;
+use App\Tests\Factory\EntryFactory;
+use App\Tests\Integration\Shared\KernelTestCase;
+use DateTimeImmutable;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class BudgetManagerTest extends KernelTestCase
 {
     private BudgetManager $budgetManager;
     private EntryManager $entryManager;
+    private const BUDGET_BALANCE_NAME = 'Budget balance';
 
     /**
      * @throws Exception
@@ -24,6 +28,30 @@ class BudgetManagerTest extends KernelTestCase
 
         $this->budgetManager = $container->get(BudgetManager::class);
         $this->entryManager  = $container->get(EntryManager::class);
+
+        $this->populateDatabase();
+    }
+
+    private function populateDatabase(): void
+    {
+        /** @var Budget $budget */
+        $budget = BudgetFactory::createOne([
+            'name'   => self::BUDGET_BALANCE_NAME,
+            'amount' => 1000.0,
+        ])->object();
+
+        EntryFactory::createSequence([
+            [
+                'createdAt' => new DateTimeImmutable('-5 hour'),
+                'amount'    => 500,
+                'budget'    => $budget,
+            ],
+            [
+                'createdAt' => new DateTimeImmutable('-1 year'),
+                'amount'    => 1200,
+                'budget'    => $budget,
+            ],
+        ]);
     }
 
     private function getBudget(array $data = []): Budget
@@ -41,11 +69,12 @@ class BudgetManagerTest extends KernelTestCase
     public function testBudgetWithPositiveCashFlowMustTransferToSpent(): void
     {
         $initialBalance = $this->entryManager->balance();
-        $overflow       = 200;
+        $overflow       = 200.0;
 
         $budget = $this->getBudget([
-            'name' => 'Budget balance',
+            'name' => self::BUDGET_BALANCE_NAME,
         ]);
+
         $this->budgetManager->balancing($budget);
         $newBalance = $this->entryManager->balance();
 

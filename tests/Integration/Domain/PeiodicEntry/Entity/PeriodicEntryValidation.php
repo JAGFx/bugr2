@@ -2,7 +2,7 @@
 
 namespace App\Tests\Integration\Domain\PeiodicEntry\Entity;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Integration\Shared\KernelTestCase;
 
 class PeriodicEntryValidation extends KernelTestCase
 {

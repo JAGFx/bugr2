@@ -13,8 +13,6 @@ final class BudgetFactory extends ModelFactory
         return [
             'amount'    => self::faker()->randomFloat(),
             'createdAt' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'enable'    => self::faker()->boolean(),
-            'historic'  => [],
             'name'      => self::faker()->text(),
             'updatedAt' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
         ];
