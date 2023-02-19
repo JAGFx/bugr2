@@ -148,4 +148,9 @@ class PeriodicEntry implements PeriodicEntryInterface
     {
         return EntryTypeEnum::TYPE_SPENT === $this->getType();
     }
+
+    public function countBudgets(): ?int
+    {
+        return $this->budgets->count();
+    }
 }

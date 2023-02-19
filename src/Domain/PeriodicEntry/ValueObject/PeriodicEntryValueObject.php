@@ -13,7 +13,8 @@ class PeriodicEntryValueObject implements PeriodicEntryInterface
         private readonly string $name,
         private readonly float $amount,
         private readonly DateTimeImmutable $executionDate,
-        private readonly bool $isForecast
+        private readonly bool $isForecast,
+        private readonly ?int $countBudgets
     ) {
     }
 
@@ -52,5 +53,10 @@ class PeriodicEntryValueObject implements PeriodicEntryInterface
     public function isSpent(): bool
     {
         return !$this->isForecast;
+    }
+
+    public function countBudgets(): ?int
+    {
+        return $this->countBudgets;
     }
 }

@@ -20,4 +20,6 @@ interface PeriodicEntryInterface
     public function isSpent(): bool;
 
     public function getType(): EntryTypeEnum;
+
+    public function countBudgets(): ?int;
 }

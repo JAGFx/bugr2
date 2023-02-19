@@ -37,6 +37,7 @@ class PeriodicEntryRepositoryTest extends KernelTestCase
                 'budgets' => BudgetFactory::createSequence([
                     ['amount' => 123],
                     ['amount' => 456],
+                    ['amount' => 789, 'enable' => false],
                 ]),
             ],
         ]);

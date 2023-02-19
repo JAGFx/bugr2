@@ -17,6 +17,12 @@
                 <i class="fa-solid fa-calendar-day"></i>
                 <small>{{ periodicEntry.executionDate | format_datetime(pattern='d MMM', locale=app.request.locale) }}</small>
             </span>
+            {% if periodicEntry.countBudgets is not null %}
+                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Nombre de budget(s) actif">
+                    <i class="fa-solid fa-coins"></i>
+                    <small>{{ periodicEntry.countBudgets }}</small>
+                </span>
+            {% endif %}
         </div>
     </div>
     <div class="w-50 me-3 text-end">

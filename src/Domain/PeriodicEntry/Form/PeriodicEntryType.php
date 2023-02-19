@@ -3,7 +3,10 @@
 namespace App\Domain\PeriodicEntry\Form;
 
 use App\Domain\Budget\Entity\Budget;
+use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Domain\Budget\Repository\BudgetRepository;
 use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -31,12 +34,16 @@ class PeriodicEntryType extends AbstractType
                 'input'  => 'datetime_immutable',
             ])
             ->add('budgets', EntityType::class, [
-                'class'        => Budget::class,
-                'multiple'     => true,
-                'expanded'     => false,
-                'choice_label' => 'name',
-                'required'     => false,
-                'placeholder'  => '-- Pas de budget --',
+                'class'         => Budget::class,
+                'multiple'      => true,
+                'expanded'      => false,
+                'choice_label'  => 'name',
+                'required'      => false,
+                'placeholder'   => '-- Pas de budget --',
+                'query_builder' => static function (BudgetRepository $budgetRepository) : QueryBuilder {
+                    $budgetSearchCommand = new BudgetSearchCommand(enabled: true);
+                    return $budgetRepository->search($budgetSearchCommand);
+                },
             ]);
     }
 

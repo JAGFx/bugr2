@@ -9,5 +9,5 @@ App\Domain\PeriodicEntry\Entity\PeriodicEntry:
     amount: <randomFloat(2, 15, 1500)>
     executionDate: <immutableDateTimeBetween('-5 hour', 'now')>
     budgets:
-      - '@budget_over'
+      - '@budget_disabled'
       - '@budget_full'
