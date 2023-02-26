@@ -1,17 +1,16 @@
-version: '3'
-
 services:
   php:
-    image: bugr2-php:latest
+    image: ghcr.io/jagfx/bugr2:ci
     build:
       context: ./docker/php
+      target: dev
     volumes:
       - ./:/var/www/symfony/
     networks:
       - app_network
 
   nginx:
-    image: bugr2-nginx:latest
+    image: bugr2-nginx:ci
     build:
       context: ./docker/nginx
     volumes:

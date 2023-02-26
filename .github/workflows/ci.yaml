@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  install:
+    name: Install
+    runs-on: ghcr.io/jagfx/bugr2:ci
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Install composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+      - name: Install npm dependencies
+        run: npm i
+#      - name: Create Database
+#        run: |
+#          mkdir -p data
+#          touch data/database.sqlite
+      - name: Cache node vendor
+        uses: actions/cache@v3
+        id: cache-vendor
+        with:
+          path: vendor/
+          key: vendor-${{ github.sha }}
+      - name: Cache node modules
+        uses: actions/cache@v3
+        id: cache-node_modules
+        with:
+          path: node_modules/
+          key: node_modules-${{ github.sha }}
+
+  linter:
+    name: Linter
+    runs-on: ghcr.io/jagfx/bugr2:ci
+    needs: [ install ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - uses: actions/cache@v3
+        id: cache-vendor
+        with:
+          path: vendor/
+          key: vendor-${{ github.sha }}
+
+      - name: PHP CS Fixer
+        run: php-cs-fixer fix --using-cache=no --diff #--dry-run
+      - name: PHP Stan
+        run: vendor/bin/phpstan analyse --xdebug -n src
+      - name: Rector
+        run: vendor/bin/rector process src --xdebug
+      - name: Psalm
+        run: vendor/bin/psalm
+      - name: PHP CPD
+        run: vendor/bin/phpcpd src
+
+      - uses: actions/cache@v3
+        id: cache-node_modules
+        with:
+          path: node_modules/
+          key: node_modules-${{ github.sha }}
+      - name: Eslint / Prettier / Stylelint
+        run: npm run lint
+
+  unit_test:
+    name: Unit test
+    runs-on: ghcr.io/jagfx/bugr2:ci
+    needs: [ install ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - uses: actions/cache@v3
+        id: cache-vendor
+        with:
+          path: vendor/
+          key: vendor-${{ github.sha }}
+      - name: Run unit test
+        run: bin/phpunit tests/Unit
+
+#  integration_test:
+#    name: Integration test
+#    runs-on: ghcr.io/jagfx/bugr2:ci
+#    needs: [ install ]
+#    services:
+#      mysql:
+#        image: mysql:8
+#        command: --default-authentication-plugin=mysql_native_password
+#        env:
+#          MYSQL_ROOT_PASSWORD: noPassword
+#          MYSQL_DATABASE: bugr_test
+#        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 2
+#      - uses: actions/cache@v3
+#        id: cache-vendor
+#        with:
+#          path: vendor/
+#          key: vendor-${{ github.sha }}
+#      - name: Create database
+#        run: bin/console d:d:c --env=test
+#        env:
+#          DB_HOST: 127.0.0.1
+#      - name: Apply database schema
+#        run: php bin/console d:m:m -n --env=test
+#        env:
+#          DB_HOST: 127.0.0.1
+#      - name: Run unit test
+#        run: bin/phpunit tests/Integration
+#        env:
+#          DB_HOST: 127.0.0.1
