@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run CI
-        uses: .github/workflows/ci.yaml
+        uses: ./.github/workflows/ci.yaml
 
   release:
     name: Create and push docker image
