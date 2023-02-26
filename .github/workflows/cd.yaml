@@ -7,7 +7,7 @@ on:
 
 jobs:
   ci:
-    uses: ci.yaml
+    uses: .github/workflows/ci.yaml
 
   release:
     name: Create and push docker image
