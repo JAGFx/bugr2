@@ -1,0 +1,14 @@
+bin/php
+docker/
+fixtures/
+public/build/
+tests/
+*.local
+*.cache
+.php-cs-fixer.*
+.stylelintrc.json
+LICENSE
+phpstan.neon
+psalm.xml
+README.md
+rector.php

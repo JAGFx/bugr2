@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\Domain\Budget\Manager;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
@@ -39,11 +40,12 @@ class BudgetManagerTest extends KernelTestCase
         $budget = BudgetFactory::createOne([
             'name'   => self::BUDGET_BALANCE_NAME,
             'amount' => 1000.0,
-        ])->object();
+        ])->_real();
 
+        /** @var Account $account */
         $account = AccountFactory::new()
             ->createOne()
-            ->object();
+            ->_real();
 
         EntryFactory::createSequence([
             [
@@ -82,7 +84,8 @@ class BudgetManagerTest extends KernelTestCase
             'name' => self::BUDGET_BALANCE_NAME,
         ]);
 
-        $account = AccountFactory::first()->object();
+        /** @var Account $account */
+        $account = AccountFactory::first()->_real();
 
         $this->budgetManager->balancing($budget, $account);
         $newBalance = $this->entryManager->balance();

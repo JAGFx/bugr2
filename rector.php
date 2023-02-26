@@ -10,6 +10,7 @@ use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\EarlyReturn\Rector\If_\ChangeIfElseValueAssignToEarlyReturnRector;
 use Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector;
 use Rector\EarlyReturn\Rector\StmtsAwareInterface\ReturnEarlyIfVariableRector;
+use Rector\Enum\Config\Defaults;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
@@ -28,6 +29,7 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/*.php',
     ]);
 
+    $rectorConfig->parallel(maxNumberOfProcess: (int) ($_ENV['RECTOR_MAX_PROCESS'] ?? Defaults::PARALLEL_MAX_NUMBER_OF_PROCESS));
     $rectorConfig->importNames();
 
     /// Sets

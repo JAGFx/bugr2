@@ -3,6 +3,7 @@ services:
     image: bugr2-php:latest
     build:
       context: ./docker/php
+      target: dev
     volumes:
       - ./:/var/www/symfony/
     networks:

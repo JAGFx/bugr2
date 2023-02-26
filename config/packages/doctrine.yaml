@@ -12,6 +12,7 @@ doctrine:
           enum: string
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        server_version: '8.0'
     default_connection: default
 
   orm:

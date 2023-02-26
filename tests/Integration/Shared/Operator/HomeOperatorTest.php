@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\Shared\Operator;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\Transfer;
@@ -32,7 +33,7 @@ class HomeOperatorTest extends KernelTestCase
         $budgetTarget = BudgetFactory::findOrCreate([
             'name'   => self::BUDGET_TARGET_NAME,
             'amount' => 0,
-        ])->object();
+        ])->_real();
 
         $initialBalance = $this->entryManager->balance();
         $this->transfer(null, $budgetTarget);
@@ -49,13 +50,13 @@ class HomeOperatorTest extends KernelTestCase
         $budgetSource = BudgetFactory::findOrCreate([
             'name'   => self::BUDGET_SOURCE_NAME,
             'amount' => 0,
-        ])->object();
+        ])->_real();
 
         /** @var Budget $budgetTarget */
         $budgetTarget = BudgetFactory::findOrCreate([
             'name'   => self::BUDGET_TARGET_NAME,
             'amount' => 0,
-        ])->object();
+        ])->_real();
 
         $initialBalance = $this->entryManager->balance();
         $this->transfer($budgetSource, $budgetTarget);
@@ -70,7 +71,7 @@ class HomeOperatorTest extends KernelTestCase
         $budgetSource = BudgetFactory::findOrCreate([
             'name'   => self::BUDGET_SOURCE_NAME,
             'amount' => 0,
-        ])->object();
+        ])->_real();
 
         $initialBalance = $this->entryManager->balance();
         $this->transfer($budgetSource, null);
@@ -83,7 +84,8 @@ class HomeOperatorTest extends KernelTestCase
 
     private function transfer(?Budget $budgetSource, ?Budget $budgetTarget): void
     {
-        $account = AccountFactory::new()->create()->object();
+        /** @var Account $account */
+        $account = AccountFactory::new()->create()->_real();
 
         $transfer = (new Transfer())
             ->setAccount($account)

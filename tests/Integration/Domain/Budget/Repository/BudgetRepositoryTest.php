@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\Domain\Budget\Repository;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\ValueObject\BudgetValueObject;
@@ -40,9 +41,10 @@ class BudgetRepositoryTest extends KernelTestCase
             'name'   => self::BUDGET_NAME,
         ]);
 
+        /** @var Account $account */
         $account = AccountFactory::new()
             ->createOne()
-            ->object();
+            ->_real();
 
         EntryFactory::createMany(3, [
             'createdAt' => DateTimeImmutable::createFromMutable(faker()->dateTimeBetween('-1 year -1 month', '-1 year')),

@@ -50,4 +50,8 @@ lint:
 	npm run lint
 
 ci: lint test
+
+gh\:workflow:
+	@~/bin/act -P ghcr.io/jagfx/bugr2:ci=ghcr.io/jagfx/bugr2:ci -W .github/workflows/cd.yaml
+
 # -- End Code linter & test (CI)
