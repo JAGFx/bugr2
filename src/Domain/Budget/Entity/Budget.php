@@ -178,17 +178,13 @@ class Budget
     public function getCashFlow(): float
     {
         $readableCollection = $this->entries
-            ->filter(static fn (Entry $entry): bool => $entry->getCreatedAt() < YearRange::fisrtDayOf(YearRange::current()) || $entry->isABalancing());
+            ->filter(static fn (Entry $entry): bool => $entry->getCreatedAt() < YearRange::firstDayOf(YearRange::current()) || $entry->isABalancing());
 
-        $cashFlow = array_reduce(
+        return array_reduce(
             $readableCollection->toArray(),
             static fn (float $cashFlow, Entry $entry): float => $cashFlow + $entry->getAmount(),
             0.0
         );
-
-        return (0.0 === $cashFlow)
-            ? 0.0
-            : $cashFlow - $this->amount;
     }
 
     public function hasNegativeCashFlow(): bool

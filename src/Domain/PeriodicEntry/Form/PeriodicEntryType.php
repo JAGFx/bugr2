@@ -40,8 +40,9 @@ class PeriodicEntryType extends AbstractType
                 'choice_label'  => 'name',
                 'required'      => false,
                 'placeholder'   => '-- Pas de budget --',
-                'query_builder' => static function (BudgetRepository $budgetRepository) : QueryBuilder {
+                'query_builder' => static function (BudgetRepository $budgetRepository): QueryBuilder {
                     $budgetSearchCommand = new BudgetSearchCommand(enabled: true);
+
                     return $budgetRepository->search($budgetSearchCommand);
                 },
             ]);

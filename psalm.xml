@@ -48,4 +48,8 @@
             </errorLevel>
         </InternalMethod>
     </issueHandlers>
+    <forbiddenFunctions>
+        <function name="dd"/>
+        <function name="dump"/>
+    </forbiddenFunctions>
 </psalm>

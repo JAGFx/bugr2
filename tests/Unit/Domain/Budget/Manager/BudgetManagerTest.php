@@ -36,16 +36,25 @@ class BudgetManagerTest extends TestCase
             ->getMock();
     }
 
-    public function testBudgetWithNegativeCashFlowDoNothing(): void
+    public function testBudgetWithBalancedCashFlowDoNothing(): void
     {
-        $progress = -500.0;
+        $progress = 200.0;
+        $cashFlow = 0.0;
         $budget   = $this->generateBudget([
-             'amount' => self::BUDGET_AMOUNT,
+            'amount'  => self::BUDGET_AMOUNT,
             'entries' => [
                 [
                     'entryName'      => 'Past year entry',
-                    'entryAmount'    => $progress,
+                    'entryAmount'    => -self::BUDGET_AMOUNT,
                     'entryCreatedAt' => new DateTimeImmutable('-1 year'),
+                ],
+                [
+                    'entryName'      => 'Past year entry',
+                    'entryAmount'    => self::BUDGET_AMOUNT,
+                    'entryCreatedAt' => new DateTimeImmutable('-1 year -1 hour'),
+                ],
+                [
+                    'entryAmount' => 200,
                 ],
             ],
         ]);
@@ -57,8 +66,9 @@ class BudgetManagerTest extends TestCase
 
         $budgetManager->balancing($budget);
 
-        self::assertCount(1, $budget->getEntries());
+        self::assertCount(3, $budget->getEntries());
         self::assertSame($progress, $budget->getProgress());
+        self::assertSame($cashFlow, $budget->getCashFlow());
     }
 
     public function testBudgetWithPositiveCashFlowMustTransferToSpent(): void
@@ -69,7 +79,44 @@ class BudgetManagerTest extends TestCase
             'entries' => [
                 [
                     'entryName'      => 'Past year entry',
-                    'entryAmount'    => self::BUDGET_AMOUNT + $overflow,
+                    'entryAmount'    => $overflow,
+                    'entryCreatedAt' => new DateTimeImmutable('-1 year'),
+                ],
+                [
+                    'entryAmount' => 200,
+                ],
+            ],
+        ]);
+
+        $budgetManager = $this->createBudgetManagerMock();
+        $budgetManager
+            ->expects(self::once())
+            ->method('update');
+
+        self::assertSame($overflow, $budget->getCashFlow());
+
+        $budgetManager->balancing($budget);
+
+        $balancingEntry = $budget->getEntries()
+            ->filter(fn (Entry $entry): bool => str_starts_with($entry->getName(), 'Équilibrage'))
+            ->first();
+
+        self::assertCount(2 + 1, $budget->getEntries());
+        self::assertInstanceOf(Entry::class, $balancingEntry);
+        self::assertSame($balancingEntry->getKind(), EntryKindEnum::BALANCING);
+        self::assertSame(-$overflow, $balancingEntry->getAmount());
+        self::assertSame(0.0, $budget->getCashFlow());
+    }
+
+    public function testBudgetWithNegativeCashFlowMustTransferToSpent(): void
+    {
+        $overflow = -500.0;
+        $budget   = $this->generateBudget([
+            'amount'  => self::BUDGET_AMOUNT,
+            'entries' => [
+                [
+                    'entryName'      => 'Past year entry',
+                    'entryAmount'    => $overflow,
                     'entryCreatedAt' => new DateTimeImmutable('-1 year'),
                 ],
                 [

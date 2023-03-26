@@ -47,8 +47,8 @@ class BudgetManagerTest extends KernelTestCase
                 'budget'    => $budget,
             ],
             [
-                'createdAt' => new DateTimeImmutable('-1 year'),
-                'amount'    => 1200,
+                'createdAt' => new DateTimeImmutable('-1 year -1 hour'),
+                'amount'    => 200,
                 'budget'    => $budget,
             ],
         ]);

@@ -8,14 +8,6 @@ parameters:
         - src
         - tests
         - .php-cs-fixer.dist.php
-#        - rector.php
-#    excludePaths:
-#        - src/DataFixtures
-#    symfony:
-#        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
-#        constantHassers: false # see https://github.com/phpstan/phpstan-symfony#constant-hassers
-#    scanDirectories:
-#        - var/cache/dev/Symfony/Config
     ignoreErrors:
         - message: '#^Property (.*) type has no value type specified in iterable type array.$#'
           path: src/
@@ -23,3 +15,4 @@ parameters:
           path: src/
     checkGenericClassInNonGenericObjectType: false
     reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false

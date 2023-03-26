@@ -71,7 +71,7 @@ class BudgetManager
 
     public function balancing(Budget $budget): void
     {
-        if ($budget->hasPositiveCashFlow()) {
+        if ($budget->hasPositiveCashFlow() || $budget->hasNegativeCashFlow()) {
             $entryBalanceSpent = (new Entry())
                 ->setName(sprintf('Équilibrage de %s', $budget->getName()))
                 ->setKind(EntryKindEnum::BALANCING)

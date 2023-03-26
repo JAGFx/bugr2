@@ -57,7 +57,7 @@ class BudgetRepository extends ServiceEntityRepository
 
         if (null !== $command->getYear()) {
             $queryBuilder->andWhere('e.createdAt BETWEEN :from AND :to')
-                ->setParameter('from', YearRange::fisrtDayOf($command->getYear())->format('Y-m-d H:i:s'))
+                ->setParameter('from', YearRange::firstDayOf($command->getYear())->format('Y-m-d H:i:s'))
                 ->setParameter('to', YearRange::lastDayOf($command->getYear())->format('Y-m-d H:i:s'));
         }
 

@@ -31,7 +31,7 @@ class YearRange
             : self::range($from + $offset, $from);
     }
 
-    public static function fisrtDayOf(?int $year = null): DateTimeImmutable
+    public static function firstDayOf(?int $year = null): DateTimeImmutable
     {
         $year ??= self::current();
 
