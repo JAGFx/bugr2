@@ -16,7 +16,7 @@ class Transfer
 
     #[NotBlank]
     #[Positive]
-    private float            $amount = 0;
+    private float $amount = 0;
 
     public function getBudgetSource(): ?Budget
     {

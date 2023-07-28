@@ -22,7 +22,7 @@ class YearRange
     /**
      * @return int[]
      */
-    public static function offset(?int $from = null, int $offset = 0): array
+    public static function offset(int $from = null, int $offset = 0): array
     {
         $from ??= self::current();
 
@@ -31,7 +31,7 @@ class YearRange
             : self::range($from + $offset, $from);
     }
 
-    public static function firstDayOf(?int $year = null): DateTimeImmutable
+    public static function firstDayOf(int $year = null): DateTimeImmutable
     {
         $year ??= self::current();
 
@@ -40,7 +40,7 @@ class YearRange
             ->setTime(0, 0);
     }
 
-    public static function lastDayOf(?int $year = null): DateTimeImmutable
+    public static function lastDayOf(int $year = null): DateTimeImmutable
     {
         $year ??= self::current();
 

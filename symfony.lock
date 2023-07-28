@@ -72,6 +72,15 @@
             "config/packages/nelmio_alice.yaml"
         ]
     },
+    "phpstan/phpstan": {
+        "version": "1.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "d74d4d719d5f53856c9c13544aa22d44144b1819"
+        }
+    },
     "phpunit/phpunit": {
         "version": "9.5",
         "recipe": {
@@ -249,6 +258,15 @@
         "files": [
             "config/packages/security.yaml"
         ]
+    },
+    "symfony/stimulus-bundle": {
+        "version": "2.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.8",
+            "ref": "9e33a8a3794b603fb4be6c04ee5ecab901ce549e"
+        }
     },
     "symfony/translation": {
         "version": "6.2",

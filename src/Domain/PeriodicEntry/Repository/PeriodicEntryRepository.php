@@ -45,7 +45,7 @@ class PeriodicEntryRepository extends ServiceEntityRepository
         return $this;
     }
 
-    public function searchValueObject(?PeriodicEntrySearchCommand $command = null): QueryBuilder
+    public function searchValueObject(PeriodicEntrySearchCommand $command = null): QueryBuilder
     {
         $command ??= new PeriodicEntrySearchCommand();
 

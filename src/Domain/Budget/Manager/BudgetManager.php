@@ -40,7 +40,7 @@ class BudgetManager
     /**
      * @return Budget[]
      */
-    public function search(?BudgetSearchCommand $command = null): array
+    public function search(BudgetSearchCommand $command = null): array
     {
         $command ??= new BudgetSearchCommand();
 
@@ -56,7 +56,7 @@ class BudgetManager
     /**
      * @return BudgetValueObject[]
      */
-    public function searchValueObject(?BudgetSearchCommand $command = null): array
+    public function searchValueObject(BudgetSearchCommand $command = null): array
     {
         $command ??= new BudgetSearchCommand();
 

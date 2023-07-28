@@ -80,9 +80,9 @@ class Entry
 
     public function getType(): EntryTypeEnum
     {
-        return (null === $this->budget)
-            ? EntryTypeEnum::TYPE_SPENT
-            : EntryTypeEnum::TYPE_FORECAST;
+        return ($this->budget instanceof Budget)
+            ? EntryTypeEnum::TYPE_FORECAST
+            : EntryTypeEnum::TYPE_SPENT;
     }
 
     // ----

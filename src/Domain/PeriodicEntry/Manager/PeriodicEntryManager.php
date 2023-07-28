@@ -30,7 +30,7 @@ class PeriodicEntryManager
     }
 
     /** @return PeriodicEntryValueObject[] */
-    public function searchValueObject(?PeriodicEntrySearchCommand $command = null): array
+    public function searchValueObject(PeriodicEntrySearchCommand $command = null): array
     {
         $command ??= new PeriodicEntrySearchCommand();
 
