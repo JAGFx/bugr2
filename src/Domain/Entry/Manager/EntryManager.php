@@ -2,10 +2,12 @@
 
 namespace App\Domain\Entry\Manager;
 
+use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Entity\Entry;
 use App\Domain\Entry\Model\EntrySearchCommand;
 use App\Domain\Entry\Repository\EntryRepository;
 use App\Domain\Entry\ValueObject\EntryBalance;
+use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
 use App\Shared\Utils\Statistics;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -33,6 +35,26 @@ class EntryManager
         $forecastAmount = Statistics::sumOf($forecastAmount, 'sum');
 
         return new EntryBalance($spentAmount + $forecastAmount, $spentAmount, $forecastAmount);
+    }
+
+    public function applyPeriodicEntry(PeriodicEntry $periodicEntry): void {
+        /** @var Budget $budget */
+        foreach ($periodicEntry->getBudgets() as $budget) {
+            $amount = $budget->getAmount() / 12;
+
+            $entry = (new Entry())
+                ->setAmount( $amount)
+                ->setName( 'Provision of ' . $budget->getName() )
+                ->setBudget($budget);
+
+            $this
+                ->entryRepository
+                ->create($entry);
+        }
+
+        $this
+            ->entryRepository
+            ->flush();
     }
 
     public function create(Entry $entry): void
