@@ -65,7 +65,7 @@ class BudgetController extends AbstractController
         }
 
         return $this->render('domain/budget/form.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 }

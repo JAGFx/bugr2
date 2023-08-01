@@ -1,4 +1,5 @@
 #!/bin/bash
+# 	-u $(id -u ${USER}):$(id -g ${USER}) \
 
 docker run -i --rm  \
 	-v "$(pwd):/var/www/symfony/" \

@@ -4,16 +4,16 @@ namespace App\Domain\Budget\ValueObject;
 
 use App\Domain\Budget\Model\BudgetProgressTrait;
 
-final class BudgetValueObject
+final readonly class BudgetValueObject
 {
     use BudgetProgressTrait;
 
     public function __construct(
-        private readonly int $id,
-        private readonly string $name,
-        private readonly float $amount,
-        private readonly bool $enable,
-        private readonly float $progress,
+        private int $id,
+        private string $name,
+        private float $amount,
+        private bool $enable,
+        private float $progress,
     ) {
     }
 

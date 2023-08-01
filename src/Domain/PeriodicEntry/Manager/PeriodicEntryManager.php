@@ -2,8 +2,6 @@
 
 namespace App\Domain\PeriodicEntry\Manager;
 
-use App\Domain\Budget\Entity\Budget;
-use App\Domain\Entry\Entity\Entry;
 use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
 use App\Domain\PeriodicEntry\Form\PeriodicEntrySearchCommand;
 use App\Domain\PeriodicEntry\Repository\PeriodicEntryRepository;

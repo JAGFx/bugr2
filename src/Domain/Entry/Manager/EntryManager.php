@@ -37,14 +37,15 @@ class EntryManager
         return new EntryBalance($spentAmount + $forecastAmount, $spentAmount, $forecastAmount);
     }
 
-    public function applyPeriodicEntry(PeriodicEntry $periodicEntry): void {
+    public function applyPeriodicEntry(PeriodicEntry $periodicEntry): void
+    {
         /** @var Budget $budget */
         foreach ($periodicEntry->getBudgets() as $budget) {
             $amount = $budget->getAmount() / 12;
 
             $entry = (new Entry())
-                ->setAmount( $amount)
-                ->setName( 'Provision of ' . $budget->getName() )
+                ->setAmount($amount)
+                ->setName('Provision of ' . $budget->getName())
                 ->setBudget($budget);
 
             $this

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-        errorLevel="7"
+        errorLevel="8"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -11,45 +11,21 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
-
+    <plugins>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin" />
+    </plugins>
+    <extraFiles>
+        <directory name="var/cache/dev/Symfony/Config" /> <!-- https://github.com/psalm/psalm-plugin-symfony/issues/201 -->
+    </extraFiles>
     <issueHandlers>
         <MissingTemplateParam errorLevel="suppress"/>
-        <PossiblyInvalidMethodCall errorLevel="suppress"/>
-        <ArgumentTypeCoercion errorLevel="suppress"/>
-        <LessSpecificReturnStatement errorLevel="suppress"/>
-        <MoreSpecificReturnType errorLevel="suppress"/>
-        <InvalidStringClass errorLevel="suppress"/>
-        <MoreSpecificImplementedParamType errorLevel="suppress"/>
-        <InvalidNullableReturnType errorLevel="suppress"/>
-        <NullableReturnStatement errorLevel="suppress"/>
-        <PossiblyInvalidArgument errorLevel="suppress"/>
-        <MissingClosureReturnType errorLevel="suppress"/>
+        <ForbiddenCode errorLevel="error"/>
+        <PossiblyNullOperand errorLevel="error"/>
         <DeprecatedMethod errorLevel="info"/>
-        <MissingParamType errorLevel="info"/>
-        <MissingClosureParamType errorLevel="info"/>
-        <MissingReturnType errorLevel="info"/>
-        <DeprecatedClass errorLevel="info"/>
-        <PossiblyNullReference errorLevel="info"/>
-        <PossiblyNullArgument errorLevel="info"/>
-        <PossiblyNullOperand errorLevel="info"/>
-        <UndefinedClass>
-            <errorLevel type="suppress">
-                <directory name="tests"/>
-            </errorLevel>
-        </UndefinedClass>
-        <PossiblyUndefinedMethod>
-            <errorLevel type="suppress">
-                <directory name="tests"/>
-            </errorLevel>
-        </PossiblyUndefinedMethod>
-        <InternalMethod>
-            <errorLevel type="suppress">
-                <directory name="tests"/>
-            </errorLevel>
-        </InternalMethod>
     </issueHandlers>
     <forbiddenFunctions>
         <function name="dd"/>
         <function name="dump"/>
+        <function name="var_dump"/>
     </forbiddenFunctions>
 </psalm>
