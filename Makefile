@@ -4,6 +4,8 @@ start:
 
 stop:
 	@docker compose down
+
+restart: stop start
 # -- End Docker
 
 # -- Start Environment

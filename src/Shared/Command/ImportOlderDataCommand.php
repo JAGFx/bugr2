@@ -237,7 +237,7 @@ class ImportOlderDataCommand extends Command
 
         $this->connection->insert('entry', [
             'budget_id'  => 1275,
-            'amount'     => -51.37,
+            'amount'     => -928.05,
             'name'       => 'Regularisation',
             'created_at' => (new DateTimeImmutable())->format('c'),
             'updated_at' => (new DateTimeImmutable())->format('c'),
