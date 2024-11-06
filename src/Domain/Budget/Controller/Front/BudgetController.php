@@ -6,6 +6,7 @@ use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Form\BudgetBalanceSearchType;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Domain\Budget\Operator\BudgetOperator;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\TurboResponseTraits;
 use App\Shared\Utils\YearRange;
@@ -21,7 +22,8 @@ class BudgetController extends AbstractController
 
     public function __construct(
         private readonly BudgetManager $budgetManager,
-        private readonly EntryManager $entryManager
+        private readonly EntryManager $entryManager,
+        private readonly BudgetOperator $budgetOperator,
     ) {
     }
 
@@ -70,7 +72,7 @@ class BudgetController extends AbstractController
     #[Route('/{id}/balancing', name: 'front_budget_balancing', methods: [Request::METHOD_GET])]
     public function balancing(Request $request, Budget $budget): Response
     {
-        // TODO: See how to have a budget with multiple entru and adjustment of it
+        // TODO: Move balancing on budget for a specific account
         $this->budgetManager->balancing($budget);
 
         $this->addFlash('success', 'Budget équilibré');
@@ -81,6 +83,19 @@ class BudgetController extends AbstractController
             [
                 'budget'       => $budget,
                 'entryBalance' => $this->entryManager->balance(),
+            ]
+        );
+    }
+
+    #[Route('/{id}/cash-flow-account', name: 'front_budget_cash_flow_by_account', methods: [Request::METHOD_GET])]
+    public function cashFlowByAccount(Request $request, Budget $budget): Response
+    {
+        return $this->renderTurboStream(
+            $request,
+            'domain/budget/turbo/success.stream.cash_flow_account.html.twig',
+            [
+                'budget'    => $budget,
+                'cashFlows' => $this->budgetOperator->getBudgetCashFlowsByAccount($budget),
             ]
         );
     }

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Budget\Entity;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Model\BudgetProgressTrait;
 use App\Domain\Budget\Repository\BudgetRepository;
 use App\Domain\Entry\Entity\Entry;
@@ -175,10 +176,17 @@ class Budget
         );
     }
 
-    public function getCashFlow(): float
+    public function getCashFlow(?Account $account = null): float
     {
+        // TODO: Continue here: Add test
         $readableCollection = $this->entries
-            ->filter(static fn (Entry $entry): bool => $entry->getCreatedAt() < YearRange::firstDayOf(YearRange::current()) || $entry->isABalancing());
+            ->filter(static function (Entry $entry) use ($account): bool {
+                if (!is_null($account) && $entry->getAccount() !== $account) {
+                    return false;
+                }
+
+                return $entry->getCreatedAt() < YearRange::firstDayOf(YearRange::current()) || $entry->isABalancing();
+            });
 
         return array_reduce(
             $readableCollection->toArray(),

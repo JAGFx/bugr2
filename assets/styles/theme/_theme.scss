@@ -13,3 +13,8 @@ body {
 .rounded {
   border-radius: $border-radius;
 }
+
+.link-dotted {
+  text-decoration-style: dotted;
+  text-underline-offset: .275rem;
+}

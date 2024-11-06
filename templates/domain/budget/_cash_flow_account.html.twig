@@ -1,0 +1,8 @@
+{% import 'shared/_currency.macro.html.twig' as currency %}
+
+{% for cashFlow in cashFlows %}
+    <li class="list-group-item d-flex justify-content-between align-items-center ms-2 ">
+        <div class="me-2"><small>{{ cashFlow.account.name }}</small></div>
+        <div><small>{{ currency.amount(cashFlow.cashFlow, true) }}</small></div>
+    </li>
+{% endfor %}
