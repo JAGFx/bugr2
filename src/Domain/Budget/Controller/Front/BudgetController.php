@@ -70,6 +70,7 @@ class BudgetController extends AbstractController
     #[Route('/{id}/balancing', name: 'front_budget_balancing', methods: [Request::METHOD_GET])]
     public function balancing(Request $request, Budget $budget): Response
     {
+        // TODO: See how to have a budget with multiple entru and adjustment of it
         $this->budgetManager->balancing($budget);
 
         $this->addFlash('success', 'Budget équilibré');

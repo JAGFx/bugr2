@@ -47,7 +47,7 @@ class BudgetController extends AbstractController
         return $this->handleForm(ControllerActionEnum::EDIT, $request, $budget);
     }
 
-    private function handleForm(ControllerActionEnum $action, Request $request, Budget $budget = null): Response
+    private function handleForm(ControllerActionEnum $action, Request $request, ?Budget $budget = null): Response
     {
         $budget ??= new Budget();
 

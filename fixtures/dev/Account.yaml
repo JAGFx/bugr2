@@ -1,0 +1,6 @@
+App\Domain\Account\Entity\Account:
+  account_a:
+    name: 'Livret A'
+
+  account_ldds:
+    name: LDDS

@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   php:
     image: bugr2-php:latest

@@ -30,6 +30,11 @@ doctrine:
         dir: '%kernel.project_dir%/src/Domain/PeriodicEntry/Entity'
         prefix: 'App\Domain\PeriodicEntry\Entity\PeriodicEntry'
         alias: PeriodicEntry
+      Account:
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/Domain/Account'
+        prefix: 'App\Domain\Account\Entity'
+        alias: Account
     dql:
       string_functions:
         ifnull: DoctrineExtensions\Query\Mysql\IfNull

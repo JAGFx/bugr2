@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entry\Entity;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Model\EntryKindEnum;
 use App\Domain\Entry\Model\EntryTypeEnum;
@@ -13,9 +14,11 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotEqualTo;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 #[Entity(repositoryClass: EntryRepository::class)]
 class Entry
@@ -43,6 +46,11 @@ class Entry
     #[Column(enumType: EntryKindEnum::class, options: ['default' => EntryKindEnum::DEFAULT])]
     #[NotBlank]
     private EntryKindEnum $kind = EntryKindEnum::DEFAULT;
+
+    #[ManyToOne(inversedBy: 'entries')]
+    #[JoinColumn(nullable: false)]
+    #[NotNull]
+    private ?Account $account = null;
 
     public function __construct()
     {
@@ -128,5 +136,17 @@ class Entry
     public function isABalancing(): bool
     {
         return EntryKindEnum::BALANCING === $this->kind;
+    }
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): Entry
+    {
+        $this->account = $account;
+
+        return $this;
     }
 }

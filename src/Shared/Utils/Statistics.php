@@ -13,7 +13,7 @@ class Statistics
     {
         return array_filter(
             $statistics,
-            static fn (array $statistic): bool => ($negate)
+            static fn (array $statistic): bool => ($negate) // @phpstan-ignore-line
                 ? $statistic[$property] !== $value
                 : $statistic[$property] === $value
         );

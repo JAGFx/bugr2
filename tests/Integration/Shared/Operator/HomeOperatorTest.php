@@ -6,6 +6,7 @@ use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\Transfer;
 use App\Shared\Operator\HomeOperator;
+use App\Tests\Factory\AccountFactory;
 use App\Tests\Factory\BudgetFactory;
 use App\Tests\Integration\Shared\KernelTestCase;
 
@@ -87,7 +88,9 @@ class HomeOperatorTest extends KernelTestCase
             ->setBudgetSource($budgetSource)
             ->setBudgetTarget($budgetTarget);
 
-        $this->homeOperator->transfer($transfer);
+        $account = AccountFactory::new()->create()->object();
+
+        $this->homeOperator->transfer($transfer, $account);
 
         self::assertSame(-self::BUDGET_AMOUNT, $budgetSource?->getProgress() ?? -self::BUDGET_AMOUNT);
         self::assertSame(self::BUDGET_AMOUNT, $budgetTarget?->getProgress() ?? self::BUDGET_AMOUNT);

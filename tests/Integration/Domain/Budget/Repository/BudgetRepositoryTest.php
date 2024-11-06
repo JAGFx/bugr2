@@ -6,6 +6,7 @@ use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\ValueObject\BudgetValueObject;
 use App\Shared\Utils\YearRange;
+use App\Tests\Factory\AccountFactory;
 use App\Tests\Factory\BudgetFactory;
 use App\Tests\Factory\EntryFactory;
 use App\Tests\Integration\Shared\KernelTestCase;
@@ -39,22 +40,29 @@ class BudgetRepositoryTest extends KernelTestCase
             'name'   => self::BUDGET_NAME,
         ]);
 
+        $account = AccountFactory::new()
+            ->createOne()
+            ->object();
+
         EntryFactory::createMany(3, [
             'createdAt' => DateTimeImmutable::createFromMutable(faker()->dateTimeBetween('-1 year -1 month', '-1 year')),
             'amount'    => 128,
             'budget'    => BudgetFactory::find(['name' => self::BUDGET_NAME]),
+            'account'   => $account,
         ]);
 
         EntryFactory::createMany(3, [
             'createdAt' => DateTimeImmutable::createFromMutable(faker()->dateTimeBetween('-5 hour')),
             'amount'    => -64.0,
             'budget'    => BudgetFactory::find(['name' => self::BUDGET_NAME]),
+            'account'   => $account,
         ]);
 
         EntryFactory::createMany(2, [
             'createdAt' => DateTimeImmutable::createFromMutable(faker()->dateTimeBetween('-5 hour')),
             'amount'    => 64.0,
             'budget'    => BudgetFactory::find(['name' => self::BUDGET_NAME]),
+            'account'   => $account,
         ]);
     }
 

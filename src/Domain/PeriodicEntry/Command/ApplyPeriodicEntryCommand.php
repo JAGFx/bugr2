@@ -29,7 +29,7 @@ class ApplyPeriodicEntryCommand extends Command
         $symfonyStyle = new SymfonyStyle($input, $output);
 
         try {
-            dump('Plop');
+            //            dump('Plop');
             throw new Exception();
         } catch (Throwable $throwable) {
             $symfonyStyle->error($throwable->getMessage());
@@ -41,6 +41,6 @@ class ApplyPeriodicEntryCommand extends Command
             return Command::FAILURE;
         }
 
-//        return Command::SUCCESS;
+        //        return Command::SUCCESS;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Budget\Manager;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\Repository\BudgetRepository;
@@ -40,7 +41,7 @@ class BudgetManager
     /**
      * @return Budget[]
      */
-    public function search(BudgetSearchCommand $command = null): array
+    public function search(?BudgetSearchCommand $command = null): array
     {
         $command ??= new BudgetSearchCommand();
 
@@ -56,7 +57,7 @@ class BudgetManager
     /**
      * @return BudgetValueObject[]
      */
-    public function searchValueObject(BudgetSearchCommand $command = null): array
+    public function searchValueObject(?BudgetSearchCommand $command = null): array
     {
         $command ??= new BudgetSearchCommand();
 
@@ -69,15 +70,17 @@ class BudgetManager
         return $result;
     }
 
-    public function balancing(Budget $budget): void
+    public function balancing(Budget $budget, Account $account): void
     {
         if ($budget->hasPositiveCashFlow() || $budget->hasNegativeCashFlow()) {
             $entryBalanceSpent = (new Entry())
+                ->setAccount($account)
                 ->setName(sprintf('Équilibrage de %s', $budget->getName()))
                 ->setKind(EntryKindEnum::BALANCING)
                 ->setAmount($budget->getCashFlow());
 
             $entryBalanceForecast = (new Entry())
+                ->setAccount($account)
                 ->setBudget($budget)
                 ->setName(sprintf('Équilibrage de %s', $budget->getName()))
                 ->setKind(EntryKindEnum::BALANCING)

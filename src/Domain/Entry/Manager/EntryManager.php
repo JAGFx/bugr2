@@ -88,7 +88,7 @@ class EntryManager
     /**
      * @return Entry[]
      */
-    public function search(EntrySearchCommand $command = null): array
+    public function search(?EntrySearchCommand $command = null): array
     {
         $command ??= new EntrySearchCommand();
 
@@ -103,14 +103,17 @@ class EntryManager
     /**
      * @return PaginationInterface<Entry>
      */
-    public function getPaginated(EntrySearchCommand $command = null): PaginationInterface
+    public function getPaginated(?EntrySearchCommand $command = null): PaginationInterface
     {
         $command ??= new EntrySearchCommand();
 
-        return $this->paginator->paginate(
-            $this->search($command),
+        /** @var PaginationInterface<Entry> $pagination */
+        $pagination = $this->paginator->paginate(
+            $this->entryRepository->getEntryQueryBuilder($command),
             $command->getPage(),
             $command->getPageSize()
         );
+
+        return $pagination;
     }
 }

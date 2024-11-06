@@ -11,7 +11,7 @@ trait TurboResponseTraits
     /**
      * @param array<string, mixed> $parameters
      */
-    public function renderTurboStream(Request $request, string $view, array $parameters = [], Response $response = null): Response
+    public function renderTurboStream(Request $request, string $view, array $parameters = [], ?Response $response = null): Response
     {
         $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
 
@@ -21,5 +21,5 @@ trait TurboResponseTraits
     /**
      * @param array<string, mixed> $parameters
      */
-    abstract protected function renderForm(string $view, array $parameters = [], Response $response = null): Response;
+    abstract protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response;
 }

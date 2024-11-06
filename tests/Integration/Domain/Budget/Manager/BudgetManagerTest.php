@@ -6,6 +6,7 @@ use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Entry\Manager\EntryManager;
+use App\Tests\Factory\AccountFactory;
 use App\Tests\Factory\BudgetFactory;
 use App\Tests\Factory\EntryFactory;
 use App\Tests\Integration\Shared\KernelTestCase;
@@ -40,16 +41,22 @@ class BudgetManagerTest extends KernelTestCase
             'amount' => 1000.0,
         ])->object();
 
+        $account = AccountFactory::new()
+            ->createOne()
+            ->object();
+
         EntryFactory::createSequence([
             [
                 'createdAt' => new DateTimeImmutable('-5 hour'),
                 'amount'    => 500,
                 'budget'    => $budget,
+                'account'   => $account,
             ],
             [
                 'createdAt' => new DateTimeImmutable('-1 year -1 hour'),
                 'amount'    => 200,
                 'budget'    => $budget,
+                'account'   => $account,
             ],
         ]);
     }
@@ -75,7 +82,9 @@ class BudgetManagerTest extends KernelTestCase
             'name' => self::BUDGET_BALANCE_NAME,
         ]);
 
-        $this->budgetManager->balancing($budget);
+        $account = AccountFactory::first()->object();
+
+        $this->budgetManager->balancing($budget, $account);
         $newBalance = $this->entryManager->balance();
 
         self::assertSame($initialBalance->getTotalSpent() + $overflow, $newBalance->getTotalSpent());

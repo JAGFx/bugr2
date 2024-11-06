@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entry\Form;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Entity\Entry;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,6 +17,14 @@ class EntryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('account', EntityType::class, [
+                'class'        => Account::class,
+                'choice_label' => 'name',
+                'label'        => 'Compte',
+                'row_attr'     => [
+                    'class' => 'form-floating',
+                ],
+            ])
             ->add('name', TextType::class, [
                 'label'    => 'Intitulé',
                 'row_attr' => [
@@ -23,13 +32,16 @@ class EntryType extends AbstractType
                 ],
             ])
             ->add('amount', MoneyType::class, [
-                'label' => 'Cible',
+                'label' => 'Valeur',
             ])
             ->add('budget', EntityType::class, [
                 'class'        => Budget::class,
                 'choice_label' => 'name',
                 'required'     => false,
                 'placeholder'  => '-- Pas de budget --',
+                'row_attr'     => [
+                    'class' => 'form-floating',
+                ],
             ]);
     }
 

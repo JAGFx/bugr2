@@ -1,0 +1,28 @@
+<li class="list-group-item d-flex justify-content-center align-items-center py-3 {{ not account.enable ? 'list-group-item-secondary' : '' }}"">
+    <div class="d-flex justify-content-center align-items-start w-100 flex-column">
+        {{ account.name }}
+    </div>
+    <div class="position-absolute" style="right: 0">
+        <div class="dropstart">
+            <button type="button" class="btn dropdown-toggle text-secondary border-0" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                    <a class="dropdown-item" href="{{ path('back_account_edit', {'id': account.id}) }}">Modifier</a>
+                </li>
+                {% if account.enable %}
+                    <li>
+                        <a class="dropdown-item" data-turbo="true"
+                           href="{{ path('front_account_toggle', {'id': account.id}) }}">Désactiver</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="dropdown-item" data-turbo="true"
+                           href="{{ path('front_account_toggle', {'id': account.id}) }}">Activer</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</li>

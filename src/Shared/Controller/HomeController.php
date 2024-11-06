@@ -31,6 +31,7 @@ class HomeController extends AbstractController
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // TODO: See how to made a transfer with multiple account
             $this->homeOperator->transfer($transfer);
 
             return $this->redirectToRoute('home');
