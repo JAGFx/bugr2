@@ -58,10 +58,12 @@ class PeriodicEntryRepository extends ServiceEntityRepository
                     IFNULL(SUM(b.amount / 12), p.amount), 
                     p.executionDate, 
                     IF(SUM(b.amount) IS NULL,FALSE,TRUE),
-                    IF(SUM(b.amount) IS NULL,NULL,COUNT(DISTINCT b))
+                    IF(SUM(b.amount) IS NULL,NULL,COUNT(DISTINCT b)),
+                    a.name
                 )'
             )
             ->leftJoin('p.budgets', 'b')
+            ->leftJoin('p.account', 'a')
             ->groupBy('p.id')
             ->andWhere('IF(b IS NULL,TRUE,b.enable) = TRUE');
 

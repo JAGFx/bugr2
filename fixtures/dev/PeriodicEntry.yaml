@@ -3,6 +3,7 @@ App\Domain\PeriodicEntry\Entity\PeriodicEntry:
     name: 'Periodic dépence'
     amount: <randomFloat(2, 15, 1500)>
     executionDate: <immutableDateTimeBetween('-5 hour', 'now')>
+    account: ' @account_a'
 
   periodic_entry_forecast:
     name: 'Periodic provision'
@@ -11,3 +12,4 @@ App\Domain\PeriodicEntry\Entity\PeriodicEntry:
     budgets:
       - '@budget_disabled'
       - '@budget_full'
+    account: ' @account_a'

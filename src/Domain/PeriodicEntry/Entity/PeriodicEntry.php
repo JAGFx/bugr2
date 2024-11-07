@@ -2,6 +2,7 @@
 
 namespace App\Domain\PeriodicEntry\Entity;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\PeriodicEntry\Model\PeriodicEntryInterface;
@@ -12,8 +13,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\When;
 
 #[ORM\Entity(repositoryClass: PeriodicEntryRepository::class)]
@@ -46,6 +50,11 @@ class PeriodicEntry implements PeriodicEntryInterface
 
     #[ORM\ManyToMany(targetEntity: Budget::class, inversedBy: 'periodicEntries', fetch: 'EXTRA_LAZY')]
     private Collection $budgets;
+
+    #[ManyToOne(inversedBy: 'entries')]
+    #[JoinColumn(nullable: false)]
+    #[NotNull]
+    private ?Account $account = null;
 
     public function __construct()
     {
@@ -128,6 +137,18 @@ class PeriodicEntry implements PeriodicEntryInterface
         if ($this->budgets->contains($budget)) {
             $this->budgets->removeElement($budget);
         }
+
+        return $this;
+    }
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): PeriodicEntry
+    {
+        $this->account = $account;
 
         return $this;
     }

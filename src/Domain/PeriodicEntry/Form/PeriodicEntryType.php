@@ -2,6 +2,7 @@
 
 namespace App\Domain\PeriodicEntry\Form;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\Repository\BudgetRepository;
@@ -20,6 +21,14 @@ class PeriodicEntryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('account', EntityType::class, [
+                'class'        => Account::class,
+                'choice_label' => 'name',
+                'label'        => 'Compte',
+                'row_attr'     => [
+                    'class' => 'form-floating',
+                ],
+            ])
             ->add('name', TextType::class, [
                 'label'    => 'Nom',
                 'row_attr' => [
@@ -30,7 +39,7 @@ class PeriodicEntryType extends AbstractType
                 'label' => 'Montant',
             ])
             ->add('executionDate', DateType::class, [
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'input'  => 'datetime_immutable',
             ])
             ->add('budgets', EntityType::class, [
@@ -45,6 +54,9 @@ class PeriodicEntryType extends AbstractType
 
                     return $budgetRepository->search($budgetSearchCommand);
                 },
+                'row_attr' => [
+                    'class' => 'form-floating',
+                ],
             ]);
     }
 

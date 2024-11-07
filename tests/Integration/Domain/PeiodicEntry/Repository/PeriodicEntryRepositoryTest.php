@@ -6,6 +6,7 @@ use App\Domain\Entry\Model\EntryTypeEnum;
 use App\Domain\PeriodicEntry\Form\PeriodicEntrySearchCommand;
 use App\Domain\PeriodicEntry\Manager\PeriodicEntryManager;
 use App\Domain\PeriodicEntry\ValueObject\PeriodicEntryValueObject;
+use App\Tests\Factory\AccountFactory;
 use App\Tests\Factory\BudgetFactory;
 use App\Tests\Factory\PeriodicEntryFactory;
 use App\Tests\Integration\Shared\KernelTestCase;
@@ -28,8 +29,9 @@ class PeriodicEntryRepositoryTest extends KernelTestCase
     {
         PeriodicEntryFactory::createSequence([
             [
-                'amount' => 42,
-                'name'   => 'Spent',
+                'amount'  => 42,
+                'name'    => 'Spent',
+                'account' => AccountFactory::new()->create(),
             ],
             [
                 'amount'  => 42,
@@ -39,6 +41,7 @@ class PeriodicEntryRepositoryTest extends KernelTestCase
                     ['amount' => 456],
                     ['amount' => 789, 'enable' => false],
                 ]),
+                'account' => AccountFactory::new()->create(),
             ],
         ]);
     }
