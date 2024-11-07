@@ -39,10 +39,6 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                {% if budget.positiveCashFlow or budget.negativeCashFlow %}
-                    <li><a class="dropdown-item" data-turbo="true"
-                           href="{{ path('front_budget_balancing', {'id': budget.id}) }}">Équilibrer</a></li>
-                {% endif %}
                 {% if budget.enable %}
                     <li><a class="dropdown-item" data-turbo="true"
                            href="{{ path('front_budget_toggle', {'id': budget.id}) }}">Désactiver</a></li>

@@ -83,14 +83,15 @@ class HomeOperatorTest extends KernelTestCase
 
     private function transfer(?Budget $budgetSource, ?Budget $budgetTarget): void
     {
+        $account = AccountFactory::new()->create()->object();
+
         $transfer = (new Transfer())
+            ->setAccount($account)
             ->setAmount(self::BUDGET_AMOUNT)
             ->setBudgetSource($budgetSource)
             ->setBudgetTarget($budgetTarget);
 
-        $account = AccountFactory::new()->create()->object();
-
-        $this->homeOperator->transfer($transfer, $account);
+        $this->homeOperator->transfer($transfer);
 
         self::assertSame(-self::BUDGET_AMOUNT, $budgetSource?->getProgress() ?? -self::BUDGET_AMOUNT);
         self::assertSame(self::BUDGET_AMOUNT, $budgetTarget?->getProgress() ?? self::BUDGET_AMOUNT);

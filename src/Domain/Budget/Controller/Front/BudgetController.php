@@ -2,6 +2,7 @@
 
 namespace App\Domain\Budget\Controller\Front;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Form\BudgetBalanceSearchType;
 use App\Domain\Budget\Manager\BudgetManager;
@@ -10,6 +11,7 @@ use App\Domain\Budget\Operator\BudgetOperator;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\TurboResponseTraits;
 use App\Shared\Utils\YearRange;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,11 +71,13 @@ class BudgetController extends AbstractController
         );
     }
 
-    #[Route('/{id}/balancing', name: 'front_budget_balancing', methods: [Request::METHOD_GET])]
-    public function balancing(Request $request, Budget $budget): Response
-    {
-        // TODO: Move balancing on budget for a specific account
-        $this->budgetManager->balancing($budget);
+    #[Route('/{budgetId}/balancing/accounts/{accountId}', name: 'front_budget_balancing', methods: [Request::METHOD_GET])]
+    public function balancing(
+        Request $request,
+        #[MapEntity(mapping: ['budgetId' => 'id'])] Budget $budget,
+        #[MapEntity(mapping: ['accountId' => 'id'])] Account $account
+    ): Response {
+        $this->budgetManager->balancing($budget, $account);
 
         $this->addFlash('success', 'Budget équilibré');
 

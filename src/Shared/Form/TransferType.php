@@ -2,6 +2,7 @@
 
 namespace App\Shared\Form;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Shared\Model\Transfer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,6 +16,15 @@ class TransferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('account', EntityType::class, [
+                'class'        => Account::class,
+                'required'     => false,
+                'label'        => 'Name',
+                'choice_label' => 'name',
+                'row_attr'     => [
+                    'class' => 'form-floating',
+                ],
+            ])
             ->add('budgetSource', EntityType::class, [
                 'class'        => Budget::class,
                 'required'     => false,

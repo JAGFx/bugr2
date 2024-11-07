@@ -178,7 +178,6 @@ class Budget
 
     public function getCashFlow(?Account $account = null): float
     {
-        // TODO: Continue here: Add test
         $readableCollection = $this->entries
             ->filter(static function (Entry $entry) use ($account): bool {
                 if (!is_null($account) && $entry->getAccount() !== $account) {

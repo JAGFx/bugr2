@@ -2,12 +2,17 @@
 
 namespace App\Shared\Model;
 
+use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Positive;
 
 class Transfer
 {
+    #[NotNull]
+    private ?Account $account = null;
+
     #[NotBlank(allowNull: true)]
     private ?Budget $budgetSource = null;
 
@@ -17,6 +22,18 @@ class Transfer
     #[NotBlank]
     #[Positive]
     private float $amount = 0;
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): Transfer
+    {
+        $this->account = $account;
+
+        return $this;
+    }
 
     public function getBudgetSource(): ?Budget
     {
