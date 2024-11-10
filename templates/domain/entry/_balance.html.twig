@@ -1,7 +1,7 @@
 {% import 'shared/_currency.macro.html.twig' as currency %}
 
 <div class="card bg-gradient-accent text-white">
-    <div class="card-body p-0">
+    <div class="card-body p-0 position-relative">
         <div class="text-center my-3">
             <span class="text-white-50">Balance</span>
             <h3 class="m-0">{{ currency.amount(entryBalance.total, false) }}</h3>
@@ -25,6 +25,32 @@
                     Provision
                 </span>
                 <small class="text-white">{{ currency.amount(entryBalance.totalForecast, false) }}</small>
+            </div>
+        </div>
+
+        <div class="position-absolute" style="right: 0; top: 0;">
+            <div class="dropstart">
+                <button type="button" class="btn dropdown-toggle text-secondary border-0" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <i class="fa-solid fa-paw fs-4 p-2 text-white"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li>
+                        <a class="dropdown-item" href="{{ path('home') }}">Accueil</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('back_account_account_list', {enabled: true}) }}">Comptes</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('back_budget_budget_list', {enabled: true}) }}">Budgets</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('back_entries_list') }}">Entrés</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('back_periodicentry_list') }}">Entrées périodique</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

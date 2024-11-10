@@ -5,11 +5,13 @@
         <ul class="pagination {{ classAlign }} {{ classSize }} rounded bg-acrylic">
             {% if previous is defined %}
                 <li class="page-item">
-                    <a data-turbo="true" class="page-link" rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</a>
+                    <a data-turbo="true" class="page-link" rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <span class="page-link">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</span>
+                    <span class="page-link"><i class="fa-solid fa-arrow-left text-muted"></i></span>
                 </li>
             {% endif %}
 
@@ -60,11 +62,15 @@
 
             {% if next is defined %}
                 <li class="page-item">
-                    <a data-turbo="true" class="page-link" rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }}&nbsp;&raquo;</a>
+                    <a data-turbo="true" class="page-link" rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
                 </li>
             {% else %}
                 <li  class="page-item disabled">
-                    <span class="page-link">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }}&nbsp;&raquo;</span>
+                    <span class="page-link">
+                        <i class="fa-solid fa-arrow-right text-muted"></i>
+                    </span>
                 </li>
             {% endif %}
         </ul>

@@ -4,24 +4,22 @@
     <div class="d-flex justify-content-center align-items-start w-100 flex-column">
         {{ periodicEntry.name }}
         <div>
-            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ periodicEntry.type.humanize }}">
+            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ periodicEntry.type.humanize }}" data-bs-placement="bottom">
                 {% if periodicEntry.isForecast %}
                     <i class="fa-solid fa-shield-halved text-warning"></i>
-                    <small class="text-warning">{{ periodicEntry.type.humanize }}</small>
                 {% else %}
                     <i class="fa-solid fa-leaf text-primary"></i>
-                    <small class="text-primary">{{ periodicEntry.type.humanize }}</small>
                 {% endif %}
             </span>
-            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ periodicEntry.accountName }}">
+            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ periodicEntry.accountName }}" data-bs-placement="bottom">
                 <i class="fa-solid fa-building-columns"></i>
             </span>
-            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création">
+            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création" data-bs-placement="bottom">
                 <i class="fa-solid fa-calendar-day"></i>
                 <small>{{ periodicEntry.executionDate | format_datetime(pattern='d MMM', locale=app.request.locale) }}</small>
             </span>
             {% if periodicEntry.countBudgets is not null %}
-                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Nombre de budget(s) actif">
+                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Nombre de budget(s) actif" data-bs-placement="bottom">
                     <i class="fa-solid fa-coins"></i>
                     <small>{{ periodicEntry.countBudgets }}</small>
                 </span>

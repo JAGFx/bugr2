@@ -5,17 +5,17 @@
         <div class="d-flex justify-content-center align-items-start w-100 flex-column">
             {{ entry.name }}
             <div>
-                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ entry.type.humanize }}">
+                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ entry.type.humanize }}" data-bs-placement="bottom">
                     {% if entry.isForecast %}
                         <i class="fa-solid fa-shield-halved text-warning"></i>
                     {% else %}
                         <i class="fa-solid fa-leaf text-primary"></i>
                     {% endif %}
                 </span>
-                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ entry.account.name }}">
+                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ entry.account.name }}" data-bs-placement="bottom">
                     <i class="fa-solid fa-building-columns"></i>
                 </span>
-                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création">
+                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création" data-bs-placement="bottom">
                     <i class="fa-regular fa-calendar-check me-2"></i>
                     <small>{{ entry.createdAt | format_datetime(timeFormat='short', locale=app.request.locale) }}</small>
                 </span>

@@ -1,11 +1,11 @@
 {% import 'shared/_currency.macro.html.twig' as currency %}
 
-<span class="me-2 text-primary" data-bs-toggle="tooltip" data-bs-title="Dépense">
+<span class="me-2 text-primary" data-bs-toggle="tooltip" data-bs-title="Dépense" data-bs-placement="bottom">
     <i class="fa-solid fa-leaf text-primary me-2"></i>
     <small>{{ currency.amount(entryBalance.totalSpent, false) }}</small>
 </span>
 
-<span class="me-2 text-warning" data-bs-toggle="tooltip" data-bs-title="Provision">
+<span class="me-2 text-warning" data-bs-toggle="tooltip" data-bs-title="Provision" data-bs-placement="bottom">
     <i class="fa-solid fa-shield-halved text-warning me-2"></i>
     <small>{{ currency.amount(entryBalance.totalForecast, false) }}</small>
 </span>
