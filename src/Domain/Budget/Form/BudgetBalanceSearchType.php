@@ -13,10 +13,14 @@ class BudgetBalanceSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var int[] $years */
+        $years = $options['years'];
+        array_unshift($years, YearRange::current());
+
         $builder
             ->add('year', ChoiceType::class, [
                 'label'    => 'Année',
-                'choices'  => $this->yearChoices(),
+                'choices'  => array_combine(array_values($years), array_values($years)),
                 'row_attr' => [
                     'class' => 'form-floating',
                 ],
@@ -28,15 +32,8 @@ class BudgetBalanceSearchType extends AbstractType
         $resolver->setDefaults([
             'data_class' => BudgetSearchCommand::class,
         ]);
-    }
 
-    /**
-     * @return array<int, int>
-     */
-    private function yearChoices(): array
-    {
-        $years = YearRange::range(2019, YearRange::current());
-
-        return array_combine($years, $years);
+        $resolver->setRequired('years');
+        $resolver->setAllowedTypes('years', ['int[]']);
     }
 }

@@ -6,6 +6,7 @@ use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Budget\Form\BudgetBalanceSearchType;
 use App\Domain\Budget\Manager\BudgetManager;
+use App\Domain\Budget\Manager\HistoryBudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\Operator\BudgetOperator;
 use App\Domain\Entry\Manager\EntryManager;
@@ -26,6 +27,7 @@ class BudgetController extends AbstractController
         private readonly BudgetManager $budgetManager,
         private readonly EntryManager $entryManager,
         private readonly BudgetOperator $budgetOperator,
+        private readonly HistoryBudgetManager $historyBudgetManager,
     ) {
     }
 
@@ -36,18 +38,24 @@ class BudgetController extends AbstractController
             ->setShowCredits(false)
             ->setYear(YearRange::current());
 
-        $form = $this
+        $years = $this->historyBudgetManager->getAvailableYears();
+        $form  = $this
             ->createForm(BudgetBalanceSearchType::class, $budgetSearchCommand, [
                 'action' => $this->generateUrl('front_budget_filter'),
+                'years'  => $years,
             ])
             ->handleRequest($request);
+
+        $values = (YearRange::current() === $budgetSearchCommand->getYear())
+            ? $this->budgetManager->searchValueObject($budgetSearchCommand)
+            : $this->historyBudgetManager->getHistories($budgetSearchCommand);
 
         return $this->renderTurboStream(
             $request,
             'domain/budget/turbo/success.stream.progress_list.html.twig',
             [
-                'form'    => $form,
-                'budgets' => $this->budgetManager->searchValueObject($budgetSearchCommand),
+                'form'   => $form,
+                'values' => $values,
             ]
         );
     }

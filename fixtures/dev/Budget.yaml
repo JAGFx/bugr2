@@ -23,3 +23,28 @@ App\Domain\Budget\Entity\Budget:
   budget_current_year:
     name: 'Budget current year'
     amount: 1000
+
+App\Domain\Budget\Entity\HistoryBudget:
+  history_budget_over:
+    date: <dateTimeImmutable('first day previous year')>
+    relativeProgress: 250
+    amount: 200
+    budget: '@budget_over'
+
+  history_budget_full:
+    date: <dateTimeImmutable('first day previous year')>
+    relativeProgress: 200
+    amount: 200
+    budget: '@budget_full'
+
+  history_budget_empty:
+    date: <dateTimeImmutable('first day previous year')>
+    relativeProgress: 0
+    amount: 200
+    budget: '@budget_empty'
+
+  budget_current_2_year_ago:
+    date: <dateTimeImmutable('first day -2 year')>
+    relativeProgress: 0
+    amount: 200
+    budget: '@budget_current_year'

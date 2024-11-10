@@ -39,6 +39,7 @@ doctrine:
       string_functions:
         ifnull: DoctrineExtensions\Query\Mysql\IfNull
         if: DoctrineExtensions\Query\Mysql\IfElse
+        YEAR: DoctrineExtensions\Query\Mysql\Year
 
 when@test:
   doctrine:
