@@ -35,12 +35,20 @@ class EntryRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function balance(): QueryBuilder
+    public function balance(EntrySearchCommand $command): QueryBuilder
     {
-        return $this->createQueryBuilder('e')
+        $queryBuilder = $this->createQueryBuilder('e')
             ->select('SUM(e.amount) as sum, b.id')
             ->leftJoin('e.budget', 'b')
             ->groupBy('b.id');
+
+        if (!is_null($command->getAccount())) {
+            $queryBuilder
+                ->andWhere('e.account = :account')
+                ->setParameter('account', $command->getAccount());
+        }
+
+        return $queryBuilder;
     }
 
     public function getEntryQueryBuilder(EntrySearchCommand $command): QueryBuilder

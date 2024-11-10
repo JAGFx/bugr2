@@ -13,6 +13,9 @@
                     <small class="text-primary">{{ periodicEntry.type.humanize }}</small>
                 {% endif %}
             </span>
+            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ periodicEntry.accountName }}">
+                <i class="fa-solid fa-building-columns"></i>
+            </span>
             <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création">
                 <i class="fa-solid fa-calendar-day"></i>
                 <small>{{ periodicEntry.executionDate | format_datetime(pattern='d MMM', locale=app.request.locale) }}</small>
@@ -23,11 +26,6 @@
                     <small>{{ periodicEntry.countBudgets }}</small>
                 </span>
             {% endif %}
-            <br>
-            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Compte">
-                <i class="fa-solid fa-building-columns me-2"></i>
-                <small>{{ periodicEntry.accountName }}</small>
-            </span>
         </div>
     </div>
     <div class="w-50 me-3 text-end">

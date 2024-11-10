@@ -1,0 +1,9 @@
+{% extends 'shared/turbo/_stream.html.twig' %}
+
+{% block stream %}
+    <turbo-stream action="update" target="account_list_item__cash_flow_by_account_{{ account.id }}">
+        <template>
+            {% include 'domain/account/_cash_flow_account.html.twig' %}
+        </template>
+    </turbo-stream>
+{% endblock %}

@@ -12,14 +12,12 @@
                         <i class="fa-solid fa-leaf text-primary"></i>
                     {% endif %}
                 </span>
+                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ entry.account.name }}">
+                    <i class="fa-solid fa-building-columns"></i>
+                </span>
                 <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création">
                     <i class="fa-regular fa-calendar-check me-2"></i>
                     <small>{{ entry.createdAt | format_datetime(timeFormat='short', locale=app.request.locale) }}</small>
-                </span>
-                <br>
-                <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Compte">
-                    <i class="fa-solid fa-building-columns me-2"></i>
-                    <small>{{ entry.account.name }}</small>
                 </span>
             </div>
         </div>

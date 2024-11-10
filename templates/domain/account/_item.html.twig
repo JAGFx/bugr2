@@ -1,6 +1,17 @@
-<li class="list-group-item d-flex justify-content-center align-items-center py-3 {{ not account.enable ? 'list-group-item-secondary' : '' }}"">
-    <div class="d-flex justify-content-center align-items-start w-100 flex-column">
-        {{ account.name }}
+<li class="list-group-item d-flex justify-content-center align-items-center py-3 {{ not account.enable ? 'list-group-item-secondary' : '' }}">
+    <div class="d-flex flex-column w-100">
+        <div class="d-flex justify-content-between w-100">
+            <div class="d-flex justify-content-center align-items-start w-100 flex-column">
+                {{ account.name }}
+                <a data-turbo="true" href="{{ path('front_account_cash_flow', {'id': account.id}) }}" class="link-offset-3 link-dotted text-white-50" data-bs-toggle="tooltip" data-bs-title="Voir la balance">
+                    <span>
+                        <i class="fa-solid fa-scale-balanced me-2"></i>
+                        <small>Voir la balance</small>
+                    </span>
+                </a>
+                <turbo-frame id="account_list_item__cash_flow_by_account_{{ account.id }}"></turbo-frame>
+            </div>
+        </div>
     </div>
     <div class="position-absolute" style="right: 0">
         <div class="dropstart">

@@ -20,11 +20,11 @@ class EntryManager
     ) {
     }
 
-    public function balance(): EntryBalance
+    public function balance(?EntrySearchCommand $command = null): EntryBalance
     {
         /** @var array<string, mixed> $data */
         $data = $this->entryRepository
-            ->balance()
+            ->balance($command ?? new EntrySearchCommand())
             ->getQuery()
             ->getResult();
 
