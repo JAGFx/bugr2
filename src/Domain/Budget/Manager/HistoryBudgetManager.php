@@ -4,13 +4,23 @@ namespace App\Domain\Budget\Manager;
 
 use App\Domain\Budget\Entity\HistoryBudget;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Domain\Budget\Model\Search\HistoryBudgetSearchCommand;
 use App\Domain\Budget\Repository\HistoryBudgetRepository;
 
 class HistoryBudgetManager
 {
     public function __construct(
-        private HistoryBudgetRepository $repository
+        private readonly HistoryBudgetRepository $repository
     ) {
+    }
+
+    public function create(HistoryBudget $historyBudget): self
+    {
+        $this->repository
+            ->create($historyBudget)
+            ->flush();
+
+        return $this;
     }
 
     /**
@@ -29,7 +39,7 @@ class HistoryBudgetManager
     /**
      * @return HistoryBudget[]
      */
-    public function getHistories(BudgetSearchCommand $command): array
+    public function getHistories(BudgetSearchCommand|HistoryBudgetSearchCommand $command): array
     {
         /** @var HistoryBudget[] $histories */
         $histories = $this->repository

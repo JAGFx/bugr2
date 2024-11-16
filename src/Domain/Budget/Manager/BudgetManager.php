@@ -70,6 +70,14 @@ class BudgetManager
         return $result;
     }
 
+    public function find(int $id): ?Budget
+    {
+        /** @var ?Budget $budget */
+        $budget = $this->budgetRepository->find($id);
+
+        return $budget;
+    }
+
     public function balancing(Budget $budget, Account $account): void
     {
         if ($budget->hasPositiveCashFlow() || $budget->hasNegativeCashFlow()) {

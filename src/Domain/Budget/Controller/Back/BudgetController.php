@@ -7,7 +7,9 @@ use App\Domain\Budget\Form\BudgetSearchType;
 use App\Domain\Budget\Form\BudgetType;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Domain\Budget\Operator\HistoryBudgetOperator;
 use App\Shared\Model\ControllerActionEnum;
+use App\Shared\Utils\YearRange;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +24,10 @@ class BudgetController extends AbstractController
     }
 
     #[Route('/', name: 'back_budget_budget_list', methods: Request::METHOD_GET)]
-    public function list(Request $request): Response
+    public function list(Request $request, HistoryBudgetOperator $historyBudgetOperator): Response
     {
+        $historyBudgetOperator->generateHistoryBudgetsForYear(YearRange::current());
+
         $budgetSearchCommand = new BudgetSearchCommand();
 
         $this

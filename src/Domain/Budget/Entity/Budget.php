@@ -171,7 +171,7 @@ class Budget
     {
         return array_reduce(
             $this->entries->toArray(),
-            static fn (float $currentSum, Entry $entry): float => $currentSum + $entry->getAmount(),
+            static fn (float $currentSum, Entry $entry): float => $currentSum + (($showAsSpentOnly) ? 0 : $entry->getAmount()),
             0
         );
     }

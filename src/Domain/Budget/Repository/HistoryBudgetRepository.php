@@ -4,6 +4,7 @@ namespace App\Domain\Budget\Repository;
 
 use App\Domain\Budget\Entity\HistoryBudget;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Domain\Budget\Model\Search\HistoryBudgetSearchCommand;
 use App\Shared\Utils\YearRange;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -24,7 +25,7 @@ class HistoryBudgetRepository extends ServiceEntityRepository
             ->orderBy('year', 'DESC');
     }
 
-    public function search(BudgetSearchCommand $command): QueryBuilder
+    public function search(BudgetSearchCommand|HistoryBudgetSearchCommand $command): QueryBuilder
     {
         $qb = $this->createQueryBuilder('hb');
 
@@ -35,6 +36,24 @@ class HistoryBudgetRepository extends ServiceEntityRepository
                 ->setParameter('to', YearRange::lastDayOf($command->getYear())->format('Y-m-d H:i:s'));
         }
 
+        if ($command instanceof HistoryBudgetSearchCommand && !is_null($command->getBudget())) {
+            $qb
+                ->andWhere('hb.budget = :budget')
+                ->setParameter('budget', $command->getBudget());
+        }
+
         return $qb;
+    }
+
+    public function create(HistoryBudget $historyBudget): self
+    {
+        $this->_em->persist($historyBudget);
+
+        return $this;
+    }
+
+    public function flush(): void
+    {
+        $this->_em->flush();
     }
 }
