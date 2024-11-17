@@ -53,7 +53,17 @@ class EntryRepository extends ServiceEntityRepository
 
     public function getEntryQueryBuilder(EntrySearchCommand $command): QueryBuilder
     {
-        return $this->createQueryBuilder('e')
+        $queryBuilder = $this
+            ->createQueryBuilder('e')
             ->orderBy('e.createdAt', Criteria::DESC);
+
+        if (!is_null($command->getStartDate()) && !is_null($command->getEndDate())) {
+            $queryBuilder
+                ->andWhere('e.createdAt BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $command->getStartDate()->format('Y-m-d'))
+                ->setParameter('endDate', $command->getEndDate()->format('Y-m-d'));
+        }
+
+        return $queryBuilder;
     }
 }

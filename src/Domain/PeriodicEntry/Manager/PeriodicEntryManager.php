@@ -5,7 +5,6 @@ namespace App\Domain\PeriodicEntry\Manager;
 use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
 use App\Domain\PeriodicEntry\Form\PeriodicEntrySearchCommand;
 use App\Domain\PeriodicEntry\Repository\PeriodicEntryRepository;
-use App\Domain\PeriodicEntry\ValueObject\PeriodicEntryValueObject;
 
 class PeriodicEntryManager
 {
@@ -29,17 +28,17 @@ class PeriodicEntryManager
         $this->periodicEntryRepository->remove($entry, $flush);
     }
 
-    /** @return PeriodicEntryValueObject[] */
-    public function searchValueObject(?PeriodicEntrySearchCommand $command = null): array
+    /** @return PeriodicEntry[] */
+    public function search(?PeriodicEntrySearchCommand $command = null): array
     {
         $command ??= new PeriodicEntrySearchCommand();
 
-        /** @var PeriodicEntryValueObject[] $periodicEntriesValueObjects */
-        $periodicEntriesValueObjects = $this->periodicEntryRepository
-            ->searchValueObject($command)
+        /** @var PeriodicEntry[] $periodicEntries */
+        $periodicEntries = $this->periodicEntryRepository
+            ->search($command)
             ->getQuery()
             ->getResult();
 
-        return $periodicEntriesValueObjects;
+        return $periodicEntries;
     }
 }

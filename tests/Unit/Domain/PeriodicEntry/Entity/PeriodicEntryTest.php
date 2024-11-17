@@ -12,8 +12,7 @@ class PeriodicEntryTest extends TestCase
     public function testAPeriodicEntryWithBudgetMustReturnForecastType(): void
     {
         $periodicEntry = new PeriodicEntry();
-        $budget        = (new Budget())
-            ->setAmount(rand(1, 100));
+        $budget        = (new Budget());
 
         $periodicEntry->addBudget($budget);
 
@@ -23,7 +22,8 @@ class PeriodicEntryTest extends TestCase
 
     public function testAPeriodicEntryWithoutBudgetsMustReturnSpentType(): void
     {
-        $periodicEntry = new PeriodicEntry();
+        $periodicEntry = (new PeriodicEntry())
+            ->setAmount(rand(1, 100));
 
         self::assertSame(EntryTypeEnum::TYPE_SPENT, $periodicEntry->getType());
         self::assertTrue($periodicEntry->isSpent());

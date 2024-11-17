@@ -45,34 +45,25 @@ class PeriodicEntryRepository extends ServiceEntityRepository
         return $this;
     }
 
-    public function searchValueObject(?PeriodicEntrySearchCommand $command = null): QueryBuilder
+    public function search(?PeriodicEntrySearchCommand $command = null): QueryBuilder
     {
         $command ??= new PeriodicEntrySearchCommand();
 
         $queryBuilder = $this
-            ->createQueryBuilder('p')
-            ->select(
-                'NEW App\Domain\PeriodicEntry\ValueObject\PeriodicEntryValueObject(
-                    p.id, 
-                    p.name, 
-                    IFNULL(SUM(b.amount / 12), p.amount), 
-                    p.executionDate, 
-                    IF(SUM(b.amount) IS NULL,FALSE,TRUE),
-                    IF(SUM(b.amount) IS NULL,NULL,COUNT(DISTINCT b)),
-                    a.name
-                )'
-            )
-            ->leftJoin('p.budgets', 'b')
-            ->leftJoin('p.account', 'a')
-            ->groupBy('p.id')
-            ->andWhere('IF(b IS NULL,TRUE,b.enable) = TRUE');
+            ->createQueryBuilder('p');
 
         if (EntryTypeEnum::TYPE_SPENT === $command->getEntryTypeEnum()) {
-            $queryBuilder->andHaving('SUM(b.amount) IS NULL');
+            $queryBuilder
+                ->andWhere('p.budgets IS EMPTY')
+                ->andWhere('p.amount IS NOT NULL')
+            ;
         }
 
         if (EntryTypeEnum::TYPE_FORECAST === $command->getEntryTypeEnum()) {
-            $queryBuilder->andHaving('SUM(b.amount) IS NOT NULL');
+            $queryBuilder
+                ->andWhere('p.budgets IS NOT EMPTY')
+                ->andWhere('p.amount IS NULL')
+            ;
         }
 
         return $queryBuilder;

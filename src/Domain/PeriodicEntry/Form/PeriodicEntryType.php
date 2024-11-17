@@ -36,7 +36,8 @@ class PeriodicEntryType extends AbstractType
                 ],
             ])
             ->add('amount', MoneyType::class, [
-                'label' => 'Montant',
+                'label'    => 'Montant',
+                'required' => false,
             ])
             ->add('executionDate', DateType::class, [
                 'widget' => 'single_text',

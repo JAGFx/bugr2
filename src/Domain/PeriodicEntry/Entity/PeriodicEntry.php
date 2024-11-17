@@ -5,7 +5,6 @@ namespace App\Domain\PeriodicEntry\Entity;
 use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
 use App\Domain\Entry\Model\EntryTypeEnum;
-use App\Domain\PeriodicEntry\Model\PeriodicEntryInterface;
 use App\Domain\PeriodicEntry\Repository\PeriodicEntryRepository;
 use App\Shared\Model\TimestampableTrait;
 use DateTimeImmutable;
@@ -16,14 +15,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\When;
 
 #[ORM\Entity(repositoryClass: PeriodicEntryRepository::class)]
-class PeriodicEntry implements PeriodicEntryInterface
+class PeriodicEntry
 {
     use TimestampableTrait;
+    public const int MONTH_SPLIT = 12;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,7 +35,7 @@ class PeriodicEntry implements PeriodicEntryInterface
     #[NotBlank]
     private string $name;
 
-    #[ORM\Column(type: Types::FLOAT)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     #[When(
         expression: 'this.isSpent()',
         constraints: [
@@ -42,7 +43,13 @@ class PeriodicEntry implements PeriodicEntryInterface
             new NotBlank(),
         ]
     )]
-    private float $amount = 0.0;
+    #[When(
+        expression: 'this.isForecast()',
+        constraints: [
+            new IsNull(),
+        ]
+    )]
+    private ?float $amount = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[NotBlank]
@@ -55,6 +62,9 @@ class PeriodicEntry implements PeriodicEntryInterface
     #[JoinColumn(nullable: false)]
     #[NotNull]
     private ?Account $account = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $lastExecutionDate = null;
 
     public function __construct()
     {
@@ -87,16 +97,47 @@ class PeriodicEntry implements PeriodicEntryInterface
         return $this;
     }
 
-    public function getAmount(): float
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(float $amount): PeriodicEntry
+    public function setAmount(?float $amount): PeriodicEntry
     {
         $this->amount = $amount;
 
         return $this;
+    }
+
+    public function getTotalAmount(): float
+    {
+        if ($this->isSpent()) {
+            return $this->amount ?? 0.0;
+        }
+
+        $amount = 0.0;
+
+        foreach ($this->getBudgets() as $budget) {
+            if (!$budget->getEnable()) {
+                continue;
+            }
+
+            $amount += $this->getAmountFor($budget);
+        }
+
+        return $amount;
+    }
+
+    public function getAmountFor(Budget $budgetTarget): float
+    {
+        /** @var ?Budget $budget */
+        $budget = $this->budgets->findFirst(fn (int $k, Budget $budget) => $budget === $budgetTarget); // @phpstan-ignore-line
+
+        if (is_null($budget)) {
+            return 0.0;
+        }
+
+        return round($budget->getAmount() / self::MONTH_SPLIT, 2);
     }
 
     public function getExecutionDate(): DateTimeImmutable
@@ -111,6 +152,9 @@ class PeriodicEntry implements PeriodicEntryInterface
         return $this;
     }
 
+    /**
+     * @return Collection<Budget>
+     */
     public function getBudgets(): Collection
     {
         return $this->budgets;
@@ -153,9 +197,21 @@ class PeriodicEntry implements PeriodicEntryInterface
         return $this;
     }
 
+    public function getLastExecutionDate(): ?DateTimeImmutable
+    {
+        return $this->lastExecutionDate;
+    }
+
+    public function setLastExecutionDate(?DateTimeImmutable $lastExecutionDate): PeriodicEntry
+    {
+        $this->lastExecutionDate = $lastExecutionDate;
+
+        return $this;
+    }
+
     public function getType(): EntryTypeEnum
     {
-        return $this->budgets->isEmpty()
+        return $this->budgets->isEmpty() && !is_null($this->amount)
             ? EntryTypeEnum::TYPE_SPENT
             : EntryTypeEnum::TYPE_FORECAST;
     }
