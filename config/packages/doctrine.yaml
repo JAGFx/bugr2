@@ -1,51 +1,78 @@
 doctrine:
   dbal:
-    driver: 'pdo_mysql'
-    user: '%env(string:DB_USER)%'
-    password: '%env(string:DB_PASSWORD)%'
-    host: '%env(string:DB_HOST)%'
-    dbname: '%env(string:DB_NAME)%'
-    port: '%env(string:DB_PORT)%'
+    connections:
+      default:
+        driver: 'pdo_mysql'
+        user: '%env(string:DB_USER)%'
+        password: '%env(string:DB_PASSWORD)%'
+        host: '%env(string:DB_HOST)%'
+        dbname: '%env(string:DB_NAME)%'
+        port: '%env(string:DB_PORT)%'
+        mapping_types:
+          enum: string
+        profiling_collect_backtrace: '%kernel.debug%'
+        use_savepoints: true
+    default_connection: default
 
-    # IMPORTANT: You MUST configure your server version,
-    # either here or in the DATABASE_URL env var (see .env file)
-    #server_version: '14'
   orm:
     auto_generate_proxy_classes: true
-    naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-    auto_mapping: true
-    mappings:
-      Budget:
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Domain/Budget/Entity'
-        prefix: 'App\Domain\Budget\Entity'
-        alias: Budget
-      Entry:
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Domain/Entry/Entity'
-        prefix: 'App\Domain\Entry\Entity'
-        alias: Entry
-      PeriodicEntry:
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Domain/PeriodicEntry/Entity'
-        prefix: 'App\Domain\PeriodicEntry\Entity\PeriodicEntry'
-        alias: PeriodicEntry
-      Account:
-        is_bundle: false
-        dir: '%kernel.project_dir%/src/Domain/Account'
-        prefix: 'App\Domain\Account\Entity'
-        alias: Account
-    dql:
-      string_functions:
-        ifnull: DoctrineExtensions\Query\Mysql\IfNull
-        if: DoctrineExtensions\Query\Mysql\IfElse
-        YEAR: DoctrineExtensions\Query\Mysql\Year
+    enable_lazy_ghost_objects: true
+    default_entity_manager: default
+    entity_managers:
+      default:
+        connection: default
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+          Budget:
+            is_bundle: false
+            dir: '%kernel.project_dir%/src/Domain/Budget/Entity'
+            prefix: 'App\Domain\Budget\Entity'
+            alias: Budget
+          Entry:
+            is_bundle: false
+            dir: '%kernel.project_dir%/src/Domain/Entry/Entity'
+            prefix: 'App\Domain\Entry\Entity'
+            alias: Entry
+          PeriodicEntry:
+            is_bundle: false
+            dir: '%kernel.project_dir%/src/Domain/PeriodicEntry/Entity'
+            prefix: 'App\Domain\PeriodicEntry\Entity\PeriodicEntry'
+            alias: PeriodicEntry
+          Account:
+            is_bundle: false
+            dir: '%kernel.project_dir%/src/Domain/Account'
+            prefix: 'App\Domain\Account\Entity'
+            alias: Account
+        dql:
+          string_functions:
+            ifnull: DoctrineExtensions\Query\Mysql\IfNull
+            if: DoctrineExtensions\Query\Mysql\IfElse
+            YEAR: DoctrineExtensions\Query\Mysql\Year
+
+when@dev:
+  doctrine:
+    dbal:
+      connections:
+        old_bugr:
+          user: '%env(string:OLD_BUGR_DB_USER)%'
+          password: '%env(string:OLD_BUGR_DB_PASSWORD)%'
+          host: '%env(string:OLD_BUGR_DB_HOST)%'
+          dbname: '%env(string:OLD_BUGR_DB_NAME)%'
+          port: '%env(string:OLD_BUGR_DB_PORT)%'
+    orm:
+      entity_managers:
+        old_bugr:
+          connection: old_bugr
+
 
 when@test:
   doctrine:
     dbal:
-      # "TEST_TOKEN" is typically set by ParaTest
-      dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+      connections:
+        default:
+          # "TEST_TOKEN" is typically set by ParaTest
+          dbname_suffix: '_test%env(default::TEST_TOKEN)%'
 
 when@prod:
   doctrine:

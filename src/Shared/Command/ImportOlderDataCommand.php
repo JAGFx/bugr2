@@ -2,11 +2,14 @@
 
 namespace App\Shared\Command;
 
+use App\Domain\Account\Entity\Account;
+use App\Domain\Budget\Entity\Budget;
 use App\Infrastructure\LeagueCsv\CsvExtract;
 use App\Shared\Utils\YearRange;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,37 +18,44 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('bugr:old-data:import')]
 class ImportOlderDataCommand extends Command
 {
+    public const string DEFAULT_ACCOUNT = 'Livret A';
     private Connection $connection;
+    private Connection $oldBugrManager;
 
     public function __construct(
         private readonly string $exportPath,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ManagerRegistry $managerRegistry,
     ) {
         parent::__construct();
 
         $this->connection = $this->entityManager->getConnection();
+
+        /** @var Connection $oldBugrManager */
+        $oldBugrManager       = $this->managerRegistry->getConnection('old_bugr');
+        $this->oldBugrManager = $oldBugrManager;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // 01_bugr_budget.csv
-        $this->parseBudget();
+        $this->createNewThings();
+        $this->migrateBudget();
         // 02_bugr_periodic_entry.csv
-        $this->parsePeriodicEntry();
+        //        $this->parsePeriodicEntry();
         // 03_bugr_periodic_entry_budget.csv
-        $this->parsePeriodicEntryBudget();
+        //        $this->parsePeriodicEntryBudget();
         // 04_entry.csv
-        $this->parseEntry();
-        // 06_budget_balance_by_year.csv
-        $this->applyBudgetBalance();
-        // 07_entries_forecast.csv
-        $this->removeForecastEntries();
-        // 08_entries_forecast_balance_by_year.csv
-        $this->adjustForecastEntriesBalance();
-        // 05_entry_missing_budget_csv.csv
-        $this->correctEntriesWithMissingBudget();
-
-        $this->applyForecastForCurrentYear();
+        //        $this->parseEntry();
+        //        // 06_budget_balance_by_year.csv
+        //        $this->applyBudgetBalance();
+        //        // 07_entries_forecast.csv
+        //        $this->removeForecastEntries();
+        //        // 08_entries_forecast_balance_by_year.csv
+        //        $this->adjustForecastEntriesBalance();
+        //        // 05_entry_missing_budget_csv.csv
+        //        $this->correctEntriesWithMissingBudget();
+        //
+        //        $this->applyForecastForCurrentYear();
 
         return Command::SUCCESS;
     }
@@ -57,21 +67,46 @@ class ImportOlderDataCommand extends Command
         return CsvExtract::extractRecords($path);
     }
 
-    /**
-     * @file 01_bugr_budget.csv
-     */
-    private function parseBudget(): void
+    public function createNewThings(): void
     {
-        foreach ($this->records('01_bugr_budget.csv') as $record) {
-            $this->connection->insert('budget', array_merge(
-                $record,
-                [
-                    'updated_at' => empty($record['updated_at'])
-                        ? (new DateTimeImmutable())->format('c')
-                        : $record['updated_at'],
-                ]
-            ));
+        $accounts = [self::DEFAULT_ACCOUNT, 'LDDS'];
+
+        foreach ($accounts as $accountName) {
+            $account = (new Account())
+                ->setName($accountName)
+                ->setEnable(true);
+
+            $this->entityManager->persist($account);
         }
+
+        $this->entityManager->flush();
+    }
+
+    private function migrateBudget(): void
+    {
+        $defaultAccount = $this->fetchDefaultAccount();
+
+        if (is_null($defaultAccount)) {
+            return;
+        }
+
+        $result = $this->oldBugrManager->executeQuery('SELECT b.*
+            FROM budget b;');
+
+        foreach ($result->fetchAllAssociative() as $oldBudget) {
+            $budget = (new Budget())
+                ->setName($oldBudget['name'])
+                ->setAmount($oldBudget['amount'])
+                ->setEnable($oldBudget['enable'])
+            ;
+
+            $budget->setCreatedAt(new DateTimeImmutable($oldBudget['created_at'] ?? ''));
+            $budget->setUpdatedAt(new DateTimeImmutable($oldBudget['updated_at'] ?? ''));
+
+            $this->entityManager->persist($budget);
+        }
+
+        $this->entityManager->flush();
     }
 
     /**
@@ -242,5 +277,20 @@ class ImportOlderDataCommand extends Command
             'created_at' => (new DateTimeImmutable())->format('c'),
             'updated_at' => (new DateTimeImmutable())->format('c'),
         ]);
+    }
+
+    public function fetchDefaultAccount(): ?Account
+    {
+        /** @var Account $account */
+        $account = $this->entityManager
+            ->createQueryBuilder()
+            ->from(Account::class, 'a')
+            ->select('a')
+            ->andWhere('a.name = :name')
+            ->setParameter('name', self::DEFAULT_ACCOUNT)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $account;
     }
 }
