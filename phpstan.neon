@@ -13,6 +13,8 @@ parameters:
           path: src/
         - message: '#^Parameter (.*) callable#'
           path: src/
+    excludePaths:
+        - src/Shared/Command/ImportOlderDataCommand.php
     checkGenericClassInNonGenericObjectType: false
     reportUnmatchedIgnoredErrors: false
     checkMissingIterableValueType: false

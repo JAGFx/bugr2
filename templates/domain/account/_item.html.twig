@@ -4,10 +4,10 @@
             <div class="d-flex justify-content-center align-items-start w-100 flex-column">
                 {{ account.name }}
                 <a data-turbo="true" href="{{ path('front_account_cash_flow', {'id': account.id}) }}" class="link-offset-3 link-dotted text-white-50">
-                    <span>
+                    <small>
                         <i class="fa-solid fa-scale-balanced me-2"></i>
-                        <small>Voir la balance</small>
-                    </span>
+                        <span>Voir la balance</span>
+                    </small>
                 </a>
                 <turbo-frame id="account_list_item__cash_flow_by_account_{{ account.id }}"></turbo-frame>
             </div>

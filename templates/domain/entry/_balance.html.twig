@@ -2,17 +2,17 @@
 
 <div class="card bg-gradient-accent text-white">
     <div class="card-body p-0 position-relative">
-        <div class="text-center my-3">
-            <span class="text-white-50">Balance</span>
-            <h3 class="m-0">{{ currency.amount(entryBalance.total, false) }}</h3>
+        <div class="text-center my-2">
+            <small class="text-white-50">Balance</small>
+            <h3 class="m-0 fs-1">{{ currency.amount(entryBalance.total, false) }}</h3>
         </div>
         <div class="d-flex justify-content-center align-items-center bg-dark bg-opacity-10 py-2">
             <div class="d-flex justify-content-start align-items-center flex-column w-100">
-                <span class="text-white-50">
+                <small class="text-white-50">
                     <i class="fa-solid fa-leaf"></i>
                     Dépense
-                </span>
-                <small>{{ currency.amount(entryBalance.totalSpent, false) }}</small>
+                </small>
+                <span>{{ currency.amount(entryBalance.totalSpent, false) }}</span>
             </div>
             <div>
                 <a href="{{ path('home_transfer') }}" class="btn rounded-circle bg-white bg-opacity-25 d-flex justify-content-center align-items-center p-2">
@@ -20,11 +20,11 @@
                 </a>
             </div>
             <div class="d-flex justify-content-start align-items-center flex-column w-100">
-                <span class="text-white-50">
+                <small class="text-white-50">
                     <i class="fa-solid fa-shield-halved"></i>
                     Provision
-                </span>
-                <small class="text-white">{{ currency.amount(entryBalance.totalForecast, false) }}</small>
+                </small>
+                <span class="text-white">{{ currency.amount(entryBalance.totalForecast, false) }}</span>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
                         <a class="dropdown-item" href="{{ path('back_budget_budget_list', {enabled: true}) }}">Budgets</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{{ path('back_entries_list') }}">Entrés</a>
+                        <a class="dropdown-item" href="{{ path('back_entries_list') }}">Entrées</a>
                     </li>
                     <li>
                         <a class="dropdown-item" href="{{ path('back_periodicentry_list') }}">Entrées périodique</a>

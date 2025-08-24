@@ -29,7 +29,8 @@ class HistoryBudgetManager
     public function getAvailableYears(): array
     {
         /** @var string[] $years */
-        $years = $this->repository->getAvailableYear()
+        $years = $this->repository
+            ->getAvailableYear()
             ->getQuery()
             ->getSingleColumnResult();
 

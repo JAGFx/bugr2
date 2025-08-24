@@ -14,7 +14,7 @@
             <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="{{ periodicEntry.account.name }}" data-bs-placement="bottom">
                 <i class="fa-solid fa-building-columns"></i>
             </span>
-            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date de création" data-bs-placement="bottom">
+            <span class="me-2 text-white-50" data-bs-toggle="tooltip" data-bs-title="Date d'execution" data-bs-placement="bottom">
                 <i class="fa-solid fa-calendar-day"></i>
                 <small>{{ periodicEntry.executionDate | format_datetime(pattern='d MMM', locale=app.request.locale) }}</small>
             </span>
