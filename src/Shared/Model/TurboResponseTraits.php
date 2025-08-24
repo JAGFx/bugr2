@@ -15,11 +15,11 @@ trait TurboResponseTraits
     {
         $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
 
-        return $this->renderForm($view, $parameters, $response);
+        return $this->render($view, $parameters, $response);
     }
 
     /**
      * @param array<string, mixed> $parameters
      */
-    abstract protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response;
+    abstract protected function render(string $view, array $parameters = [], ?Response $response = null): Response;
 }

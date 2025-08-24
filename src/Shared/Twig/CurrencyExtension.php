@@ -3,9 +3,8 @@
 namespace App\Shared\Twig;
 
 use Twig\Attribute\AsTwigFilter;
-use Twig\Extension\AbstractExtension;
 
-class CurrencyExtension extends AbstractExtension
+class CurrencyExtension
 {
     #[AsTwigFilter('currency')]
     public function currency(float $amount, bool $withSign = true): string

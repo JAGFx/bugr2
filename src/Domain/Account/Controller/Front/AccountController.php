@@ -9,7 +9,6 @@ use App\Domain\Account\Manager\AccountManager;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Domain\Entry\Model\EntrySearchCommand;
 use App\Shared\Model\TurboResponseTraits;
-use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,10 +58,5 @@ class AccountController extends AbstractController
                 'entryBalance' => $entryBalance,
             ]
         );
-    }
-
-    protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response
-    {
-        throw new LogicException('Not implemented');
     }
 }

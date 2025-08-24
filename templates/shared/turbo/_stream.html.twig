@@ -1,4 +1,4 @@
-<turbo-stream action="append" target="toast_container">
+<twig:Turbo:Stream:Append target="toast_container">
     <template>
         {% for label, messages in app.flashes %}
             {% for message in messages %}
@@ -6,6 +6,6 @@
             {% endfor %}
         {% endfor %}
     </template>
-</turbo-stream>
+</twig:Turbo:Stream:Append>
 
 {% block stream %}{% endblock %}
