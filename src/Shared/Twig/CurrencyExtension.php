@@ -2,18 +2,12 @@
 
 namespace App\Shared\Twig;
 
+use Twig\Attribute\AsTwigFilter;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 
 class CurrencyExtension extends AbstractExtension
 {
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('currency', [$this, 'currency']),
-        ];
-    }
-
+    #[AsTwigFilter('currency')]
     public function currency(float $amount, bool $withSign = true): string
     {
         if ($withSign) {

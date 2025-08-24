@@ -11,11 +11,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand('bugr:old-data:import')]
-class ImportOlderDataCommand extends Command
+class ImportOlderDataCommand
 {
     public const string DEFAULT_ACCOUNT = 'Livret A';
     private Connection $connection;
@@ -26,8 +25,6 @@ class ImportOlderDataCommand extends Command
         private readonly EntityManagerInterface $entityManager,
         private readonly ManagerRegistry $managerRegistry,
     ) {
-        parent::__construct();
-
         $this->connection = $this->entityManager->getConnection();
 
         /** @var Connection $oldBugrManager */
@@ -35,7 +32,7 @@ class ImportOlderDataCommand extends Command
         $this->oldBugrManager = $oldBugrManager;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(OutputInterface $output): int
     {
         $this->createNewThings();
         $this->migrateBudget();

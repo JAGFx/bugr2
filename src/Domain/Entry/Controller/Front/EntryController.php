@@ -5,6 +5,7 @@ namespace App\Domain\Entry\Controller\Front;
 use App\Domain\Entry\Entity\Entry;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\TurboResponseTraits;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,5 +38,10 @@ class EntryController extends AbstractController
         return $this->renderTurboStream($request, 'domain/entry/turbo/success.stream.remove.html.twig', [
             'entryId' => $entryId,
         ]);
+    }
+
+    protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response
+    {
+        throw new LogicException('Not implemented');
     }
 }

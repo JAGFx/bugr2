@@ -12,6 +12,7 @@ use App\Domain\Budget\Operator\BudgetOperator;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\TurboResponseTraits;
 use App\Shared\Utils\YearRange;
+use LogicException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,5 +111,10 @@ class BudgetController extends AbstractController
                 'cashFlows' => $this->budgetOperator->getBudgetCashFlowsByAccount($budget),
             ]
         );
+    }
+
+    protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response
+    {
+        throw new LogicException('Not implemented');
     }
 }

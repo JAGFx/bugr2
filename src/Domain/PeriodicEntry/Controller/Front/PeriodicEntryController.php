@@ -5,6 +5,7 @@ namespace App\Domain\PeriodicEntry\Controller\Front;
 use App\Domain\PeriodicEntry\Entity\PeriodicEntry;
 use App\Domain\PeriodicEntry\Manager\PeriodicEntryManager;
 use App\Shared\Model\TurboResponseTraits;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,5 +31,10 @@ class PeriodicEntryController extends AbstractController
         return $this->renderTurboStream($request, 'domain/periodic_entry/turbo/stream.success.remove.html.twig', [
             'periodicEntryId' => $periodicEntryId,
         ]);
+    }
+
+    protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response
+    {
+        throw new LogicException('Not implemented');
     }
 }

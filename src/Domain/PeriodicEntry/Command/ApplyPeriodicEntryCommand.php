@@ -3,7 +3,6 @@
 namespace App\Domain\PeriodicEntry\Command;
 
 use Exception;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,19 +11,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
 #[AsCommand('bugr:periodic-entry:apply')]
-class ApplyPeriodicEntryCommand extends Command
+class ApplyPeriodicEntryCommand
 {
-    //    public function __construct(
-    //        private readonly LoggerInterface $logger
-    //    ) {
-    //        parent::__construct();
-    //    }
-
-    protected function configure(): void
-    {
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
 
