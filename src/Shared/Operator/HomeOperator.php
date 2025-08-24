@@ -10,7 +10,7 @@ use App\Shared\Model\Transfer;
 class HomeOperator
 {
     public function __construct(
-        private readonly EntryManager $entryManager
+        private readonly EntryManager $entryManager,
     ) {
     }
 
@@ -19,14 +19,14 @@ class HomeOperator
         $entrySourceName = $transfer->getBudgetSource()?->getName() ?? 'Dépense';
         $entryTargetName = $transfer->getBudgetTarget()?->getName() ?? 'Dépense';
 
-        $entrySource = (new Entry())
+        $entrySource = new Entry()
             ->setKind(EntryKindEnum::BALANCING)
             ->setBudget($transfer->getBudgetSource())
             ->setAmount(-$transfer->getAmount())
             ->setAccount($transfer->getAccount())
             ->setName(sprintf('Transfer depuis %s', $entrySourceName));
 
-        $entryTarget = (new Entry())
+        $entryTarget = new Entry()
             ->setKind(EntryKindEnum::BALANCING)
             ->setBudget($transfer->getBudgetTarget())
             ->setAmount($transfer->getAmount())

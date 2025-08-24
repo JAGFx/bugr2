@@ -26,7 +26,12 @@ class Statistics
     {
         return array_reduce(
             $statistics,
-            static fn (float $currentSum, array $item): float => $currentSum + $item[$property],
+            static function (float $currentSum, array $item) use ($property): float {
+                /** @var array<float> $currentItem */
+                $currentItem = $item;
+
+                return $currentSum + ($currentItem[$property] ?? 0.0);
+            },
             0.0
         );
     }

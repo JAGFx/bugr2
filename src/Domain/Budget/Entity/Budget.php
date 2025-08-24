@@ -34,14 +34,20 @@ class Budget
     #[GreaterThan(value: 0)]
     private float $amount;
 
+    /**
+     * @var array<string>|null
+     */
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private ?array $historic = [];
 
+    /**
+     * @var Collection<int, PeriodicEntry>
+     */
     #[ORM\ManyToMany(targetEntity: PeriodicEntry::class, mappedBy: 'budgets', fetch: 'EXTRA_LAZY')]
     private Collection $periodicEntries;
 
     /**
-     * @var Collection<int, Entry>|Entry[]
+     * @var Collection<int, Entry>
      */
     #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Entry::class, cascade: ['persist', 'remove'], /* fetch: 'EXTRA_LAZY', */ indexBy: 'createdAt')]
     private Collection $entries;
@@ -104,7 +110,7 @@ class Budget
     }
 
     /**
-     * @return Collection<PeriodicEntry>
+     * @return Collection<int, PeriodicEntry>
      */
     public function getPeriodicEntries(): Collection
     {
@@ -132,13 +138,16 @@ class Budget
     }
 
     /**
-     * @return Collection<Entry>
+     * @return Collection<int, Entry>
      */
     public function getEntries(): Collection
     {
         return $this->entries;
     }
 
+    /**
+     * @param Collection<int, Entry> $entries
+     */
     public function setEntries(Collection $entries): self
     {
         $this->entries = $entries;
@@ -184,7 +193,11 @@ class Budget
                     return false;
                 }
 
-                return $entry->getCreatedAt() < YearRange::firstDayOf(YearRange::current()) || $entry->isABalancing();
+                if ($entry->getCreatedAt() < YearRange::firstDayOf(YearRange::current())) {
+                    return true;
+                }
+
+                return $entry->isABalancing();
             });
 
         return array_reduce(

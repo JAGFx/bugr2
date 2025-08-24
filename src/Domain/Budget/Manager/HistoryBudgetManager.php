@@ -10,7 +10,7 @@ use App\Domain\Budget\Repository\HistoryBudgetRepository;
 class HistoryBudgetManager
 {
     public function __construct(
-        private readonly HistoryBudgetRepository $repository
+        private readonly HistoryBudgetRepository $repository,
     ) {
     }
 

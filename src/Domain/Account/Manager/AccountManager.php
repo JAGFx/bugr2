@@ -8,7 +8,7 @@ use App\Domain\Account\Repository\AccountRepository;
 class AccountManager
 {
     public function __construct(
-        private readonly AccountRepository $repository
+        private readonly AccountRepository $repository,
     ) {
     }
 

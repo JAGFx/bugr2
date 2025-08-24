@@ -40,6 +40,7 @@ return (new PhpCsFixer\Config())
             'import_classes' => true,
             'import_constants' => true,
             'import_functions' => false,
-        ]
+        ],
+        'nullable_type_declaration_for_default_null_value' => true,
     ])
     ->setFinder($finder);

@@ -32,7 +32,7 @@ class PeriodicEntryOperator
         }
 
         if ($periodicEntry->isSpent()) {
-            $entry = (new Entry())
+            $entry = new Entry()
                 ->setAmount($periodicEntry->getAmount() ?? 0.0)
                 ->setKind(EntryKindEnum::BALANCING)
                 ->setName($periodicEntry->getName())
@@ -42,7 +42,7 @@ class PeriodicEntryOperator
         } else {
             foreach ($periodicEntry->getBudgets() as $budget) {
                 $amount = $periodicEntry->getAmountFor($budget);
-                $entry  = (new Entry())
+                $entry  = new Entry()
                     ->setAmount($amount)
                     ->setBudget($budget)
                     ->setKind(EntryKindEnum::BALANCING)

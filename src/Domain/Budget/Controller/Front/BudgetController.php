@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('budgets')]
 class BudgetController extends AbstractController
@@ -34,7 +34,7 @@ class BudgetController extends AbstractController
     #[Route('/progress-filter', name: 'front_budget_filter', methods: [Request::METHOD_GET, Request::METHOD_POST])]
     public function filter(Request $request): Response
     {
-        $budgetSearchCommand = (new BudgetSearchCommand())
+        $budgetSearchCommand = new BudgetSearchCommand()
             ->setShowCredits(false)
             ->setYear(YearRange::current());
 
@@ -83,7 +83,7 @@ class BudgetController extends AbstractController
     public function balancing(
         Request $request,
         #[MapEntity(mapping: ['budgetId' => 'id'])] Budget $budget,
-        #[MapEntity(mapping: ['accountId' => 'id'])] Account $account
+        #[MapEntity(mapping: ['accountId' => 'id'])] Account $account,
     ): Response {
         $this->budgetManager->balancing($budget, $account);
 

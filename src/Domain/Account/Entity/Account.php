@@ -27,7 +27,7 @@ class Account
     private string $name;
 
     /**
-     * @var Collection<int, Entry>|Entry[]
+     * @var Collection<int, Entry>
      */
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Entry::class, fetch: 'EXTRA_LAZY', indexBy: 'createdAt')]
     private Collection $entries;
@@ -59,13 +59,16 @@ class Account
     }
 
     /**
-     * @return Collection<Entry>
+     * @return Collection<int, Entry>
      */
     public function getEntries(): Collection
     {
         return $this->entries;
     }
 
+    /**
+     * @param Collection<int, Entry> $entries
+     */
     public function setEntries(Collection $entries): self
     {
         $this->entries = $entries;

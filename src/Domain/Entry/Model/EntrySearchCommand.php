@@ -14,7 +14,7 @@ class EntrySearchCommand implements PaginationInterface
     public function __construct(
         private ?Account $account = null,
         private ?DateTimeImmutable $startDate = null,
-        private ?DateTimeImmutable $endDate = null
+        private ?DateTimeImmutable $endDate = null,
     ) {
     }
 

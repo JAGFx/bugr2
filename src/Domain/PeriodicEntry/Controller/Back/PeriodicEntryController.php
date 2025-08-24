@@ -8,7 +8,7 @@ use App\Domain\PeriodicEntry\Manager\PeriodicEntryManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/periodic_entries')]
 class PeriodicEntryController extends AbstractController
@@ -17,7 +17,7 @@ class PeriodicEntryController extends AbstractController
     private const HANDLE_FORM_UPDATE = 'update';
 
     public function __construct(
-        private readonly PeriodicEntryManager $periodicEntryManager
+        private readonly PeriodicEntryManager $periodicEntryManager,
     ) {
     }
 

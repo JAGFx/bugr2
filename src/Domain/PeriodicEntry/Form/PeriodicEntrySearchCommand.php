@@ -7,7 +7,7 @@ use App\Domain\Entry\Model\EntryTypeEnum;
 class PeriodicEntrySearchCommand
 {
     public function __construct(
-        private ?EntryTypeEnum $entryTypeEnum = null
+        private ?EntryTypeEnum $entryTypeEnum = null,
     ) {
     }
 

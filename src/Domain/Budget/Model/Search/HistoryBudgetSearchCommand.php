@@ -8,7 +8,7 @@ class HistoryBudgetSearchCommand
 {
     public function __construct(
         private ?Budget $budget,
-        private ?int $year
+        private ?int $year,
     ) {
     }
 

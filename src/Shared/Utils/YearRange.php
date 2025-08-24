@@ -35,7 +35,7 @@ class YearRange
     {
         $year ??= self::current();
 
-        return (new DateTimeImmutable())
+        return new DateTimeImmutable()
             ->setDate($year, 1, 1)
             ->setTime(0, 0);
     }
@@ -44,7 +44,7 @@ class YearRange
     {
         $year ??= self::current();
 
-        return (new DateTimeImmutable())
+        return new DateTimeImmutable()
             ->setDate($year, 12, 31)
             ->setTime(23, 59, 59);
     }

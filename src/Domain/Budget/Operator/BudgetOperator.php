@@ -9,7 +9,7 @@ use App\Domain\Budget\ValueObject\BudgetCashFlowByAccountValueObject;
 class BudgetOperator
 {
     public function __construct(
-        private readonly AccountManager $accountManager
+        private readonly AccountManager $accountManager,
     ) {
     }
 

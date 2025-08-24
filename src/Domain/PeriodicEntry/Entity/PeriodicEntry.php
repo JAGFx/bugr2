@@ -55,6 +55,9 @@ class PeriodicEntry
     #[NotBlank]
     private DateTimeImmutable $executionDate;
 
+    /**
+     * @var Collection<int, Budget>
+     */
     #[ORM\ManyToMany(targetEntity: Budget::class, inversedBy: 'periodicEntries', fetch: 'EXTRA_LAZY')]
     private Collection $budgets;
 
@@ -131,7 +134,7 @@ class PeriodicEntry
     public function getAmountFor(Budget $budgetTarget): float
     {
         /** @var ?Budget $budget */
-        $budget = $this->budgets->findFirst(fn (int $k, Budget $budget) => $budget === $budgetTarget); // @phpstan-ignore-line
+        $budget = $this->budgets->findFirst(fn (int $k, Budget $budget): bool => $budget === $budgetTarget); // @phpstan-ignore-line
 
         if (is_null($budget)) {
             return 0.0;
@@ -153,13 +156,16 @@ class PeriodicEntry
     }
 
     /**
-     * @return Collection<Budget>
+     * @return Collection<int, Budget>
      */
     public function getBudgets(): Collection
     {
         return $this->budgets;
     }
 
+    /**
+     * @param Collection<int, Budget> $budgets
+     */
     public function setBudgets(Collection $budgets): PeriodicEntry
     {
         $this->budgets = $budgets;

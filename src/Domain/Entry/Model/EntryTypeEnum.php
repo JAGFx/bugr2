@@ -11,7 +11,7 @@ enum EntryTypeEnum: string
     {
         return match ($this) {
             self::TYPE_FORECAST => 'Provision',
-            self::TYPE_SPENT    => 'Dépense'
+            self::TYPE_SPENT    => 'Dépense',
         };
     }
 }

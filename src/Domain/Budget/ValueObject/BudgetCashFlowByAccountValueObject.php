@@ -10,7 +10,7 @@ class BudgetCashFlowByAccountValueObject
     public function __construct(
         private readonly Budget $budget,
         private readonly Account $account,
-        private readonly float $cashFlow
+        private readonly float $cashFlow,
     ) {
     }
 

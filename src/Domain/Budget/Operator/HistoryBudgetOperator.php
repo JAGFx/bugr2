@@ -20,7 +20,7 @@ class HistoryBudgetOperator
     public function generateHistoryBudgetsForYear(int $year): void
     {
         $budgetsValues = $this->budgetManager->searchValueObject(
-            (new BudgetSearchCommand())
+            new BudgetSearchCommand()
                ->setShowCredits(false)
                ->setYear($year)
         );
@@ -43,7 +43,7 @@ class HistoryBudgetOperator
                 continue;
             }
 
-            $historyBudget = (new HistoryBudget())
+            $historyBudget = new HistoryBudget()
                 ->setBudget($budget)
                 ->setAmount($budget->getAmount())
                 ->setDate(YearRange::firstDayOf($year))

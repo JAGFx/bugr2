@@ -14,7 +14,7 @@ class EntryManager
 {
     public function __construct(
         private readonly EntryRepository $entryRepository,
-        private readonly PaginatorInterface $paginator
+        private readonly PaginatorInterface $paginator,
     ) {
     }
 
@@ -80,13 +80,13 @@ class EntryManager
     }
 
     /**
-     * @return PaginationInterface<Entry>
+     * @return PaginationInterface<int, Entry>
      */
     public function getPaginated(?EntrySearchCommand $command = null): PaginationInterface
     {
         $command ??= new EntrySearchCommand();
 
-        /** @var PaginationInterface<Entry> $pagination */
+        /** @var PaginationInterface<int, Entry> $pagination */
         $pagination = $this->paginator->paginate(
             $this->entryRepository->getEntryQueryBuilder($command),
             $command->getPage(),

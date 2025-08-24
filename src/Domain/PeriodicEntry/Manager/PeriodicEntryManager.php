@@ -9,7 +9,7 @@ use App\Domain\PeriodicEntry\Repository\PeriodicEntryRepository;
 class PeriodicEntryManager
 {
     public function __construct(
-        private readonly PeriodicEntryRepository $periodicEntryRepository
+        private readonly PeriodicEntryRepository $periodicEntryRepository,
     ) {
     }
 

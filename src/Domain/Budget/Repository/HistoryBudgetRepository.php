@@ -10,6 +10,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<HistoryBudget>
+ */
 class HistoryBudgetRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

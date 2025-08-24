@@ -9,6 +9,9 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Entry>
+ */
 class EntryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

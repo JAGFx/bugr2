@@ -10,7 +10,7 @@ class BudgetSearchCommand
         private ?string $name = null,
         private ?bool $excludeCurrentYear = null,
         private ?int $budgetId = null,
-        private ?bool $enabled = true
+        private ?bool $enabled = true,
     ) {
     }
 

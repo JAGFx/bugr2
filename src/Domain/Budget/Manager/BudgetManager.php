@@ -15,7 +15,7 @@ class BudgetManager
 {
     public function __construct(
         private readonly BudgetRepository $budgetRepository,
-        private readonly EntryManager $entryManager
+        private readonly EntryManager $entryManager,
     ) {
     }
 
@@ -81,13 +81,13 @@ class BudgetManager
     public function balancing(Budget $budget, Account $account): void
     {
         if ($budget->hasPositiveCashFlow() || $budget->hasNegativeCashFlow()) {
-            $entryBalanceSpent = (new Entry())
+            $entryBalanceSpent = new Entry()
                 ->setAccount($account)
                 ->setName(sprintf('Équilibrage de %s', $budget->getName()))
                 ->setKind(EntryKindEnum::BALANCING)
                 ->setAmount($budget->getCashFlow());
 
-            $entryBalanceForecast = (new Entry())
+            $entryBalanceForecast = new Entry()
                 ->setAccount($account)
                 ->setBudget($budget)
                 ->setName(sprintf('Équilibrage de %s', $budget->getName()))
