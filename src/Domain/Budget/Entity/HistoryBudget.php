@@ -15,9 +15,6 @@ use Doctrine\ORM\Mapping\ManyToOne;
 #[Entity(repositoryClass: HistoryBudgetRepository::class)]
 class HistoryBudget
 {
-    // TODO: Continue here: Create a scheduler to create history
-    // @doc https://symfony.com/doc/current/scheduler.html
-
     #[Id]
     #[Column]
     #[GeneratedValue]

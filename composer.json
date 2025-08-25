@@ -36,6 +36,7 @@
     "symfony/property-access": "7.3.*",
     "symfony/property-info": "7.3.*",
     "symfony/runtime": "7.3.*",
+    "symfony/scheduler": "7.3.*",
     "symfony/security-bundle": "7.3.*",
     "symfony/serializer": "7.3.*",
     "symfony/string": "7.3.*",

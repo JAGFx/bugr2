@@ -8,12 +8,15 @@ use App\Domain\Budget\Manager\HistoryBudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\Model\Search\HistoryBudgetSearchCommand;
 use App\Shared\Utils\YearRange;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 class HistoryBudgetOperator
 {
     public function __construct(
         private readonly BudgetManager $budgetManager,
         private readonly HistoryBudgetManager $historyBudgetManager,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -50,7 +53,15 @@ class HistoryBudgetOperator
                 ->setRelativeProgress($budgetValue->getProgress(true))
             ;
 
-            $this->historyBudgetManager->create($historyBudget);
+            try {
+                $this->historyBudgetManager->create($historyBudget);
+            } catch (Throwable $throwable) {
+                $this->logger->error($throwable->getMessage(), [
+                    'budget_id' => $budget->getId(),
+                    'year'      => $year,
+                    'exception' => $throwable,
+                ]);
+            }
         }
     }
 }
