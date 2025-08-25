@@ -13,27 +13,31 @@ trait TimestampableTrait
     #[Timestampable(on: 'create')]
     private DateTimeImmutable $createdAt;
 
-    #[Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Timestampable(on: 'update')]
-    private DateTimeImmutable $updatedAt;
+    private ?DateTimeImmutable $updatedAt = null;
 
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): void
+    public function setUpdatedAt(?DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }
