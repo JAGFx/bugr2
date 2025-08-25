@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Scheduler;
+namespace App\Shared\Scheduler;
 
 use App\Domain\Budget\Scheduler\Message\CreateAnnuallyHistoryBudgetMessage;
 use DateTimeImmutable;

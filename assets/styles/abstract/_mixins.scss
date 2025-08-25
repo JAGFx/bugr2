@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @import "variables";
 
 @mixin border-gradient( $color, $width ) {
@@ -26,6 +28,6 @@
 
   @supports (backdrop-filter: blur(30px)) {
     backdrop-filter: blur(30px);
-    background: rgba($color-black, 0.1) !important;
+    background: rgba(color.adjust($color-black, $lightness: 30%), 0.1) !important;
   }
 }

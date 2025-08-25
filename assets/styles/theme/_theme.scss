@@ -1,9 +1,11 @@
 @import "../abstract/variables";
 
 body {
-  background: url("../../../public/img/bg.jpg") no-repeat center center;
+  background:
+    linear-gradient(rgba($color-black, 0.5), rgba($color-black, 0.5)),
+    url("../../../public/img/bg.png") no-repeat center center;
   background-size: cover;
-  height: 100vh;
+  height: 100dvh;
 
   main {
     overflow-y: auto;
