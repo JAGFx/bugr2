@@ -9,6 +9,7 @@ use App\Domain\Budget\Manager\HistoryBudgetManager;
 use App\Domain\Budget\Operator\HistoryBudgetOperator;
 use App\Domain\Budget\ValueObject\BudgetValueObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class HistoryBudgetOperatorTest extends TestCase
 {
@@ -25,7 +26,8 @@ class HistoryBudgetOperatorTest extends TestCase
     {
         return new HistoryBudgetOperator(
             $this->budgetManagerMock,
-            $this->historyBudgetManagerMock
+            $this->historyBudgetManagerMock,
+            $this->createMock(LoggerInterface::class)
         );
     }
 

@@ -11,11 +11,11 @@ use App\Domain\Entry\Entity\Entry;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Domain\Entry\Model\EntryKindEnum;
 
-class BudgetManager
+readonly class BudgetManager
 {
     public function __construct(
-        private readonly BudgetRepository $budgetRepository,
-        private readonly EntryManager $entryManager,
+        private BudgetRepository $budgetRepository,
+        private EntryManager $entryManager,
     ) {
     }
 

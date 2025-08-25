@@ -2,14 +2,14 @@
 
 namespace App\Tests\Unit\Domain\Budget\Model;
 
-use App\Domain\Budget\Model\BudgetProgressTrait;
+use App\Domain\Budget\Entity\Budget;
 use PHPUnit\Framework\TestCase;
 
 class BudgetProgressTraitTest extends TestCase
 {
     public function testRelativeProgressMustReturnZeroWithNoAmount(): void
     {
-        $budgetProgressTrait = $this->getMockForTrait(BudgetProgressTrait::class, mockedMethods: [
+        $budgetProgressTrait = $this->createPartialMock(Budget::class, [
             'getProgress',
             'getAmount',
         ]);
