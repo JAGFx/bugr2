@@ -1,0 +1,92 @@
+.radial-menu {
+  position: fixed;
+  bottom: 0.5rem;
+  z-index: 40;
+
+  &.left {
+    left: 0.5rem;
+  }
+
+  label {
+    position: fixed;
+    cursor: pointer;
+    left: 1rem;
+    bottom: 1rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.5rem !important;
+    z-index: 50;
+  }
+
+  .items {
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+    width: 3.5rem;
+    height: 3.5rem;
+
+    a {
+      background: $color-white;
+      color: $color-black;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      opacity: 0;
+      transform: rotate(-110deg) translate(5rem) rotate(110deg);
+      transition: transform 0.3s, opacity 0.3s ease-out;
+      text-decoration: none;
+
+      span {
+        z-index: 50;
+      }
+
+      &::after {
+        content: " ";
+        position: fixed;
+        border-left: 1rem solid transparent;
+        border-right: 1rem solid transparent;
+        border-top: 2rem solid $color-white;
+        transform: rotate(-10deg) translateY(1rem);
+        transition: transform 0.3s, opacity 0.3s ease-out;
+      }
+    }
+  }
+
+  #toggle:checked ~ .items > a {
+    opacity: 1 !important;
+    transform: rotate(var(--angle)) translate(5rem) rotate(var(--angle-correction));
+    transform-origin: 50% 50%;
+
+    &::after {
+      transform: rotate(var(--angle-pointer)) translateY(1rem);
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  #toggle {
+    display: none;
+  }
+
+  .fa-home:hover {
+    color: #55cc70;
+  }
+
+  .fa-comments:hover {
+    color: #0099e5;
+  }
+
+  .fa-heart:hover {
+    color: tomato;
+  }
+}
