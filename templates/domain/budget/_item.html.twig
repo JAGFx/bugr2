@@ -28,25 +28,27 @@
             <turbo-frame id="budget_list_item__cash_flow_by_account_{{ budget.id }}"></turbo-frame>
         </ul>
     </div>
-    <div class="position-absolute" style="right: 0; top: 0.7rem;">
-        <div class="dropstart">
-            <button type="button" class="btn dropdown-toggle text-secondary border-0" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="{{ path('back_budget_edit', {'id': budget.id}) }}">Modifier</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                {% if budget.enable %}
-                    <li><a class="dropdown-item" data-turbo="true"
-                           href="{{ path('front_budget_toggle', {'id': budget.id}) }}">Désactiver</a></li>
-                {% else %}
-                    <li><a class="dropdown-item" data-turbo="true"
-                           href="{{ path('front_budget_toggle', {'id': budget.id}) }}">Activer</a></li>
-                {% endif %}
-            </ul>
+    {% if is_granted(constant('App\\Domain\\Budget\\Security\\BudgetVoter::MANAGE'), budget) %}
+        <div class="position-absolute" style="right: 0; top: 0.7rem;">
+            <div class="dropstart">
+                <button type="button" class="btn dropdown-toggle text-secondary border-0" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item" href="{{ path('back_budget_edit', {'id': budget.id}) }}">Modifier</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    {% if budget.enable %}
+                        <li><a class="dropdown-item" data-turbo="true"
+                               href="{{ path('front_budget_toggle', {'id': budget.id}) }}">Désactiver</a></li>
+                    {% else %}
+                        <li><a class="dropdown-item" data-turbo="true"
+                               href="{{ path('front_budget_toggle', {'id': budget.id}) }}">Activer</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
+    {% endif %}
 </li>

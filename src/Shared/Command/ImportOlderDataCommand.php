@@ -8,10 +8,12 @@ use DateMalformedStringException;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -19,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ImportOlderDataCommand
 {
     public const string DEFAULT_ACCOUNT = 'Livret A';
+    public const string DEFAULT_BUDGET  = 'Budget par défaut';
     private Connection $connection;
     private Connection $oldBugrManager;
 
@@ -33,13 +36,68 @@ class ImportOlderDataCommand
         $this->oldBugrManager = $oldBugrManager;
     }
 
-    public function __invoke(OutputInterface $output): int
-    {
-        $this->createNewThings();
+    public function __invoke(
+        OutputInterface $output,
+        #[Option(shortcut: '-a')] ?string $account = null,
+        #[Option(shortcut: '-s')] ?float $amountSpent = null,
+        #[Option(shortcut: '-f')] ?float $amountForecast = null,
+    ): int {
+        if (is_null($account)) {
+            $this->createNewThings();
 
-        $this->migrateBudget();
-        $this->migratePeriodicEntry();
-        $this->migratePeriodicEntriesBudget();
+            $this->migrateBudget();
+            $this->migratePeriodicEntry();
+            $this->migratePeriodicEntriesBudget();
+
+            return Command::SUCCESS;
+        }
+
+        $account = $this->entityManager
+            ->getRepository(Account::class)
+            ->findOneBy(['name' => $account]);
+
+        if (is_null($account)) {
+            $output->writeln('<error>Account not found</error>');
+
+            return Command::FAILURE;
+        }
+
+        if (!is_null($amountSpent)) {
+            $this->connection->insert('entry', [
+                'name'       => 'Import des dépenses',
+                'amount'     => $amountSpent,
+                'created_at' => new DateTimeImmutable(),
+                'updated_at' => new DateTimeImmutable(),
+                'account_id' => $account->getId(),
+            ], [
+                'created_at' => Types::DATETIME_IMMUTABLE,
+                'updated_at' => Types::DATETIME_IMMUTABLE,
+            ]);
+        }
+
+        if (!is_null($amountForecast)) {
+            $budget = $this->entityManager
+                ->getRepository(Budget::class)
+                ->findOneBy(['name' => self::DEFAULT_BUDGET]);
+
+            if (is_null($budget)) {
+                $output->writeln('<error>Budget not found</error>');
+
+                return Command::FAILURE;
+            }
+
+            $this->connection->insert('entry', [
+                'name'       => 'Import des provisions',
+                'amount'     => $amountForecast,
+                'created_at' => new DateTimeImmutable(),
+                'updated_at' => new DateTimeImmutable(),
+                'account_id' => $account->getId(),
+                'budget_id'  => $budget->getId(),
+            ], [
+                'created_at' => Types::DATETIME_IMMUTABLE,
+                'updated_at' => Types::DATETIME_IMMUTABLE,
+            ]);
+        }
 
         return Command::SUCCESS;
     }
@@ -87,6 +145,14 @@ class ImportOlderDataCommand
             $this->entityManager->persist($budget);
         }
 
+        $budgetDefault = new Budget()
+            ->setName(self::DEFAULT_BUDGET)
+            ->setAmount(0)
+            ->setEnable(false)
+            ->setReadOnly(true)
+        ;
+
+        $this->entityManager->persist($budgetDefault);
         $this->entityManager->flush();
     }
 

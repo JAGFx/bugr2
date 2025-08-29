@@ -7,11 +7,13 @@ use App\Domain\Budget\Form\BudgetSearchType;
 use App\Domain\Budget\Form\BudgetType;
 use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
+use App\Domain\Budget\Security\BudgetVoter;
 use App\Shared\Model\ControllerActionEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/budgets')]
 class BudgetController extends AbstractController
@@ -42,6 +44,7 @@ class BudgetController extends AbstractController
     }
 
     #[Route('/{id}', name: 'back_budget_edit', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET, Request::METHOD_POST])]
+    #[IsGranted(BudgetVoter::MANAGE, 'budget')]
     public function edit(Request $request, Budget $budget): Response
     {
         return $this->handleForm(ControllerActionEnum::EDIT, $request, $budget);

@@ -9,6 +9,7 @@ use App\Domain\Budget\Manager\BudgetManager;
 use App\Domain\Budget\Manager\HistoryBudgetManager;
 use App\Domain\Budget\Model\Search\BudgetSearchCommand;
 use App\Domain\Budget\Operator\BudgetOperator;
+use App\Domain\Budget\Security\BudgetVoter;
 use App\Domain\Entry\Manager\EntryManager;
 use App\Shared\Model\TurboResponseTraits;
 use App\Shared\Utils\YearRange;
@@ -17,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('budgets')]
 class BudgetController extends AbstractController
@@ -61,6 +63,7 @@ class BudgetController extends AbstractController
     }
 
     #[Route('/{id}/toggle', name: 'front_budget_toggle', methods: [Request::METHOD_GET])]
+    #[IsGranted(BudgetVoter::MANAGE, 'budget')]
     public function toggle(Request $request, Budget $budget): Response
     {
         $this->budgetManager->toggle($budget);
@@ -80,6 +83,7 @@ class BudgetController extends AbstractController
     }
 
     #[Route('/{budgetId}/balancing/accounts/{accountId}', name: 'front_budget_balancing', methods: [Request::METHOD_GET])]
+    #[IsGranted(BudgetVoter::MANAGE, 'budget')]
     public function balancing(
         Request $request,
         #[MapEntity(mapping: ['budgetId' => 'id'])] Budget $budget,

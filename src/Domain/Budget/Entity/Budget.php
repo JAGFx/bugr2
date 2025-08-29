@@ -55,6 +55,9 @@ class Budget
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $enable = true;
 
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $readOnly = false;
+
     public function __construct()
     {
         $this->createdAt       = new DateTimeImmutable();
@@ -172,6 +175,18 @@ class Budget
     public function setEnable(bool $enable): self
     {
         $this->enable = $enable;
+
+        return $this;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return $this->readOnly;
+    }
+
+    public function setReadOnly(bool $readOnly): Budget
+    {
+        $this->readOnly = $readOnly;
 
         return $this;
     }
