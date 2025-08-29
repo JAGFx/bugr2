@@ -8,6 +8,7 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\EarlyReturn\Rector\If_\ChangeIfElseValueAssignToEarlyReturnRector;
+use Rector\EarlyReturn\Rector\If_\ChangeOrIfContinueToMultiContinueRector;
 use Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector;
 use Rector\EarlyReturn\Rector\StmtsAwareInterface\ReturnEarlyIfVariableRector;
 use Rector\Enum\Config\Defaults;
@@ -85,6 +86,7 @@ return static function (RectorConfig $rectorConfig): void {
         RenameMethodRector::class,
         RenamePropertyToMatchTypeRector::class,
         RenameVariableToMatchMethodCallReturnTypeRector::class,
-        InlineClassRoutePrefixRector::class
+        InlineClassRoutePrefixRector::class,
+        ChangeOrIfContinueToMultiContinueRector::class,
     ]);
 };

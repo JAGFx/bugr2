@@ -4,10 +4,12 @@ namespace App\Shared\Command;
 
 use App\Domain\Account\Entity\Account;
 use App\Domain\Budget\Entity\Budget;
-use App\Shared\Utils\YearRange;
+use DateMalformedStringException;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +23,6 @@ class ImportOlderDataCommand
     private Connection $oldBugrManager;
 
     public function __construct(
-        private readonly string $exportPath,
         private readonly EntityManagerInterface $entityManager,
         private readonly ManagerRegistry $managerRegistry,
     ) {
@@ -35,23 +36,10 @@ class ImportOlderDataCommand
     public function __invoke(OutputInterface $output): int
     {
         $this->createNewThings();
+
         $this->migrateBudget();
-        // 02_bugr_periodic_entry.csv
-        //        $this->parsePeriodicEntry();
-        // 03_bugr_periodic_entry_budget.csv
-        //        $this->parsePeriodicEntryBudget();
-        // 04_entry.csv
-        //        $this->parseEntry();
-        //        // 06_budget_balance_by_year.csv
-        //        $this->applyBudgetBalance();
-        //        // 07_entries_forecast.csv
-        //        $this->removeForecastEntries();
-        //        // 08_entries_forecast_balance_by_year.csv
-        //        $this->adjustForecastEntriesBalance();
-        //        // 05_entry_missing_budget_csv.csv
-        //        $this->correctEntriesWithMissingBudget();
-        //
-        //        $this->applyForecastForCurrentYear();
+        $this->migratePeriodicEntry();
+        $this->migratePeriodicEntriesBudget();
 
         return Command::SUCCESS;
     }
@@ -71,6 +59,11 @@ class ImportOlderDataCommand
         $this->entityManager->flush();
     }
 
+    /**
+     * @throws DateMalformedStringException
+     * @throws Exception
+     * @throws NonUniqueResultException
+     */
     private function migrateBudget(): void
     {
         $defaultAccount = $this->fetchDefaultAccount();
@@ -79,8 +72,7 @@ class ImportOlderDataCommand
             return;
         }
 
-        $result = $this->oldBugrManager->executeQuery('SELECT b.*
-            FROM budget b;');
+        $result = $this->oldBugrManager->executeQuery('SELECT b.* FROM budget b;');
 
         foreach ($result->fetchAllAssociative() as $oldBudget) {
             $budget = new Budget()
@@ -98,47 +90,66 @@ class ImportOlderDataCommand
         $this->entityManager->flush();
     }
 
-    public function applyForecastForCurrentYear(): void
+    /**
+     * @throws Exception
+     * @throws NonUniqueResultException
+     */
+    private function migratePeriodicEntry(): void
     {
-        $forecasts = $this->connection->fetchAllAssociative(
-            'SELECT b.id, b.name, ROUND(b.amount / 12, 3) as amount
-                    FROM budget b
-                    WHERE b.enable'
-        );
+        $defaultAccount = $this->fetchDefaultAccount();
 
-        $currentMonthNumber = (int) new DateTimeImmutable()->format('m');
-        for ($monthNumber = 1; $monthNumber <= $currentMonthNumber; ++$monthNumber) {
-            foreach ($forecasts as $forecast) {
-                $firstDayOfMont = new DateTimeImmutable()
-                    ->setDate(YearRange::current(), $monthNumber, 1)
-                    ->setTime(0, 0);
-
-                /** @var string $name */
-                $name = $forecast['name'];
-
-                $this->connection->insert('entry', [
-                    'budget_id' => $forecast['id'],
-                    'amount'    => $forecast['amount'],
-                    'name'      => sprintf(
-                        'Provision of %s - %s',
-                        $name,
-                        $firstDayOfMont->format('Y M'),
-                    ),
-                    'created_at' => $firstDayOfMont->format('c'),
-                    'updated_at' => new DateTimeImmutable()->format('c'),
-                ]);
-            }
+        if (is_null($defaultAccount)) {
+            return;
         }
 
-        $this->connection->insert('entry', [
-            'budget_id'  => 1275,
-            'amount'     => -928.05,
-            'name'       => 'Regularisation',
-            'created_at' => new DateTimeImmutable()->format('c'),
-            'updated_at' => new DateTimeImmutable()->format('c'),
-        ]);
+        $result = $this->oldBugrManager->executeQuery('SELECT pe.* FROM periodic_entry pe;');
+
+        foreach ($result->fetchAllAssociative() as $oldPeriodicEntry) {
+            $this->connection->insert('periodic_entry', [
+                'name'           => $oldPeriodicEntry['name'],
+                'amount'         => $oldPeriodicEntry['amount'],
+                'execution_date' => $oldPeriodicEntry['execution_date'],
+                'created_at'     => $oldPeriodicEntry['created_at'],
+                'updated_at'     => $oldPeriodicEntry['updated_at'],
+                'account_id'     => $defaultAccount->getId(),
+            ]);
+        }
     }
 
+    /**
+     * @throws Exception
+     */
+    private function migratePeriodicEntriesBudget(): void
+    {
+        $result = $this->oldBugrManager->executeQuery('
+            SELECT peb.*, pe.name as periodic_entry_name, b.name as budget_name
+            FROM periodic_entry_budget peb
+            JOIN periodic_entry pe ON pe.id = peb.periodic_entry_id
+            JOIN budget b ON peb.budget_id = b.id
+        ');
+
+        foreach ($result->fetchAllAssociative() as $oldPeriodicEntryBudget) {
+            $periodicEntry = $this->connection->fetchAssociative('SELECT pe.* FROM periodic_entry pe WHERE pe.name = :name', [
+                'name' => $oldPeriodicEntryBudget['periodic_entry_name'],
+            ]);
+            $budget = $this->connection->fetchAssociative('SELECT b.* FROM budget b WHERE b.name = :name', [
+                'name' => $oldPeriodicEntryBudget['budget_name'],
+            ]);
+
+            if (false === $periodicEntry || false === $budget) {
+                continue;
+            }
+
+            $this->connection->insert('periodic_entry_budget', [
+                'periodic_entry_id' => $periodicEntry['id'],
+                'budget_id'         => $budget['id'],
+            ]);
+        }
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
     public function fetchDefaultAccount(): ?Account
     {
         /** @var Account $account */
