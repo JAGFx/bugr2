@@ -4,12 +4,31 @@
     <small>{{ currency.amount(entryBalance.totalSpent + entryBalance.totalForecast, true) }}</small>
 </span>
 
-<span class="me-2 text-primary" data-bs-toggle="tooltip" data-bs-title="Dépense" data-bs-placement="bottom">
-    <i class="fa-solid fa-leaf text-primary me-2"></i>
-    <small>{{ currency.amount(entryBalance.totalSpent, false) }}</small>
-</span>
+<div class="d-flex justify-content-between align-items-center flex-wrap w-100">
+    <div class="d-flex flex-column">
+        <small class="text-muted">Dépense</small>
+        <span class="text-primary" data-bs-toggle="tooltip" data-bs-title="Dépense" data-bs-placement="bottom">
+            <i class="fa-solid fa-leaf text-primary"></i>
+            <small>{{ currency.amount(entryBalance.totalSpent, false) }}</small>
+        </span>
+    </div>
 
-<span class="me-2 text-warning" data-bs-toggle="tooltip" data-bs-title="Provision" data-bs-placement="bottom">
-    <i class="fa-solid fa-shield-halved text-warning me-2"></i>
-    <small>{{ currency.amount(entryBalance.totalForecast, false) }}</small>
-</span>
+    <div class="d-flex flex-column">
+        <small class="text-muted">Provision</small>
+        <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Provision" data-bs-placement="bottom">
+            <i class="fa-solid fa-shield-halved text-warning"></i>
+            <small>{{ currency.amount(entryBalance.totalForecast, false) }}</small>
+        </span>
+    </div>
+
+    {% if assignmentBalance > 0 %}
+        <div class="d-flex flex-column">
+            <small class="text-muted">Affectation</small>
+            <span class="" data-bs-toggle="tooltip" data-bs-title="Affectation" data-bs-placement="bottom">
+                <i class="fa-solid fa-solid fa-circle-dollar-to-slot"></i>
+                <small>{{ currency.amount(assignmentBalance, false) }}</small>
+            </span>
+        </div>
+    {% endif %}
+</div>
+

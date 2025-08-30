@@ -54,8 +54,9 @@ class AccountController extends AbstractController
             $request,
             'domain/account/turbo/success.stream.cash_flow_account.html.twig',
             [
-                'account'      => $account,
-                'entryBalance' => $entryBalance,
+                'account'           => $account,
+                'entryBalance'      => $entryBalance,
+                'assignmentBalance' => $this->accountManager->getBalanceAssignments($account),
             ]
         );
     }
