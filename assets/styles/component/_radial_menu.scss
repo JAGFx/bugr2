@@ -48,6 +48,15 @@
         z-index: 50;
       }
 
+      .title {
+        position: absolute;
+        top: var(--title-offset);
+        left: 2.5rem;
+        background: $color-white;
+        color: $color-black;
+        line-height: 0.8rem;
+      }
+
       &::after {
         content: " ";
         position: fixed;
@@ -76,17 +85,5 @@
 
   #toggle {
     display: none;
-  }
-
-  .fa-home:hover {
-    color: #55cc70;
-  }
-
-  .fa-comments:hover {
-    color: #0099e5;
-  }
-
-  .fa-heart:hover {
-    color: tomato;
   }
 }

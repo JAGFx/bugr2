@@ -1,5 +1,5 @@
-<div {{ stimulus_controller('radial_menu', {maxAngle: 110, offset: 10}) }} class="radial-menu left ">
-    <input type="checkbox" id="toggle">
+<div {{ stimulus_controller('radial_menu', {maxAngle: 121, offset: 15}) }} class="radial-menu left ">
+    <input type="checkbox" id="toggle" checked>
     <label for="toggle" class="btn btn-xs rounded-circle d-flex justify-content-center align-items-center bg-gradient-accent text-white">
         <img src="{{ asset('img/logo2.png') }}" alt="logo" class="img-fluid " style="width: 2.5rem;">
     </label>
@@ -18,6 +18,9 @@
         </a>
         <a href="{{ path('back_periodicentry_list') }}" {{ stimulus_target('radial_menu', 'menu_item') }} title="Entrées périodique">
             <span class="fa fa-file-invoice fa-regular fa-clock"></span>
+        </a>
+        <a href="{{ path('home') }}" {{ stimulus_target('radial_menu', 'menu_item') }} title="Affectations">
+            <span class="fa fa-solid fa-circle-dollar-to-slot"></span>
         </a>
     </div>
 </div>
