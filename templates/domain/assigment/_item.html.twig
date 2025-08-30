@@ -21,9 +21,9 @@
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-dark">
-{#                    <li>#}
-{#                        <a class="dropdown-item" href="{{ path('back_entry_edit', {'id': assignment.id}) }}">Modifier</a>#}
-{#                    </li>#}
+                    <li>
+                        <a class="dropdown-item" href="{{ path('back_assignment_edit', {'id': assignment.id}) }}">Modifier</a>
+                    </li>
                     <li>
                         <a class="dropdown-item" data-turbo="true" href="{{ path('front_assignment_remove', {'id': assignment.id}) }}">Supprimer</a>
                     </li>

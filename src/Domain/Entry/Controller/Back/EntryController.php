@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class EntryController extends AbstractController
 {
     use PaginationFormHandlerTrait;
-    public const HANDLE_FORM_CREATE = 'create';
-    public const HANDLE_FORM_UPDATE = 'update';
+    public const string HANDLE_FORM_CREATE = 'create';
+    public const string HANDLE_FORM_UPDATE = 'update';
 
     public function __construct(
         private readonly EntryManager $entryManager,

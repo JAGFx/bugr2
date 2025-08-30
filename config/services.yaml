@@ -16,7 +16,7 @@ services:
     class: Gedmo\Timestampable\TimestampableListener
     tags:
       - { name: doctrine.event_listener, event: 'prePersist' }
-      - { name: doctrine.event_listener, event: 'preUpdate' }
+      - { name: doctrine.event_listener, event: 'onFlush' }
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name

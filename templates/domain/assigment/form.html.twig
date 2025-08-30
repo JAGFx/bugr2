@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h3 class="mt-4 mb-2 text-center">
+        Affectations
+    </h3>
+
+    <div class="my-2">
+        <a href="{{ path('back_entries_list') }}" class="text-white-50 btn btn-outline-light">Retour</a>
+    </div>
+
+    <div class="bg-acrylic rounded p-3 my-2">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="mb-2">
+            {{ form_row(form.account) }}
+        </div>
+        <div class="mb-2">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="mb-2">
+            {{ form_row(form.amount) }}
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <button type="submit" class="btn btn-gradient-accent">Enregistrer</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
