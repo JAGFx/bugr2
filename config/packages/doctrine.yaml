@@ -45,6 +45,11 @@ doctrine:
             dir: '%kernel.project_dir%/src/Domain/Account'
             prefix: 'App\Domain\Account\Entity'
             alias: Account
+          Assignment:
+            is_bundle: false
+            dir: '%kernel.project_dir%/src/Domain/Assignment'
+            prefix: 'App\Domain\Assignment\Entity'
+            alias: Assignment
         dql:
           string_functions:
             ifnull: DoctrineExtensions\Query\Mysql\IfNull

@@ -3,6 +3,7 @@
 namespace App\Domain\Account\Entity;
 
 use App\Domain\Account\Repository\AccountRepository;
+use App\Domain\Assignment\Entity\Assignment;
 use App\Domain\Entry\Entity\Entry;
 use App\Shared\Model\TimestampableTrait;
 use DateTimeImmutable;
@@ -35,10 +36,17 @@ class Account
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
     private bool $enable = true;
 
+    /**
+     * @var Collection<int, Assignment>
+     */
+    #[ORM\OneToMany(mappedBy: 'account', targetEntity: Assignment::class, fetch: 'EXTRA_LAZY')]
+    private Collection $assignments;
+
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
-        $this->entries   = new ArrayCollection();
+        $this->createdAt   = new DateTimeImmutable();
+        $this->entries     = new ArrayCollection();
+        $this->assignments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,6 +111,24 @@ class Account
     public function setEnable(bool $enable): Account
     {
         $this->enable = $enable;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Assignment>
+     */
+    public function getAssignments(): Collection
+    {
+        return $this->assignments;
+    }
+
+    /**
+     * @param Collection<int, Assignment> $assignments
+     */
+    public function setAssignments(Collection $assignments): Account
+    {
+        $this->assignments = $assignments;
 
         return $this;
     }
