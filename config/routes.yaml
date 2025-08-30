@@ -4,59 +4,10 @@ shared:
     namespace: App\Shared\Controller
   type: attribute
 
-#domain:
-#    resource: '../src/Domain/*/Controller/*'
-#    type: attribute
-#    resource: 'routes/_domain.yaml'
-#    resource:
-#        path: '../src/Domain/*/Controller/*'
-#        namespace: App\Domain
-#    type: attribute
-
-account_front:
-  resource:
-    path: ../src/Domain/Account/Controller/Front/
-    namespace: App\Domain\Account\Controller\Front
+domain_back:
   type: attribute
+  resource: '../src/Domain/**/Controller/Back/*'
 
-account_back:
-  resource:
-    path: ../src/Domain/Account/Controller/Back/
-    namespace: App\Domain\Account\Controller\Back
+domain_front:
   type: attribute
-
-budget_back:
-  resource:
-    path: ../src/Domain/Budget/Controller/Back/
-    namespace: App\Domain\Budget\Controller\Back
-  type: attribute
-
-budget_front:
-  resource:
-    path: ../src/Domain/Budget/Controller/Front/
-    namespace: App\Domain\Budget\Controller\Front
-  type: attribute
-
-entry_back:
-  resource:
-    path: ../src/Domain/Entry/Controller/Back/
-    namespace: App\Domain\Entry\Controller\Back
-  type: attribute
-
-entry_front:
-  resource:
-    path: ../src/Domain/Entry/Controller/Front/
-    namespace: App\Domain\Entry\Controller\Front
-  type: attribute
-
-periodic_entries_back:
-  resource:
-    path: ../src/Domain/PeriodicEntry/Controller/Back/
-    namespace: App\Domain\PeriodicEntry\Controller\Back
-  type: attribute
-
-periodic_entries_front:
-  resource:
-    path: ../src/Domain/PeriodicEntry/Controller/Front/
-    namespace: App\Domain\PeriodicEntry\Controller\Front
-  type: attribute
+  resource: '../src/Domain/**/Controller/Front/*'

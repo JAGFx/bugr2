@@ -27,4 +27,11 @@ class AssignmentRepository extends ServiceEntityRepository
     {
         $this->_em->flush();
     }
+
+    public function remove(Assignment $entry): self
+    {
+        $this->_em->remove($entry);
+
+        return $this;
+    }
 }

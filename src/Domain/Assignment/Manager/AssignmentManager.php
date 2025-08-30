@@ -34,4 +34,11 @@ class AssignmentManager
     {
         $this->repository->flush();
     }
+
+    public function remove(Assignment $assignment): void
+    {
+        $this->repository
+            ->remove($assignment)
+            ->flush();
+    }
 }
